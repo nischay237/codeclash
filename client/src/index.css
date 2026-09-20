@@ -1,0 +1,235 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: #fed836;
+  color: #0f172a;
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: #fcd34d;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #0f172a;
+}
+
+/* ========================================= */
+/* ANIMATIONS FOR INTERACTIVE THEMES */
+/* ========================================= */
+
+/* Animated Pop-Up Spring for Hover Tooltips */
+@keyframes popup-pop-spring {
+  0% {
+    opacity: 0;
+    transform: translateY(18px) scale(0.88);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-4px) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-popup-spring {
+  animation: popup-pop-spring 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transform-origin: bottom center;
+}
+
+/* Swords Clash Animation */
+@keyframes sword-clash-left {
+  0%, 100% { transform: rotate(-30deg) translate(-3px, 1px); }
+  50% { transform: rotate(-5deg) translate(5px, -3px); }
+}
+
+@keyframes sword-clash-right {
+  0%, 100% { transform: rotate(30deg) translate(3px, 1px) scaleX(-1); }
+  50% { transform: rotate(5deg) translate(-5px, -3px) scaleX(-1); }
+}
+
+@keyframes spark-burst {
+  0%, 100% { opacity: 0.2; transform: scale(0.8) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1.4) rotate(45deg); filter: drop-shadow(0 0 8px #4ade80); }
+}
+
+.animate-sword-left {
+  animation: sword-clash-left 1.6s infinite ease-in-out;
+}
+
+.animate-sword-right {
+  animation: sword-clash-right 1.6s infinite ease-in-out;
+}
+
+.animate-spark {
+  animation: spark-burst 1.6s infinite ease-in-out;
+}
+
+/* Real-Time Fluctuating Graph Bars */
+@keyframes bar-fluctuate-1 {
+  0%, 100% { height: 30%; }
+  50% { height: 90%; }
+}
+@keyframes bar-fluctuate-2 {
+  0%, 100% { height: 80%; }
+  50% { height: 40%; }
+}
+@keyframes bar-fluctuate-3 {
+  0%, 100% { height: 50%; }
+  50% { height: 100%; }
+}
+@keyframes bar-fluctuate-4 {
+  0%, 100% { height: 95%; }
+  50% { height: 55%; }
+}
+@keyframes bar-fluctuate-5 {
+  0%, 100% { height: 60%; }
+  50% { height: 85%; }
+}
+
+.animate-bar-1 { animation: bar-fluctuate-1 1.4s infinite ease-in-out; }
+.animate-bar-2 { animation: bar-fluctuate-2 1.8s infinite ease-in-out 0.2s; }
+.animate-bar-3 { animation: bar-fluctuate-3 1.5s infinite ease-in-out 0.4s; }
+.animate-bar-4 { animation: bar-fluctuate-4 1.9s infinite ease-in-out 0.1s; }
+.animate-bar-5 { animation: bar-fluctuate-5 1.6s infinite ease-in-out 0.3s; }
+
+/* AI Scanner Waves */
+@keyframes ai-pulse-ring {
+  0% { transform: scale(0.9); opacity: 0.8; }
+  50% { transform: scale(1.15); opacity: 0.3; }
+  100% { transform: scale(0.9); opacity: 0.8; }
+}
+
+.animate-ai-ring {
+  animation: ai-pulse-ring 2.4s infinite ease-in-out;
+}
+
+/* Conveyor Box Slide */
+@keyframes conveyor-slide {
+  0% { transform: translateX(-12px); opacity: 0.7; }
+  50% { transform: translateX(0px); opacity: 1; }
+  100% { transform: translateX(12px); opacity: 0.7; }
+}
+
+.animate-conveyor {
+  animation: conveyor-slide 2.2s infinite ease-in-out;
+}
+
+/* Floating background emojis */
+@keyframes float-emoji-a {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-22px) rotate(14deg); }
+}
+@keyframes float-emoji-b {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-30px) rotate(-16deg); }
+}
+@keyframes float-emoji-c {
+  0%, 100% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(-18px) scale(1.18) rotate(10deg); }
+}
+
+.animate-float-a { animation: float-emoji-a 4s infinite ease-in-out; }
+.animate-float-b { animation: float-emoji-b 5.5s infinite ease-in-out 0.5s; }
+.animate-float-c { animation: float-emoji-c 4.8s infinite ease-in-out 1s; }
+
+/* 3D Golden & Cyan Orbs (Inspired by Image 4) */
+@keyframes orb-float-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(12px, -24px) scale(1.06); }
+}
+
+@keyframes orb-float-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-16px, 18px) scale(0.95); }
+}
+
+@keyframes spin-slow {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes pulse-subtle {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.05); opacity: 1; }
+}
+
+.animate-orb-1 { animation: orb-float-1 6s infinite ease-in-out; }
+.animate-orb-2 { animation: orb-float-2 7.5s infinite ease-in-out 1s; }
+.animate-spin-slow { animation: spin-slow 16s linear infinite; }
+.animate-spin-reverse-slow { animation: spin-slow 20s linear infinite reverse; }
+.animate-pulse-subtle { animation: pulse-subtle 3s infinite ease-in-out; }
+
+.sphere-3d-gold {
+  background: radial-gradient(circle at 32% 28%, #fffbeb, #fef08a 25%, #eab308 60%, #a16207 85%, #713f12 100%);
+  box-shadow: inset -6px -6px 14px rgba(0, 0, 0, 0.45), 0 12px 28px rgba(234, 179, 8, 0.45);
+}
+
+.sphere-3d-cyan {
+  background: radial-gradient(circle at 32% 28%, #ecfeff, #a5f3fc 25%, #06b6d4 60%, #0e7490 85%, #155e75 100%);
+  box-shadow: inset -6px -6px 14px rgba(0, 0, 0, 0.45), 0 12px 28px rgba(6, 182, 212, 0.45);
+}
+
+/* ========================================= */
+/* START-UP TEMPLATE BLUEPRINT & STICKER UTILITIES */
+/* ========================================= */
+.bg-blueprint-grid {
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.12) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.12) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.bg-blueprint-grid-dense {
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.10) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.10) 1px, transparent 1px);
+  background-size: 14px 14px;
+}
+
+.zigzag-vertical-left {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 32'%3E%3Cpolygon points='16,0 0,16 16,32' fill='%23f4f5f7'/%3E%3C/svg%3E");
+  background-size: 16px 32px;
+  background-repeat: repeat-y;
+}
+
+.yellow-tape-sticker {
+  background-color: #ffd60a;
+  color: #020617;
+  font-weight: 900;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  border: 1px dashed rgba(0, 0, 0, 0.25);
+}
+
+.yellow-stamp-seal {
+  background: #ffd60a;
+  color: #020617;
+  border: 2px dashed #020617;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+}
+
+.cutout-contour-yellow {
+  filter: 
+    drop-shadow(3px 0 0 #ffd60a)
+    drop-shadow(-3px 0 0 #ffd60a)
+    drop-shadow(0 3px 0 #ffd60a)
+    drop-shadow(0 -3px 0 #ffd60a)
+    drop-shadow(3px 3px 0 #ffd60a)
+    drop-shadow(-3px -3px 0 #ffd60a)
+    drop-shadow(3px -3px 0 #ffd60a)
+    drop-shadow(-3px 3px 0 #ffd60a)
+    drop-shadow(6px 8px 16px rgba(0, 0, 0, 0.3));
+}
