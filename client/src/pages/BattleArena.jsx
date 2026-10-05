@@ -105,3 +105,110 @@ export default function BattleArena({ matchData, onExitArena }) {
         updateUserElo(
           result.eloChange[user.username].newElo,
           result.eloChange[user.username].tier?.name
+        );
+      }
+    });
+
+    return () => {
+      socket.off('opponent:progress');
+      socket.off('opponent:taunt');
+      socket.off('code:test_results');
+      socket.off('code:submit_failed');
+      socket.off('match:ended');
+    };
+  }, [socket, user, updateUserElo]);
+
+  // Actions
+  const handleRunTests = (currentCode) => {
+    if (!socket || isExecuting) return;
+    setIsExecuting(true);
+    socket.emit('code:run_test', { roomId, code: currentCode });
+  };
+
+  const handleSubmitSolution = (currentCode) => {
+    if (!socket || isExecuting) return;
+    setIsExecuting(true);
+    socket.emit('code:submit', { roomId, code: currentCode });
+  };
+
+  const handleCodeChange = (newCode) => {
+    if (socket && battleActive) {
+      const lines = newCode.split('\n').length;
+      const progressPercent = Math.min(90, Math.round((newCode.length / 250) * 100));
+      socket.emit('code:progress', {
+        roomId,
+        progressPercent,
+        testsPassed: testResults?.passedCount || 0,
+        totalTests: problem.testCases?.length || 4,
+        lineCount: lines
+      });
+    }
+  };
+
+  const handleSendTaunt = (emoji, text) => {
+    if (socket && roomId) {
+      socket.emit('battle:taunt', { roomId, emoji, text });
+    }
+  };
+
+  const handleForfeit = () => {
+    if (window.confirm('Are you sure you want to forfeit this battle? Your opponent will win.')) {
+      if (socket && roomId) {
+        socket.emit('match:forfeit', { roomId });
+      }
+    }
+  };
+
+  const formatTime = (secs) => {
+    const mins = Math.floor(secs / 60);
+    const rem = secs % 60;
+    return `${mins}:${rem < 10 ? '0' : ''}${rem}`;
+  };
+
+  return (
+    <div className="relative min-h-[calc(100vh-4rem)] flex flex-col bg-[#080b12]">
+      
+      {/* 3.. 2.. 1.. Match Countdown Splash Overlay */}
+      {countdown > 0 && (
+        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/90 backdrop-blur-md animate-fadeIn">
+          <div className="text-center">
+            <span className="text-xs uppercase font-extrabold tracking-widest text-emerald-400 mb-2 block">
+              1v1 Battle Initializing
+            </span>
+            <div className="text-8xl sm:text-9xl font-black text-white animate-ping">
+              {countdown}
+            </div>
+            <p className="text-sm font-mono text-slate-400 mt-4">
+              {problem.title} • {problem.difficulty}
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Victory / Defeat Modal */}
+      {matchResult && (
+        <VictoryModal
+          matchResult={matchResult}
+          currentUser={user}
+          onPlayAgain={onExitArena}
+          onBackToLobby={onExitArena}
+        />
+      )}
+
+      {/* Arena Sub-Header Bar */}
+      <div className="border-b border-slate-800/80 bg-[#0c101c]/90 px-4 py-2.5 flex items-center justify-between">
+        
+        <div className="flex items-center gap-3">
+          <span className="text-xs font-mono font-bold text-slate-400 flex items-center gap-1.5">
+            <Swords className="w-3.5 h-3.5 text-emerald-400" />
+            Room: <strong className="text-white">{roomId}</strong>
+          </span>
+          <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${
+            problem.difficulty === 'Easy' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' :
+            problem.difficulty === 'Medium' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20' :
+            'bg-red-500/10 text-red-400 border border-red-500/20'
+          }`}>
+            {problem.difficulty}
+          </span>
+        </div>
+
