@@ -212,3 +212,110 @@ export default function BattleArena({ matchData, onExitArena }) {
           </span>
         </div>
 
+        {/* Tactical Emoji Bar */}
+        <div className="hidden sm:block">
+          <EmojiTauntBar onSendTaunt={handleSendTaunt} />
+        </div>
+
+        {/* Timer & Forfeit Controls */}
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-slate-900 border border-slate-800 text-xs font-mono font-bold text-slate-300">
+            <Clock className="w-3.5 h-3.5 text-amber-400" />
+            <span>{formatTime(timeElapsed)}</span>
+          </div>
+
+          <button
+            onClick={handleForfeit}
+            title="Forfeit Match"
+            className="p-1.5 text-xs text-red-400 hover:text-red-300 hover:bg-red-950/40 border border-red-900/60 rounded-xl transition-colors flex items-center gap-1"
+          >
+            <Flag className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Forfeit</span>
+          </button>
+        </div>
+
+      </div>
+
+      {/* Submit Error Toast */}
+      {submitError && (
+        <div className="bg-red-950/90 border-b border-red-800 px-4 py-2 text-center text-xs font-bold text-red-300 animate-shake">
+          {submitError}
+        </div>
+      )}
+
+      {/* Main Split-Screen Battle Arena View */}
+      <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-3 p-3 overflow-hidden">
+        
+        {/* Left Panel: Problem Statement (4 Cols) */}
+        <div className="lg:col-span-4 flex flex-col rounded-2xl bg-[#0d121f] border border-slate-800 overflow-hidden shadow-xl">
+          <div className="px-4 py-3 bg-slate-900/90 border-b border-slate-800 flex items-center gap-2">
+            <BookOpen className="w-4 h-4 text-emerald-400" />
+            <h2 className="text-sm font-bold text-white truncate">{problem.title}</h2>
+          </div>
+
+          <div className="flex-1 p-4 overflow-y-auto space-y-4 text-xs leading-relaxed text-slate-300">
+            <div className="whitespace-pre-wrap font-normal">{problem.description}</div>
+
+            {problem.examples && problem.examples.length > 0 && (
+              <div className="space-y-3 pt-2">
+                <span className="text-[11px] uppercase font-bold text-slate-400 block tracking-wider">Examples</span>
+                {problem.examples.map((ex, i) => (
+                  <div key={i} className="p-3 rounded-xl bg-slate-950 border border-slate-800/80 font-mono text-[11px]">
+                    <div className="mb-1"><strong className="text-slate-400">Input:</strong> {ex.input}</div>
+                    <div className="mb-1"><strong className="text-emerald-400">Output:</strong> {ex.output}</div>
+                    {ex.explanation && (
+                      <div className="text-slate-500 text-[10px]"><strong className="text-slate-400">Explanation:</strong> {ex.explanation}</div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {problem.constraints && problem.constraints.length > 0 && (
+              <div className="pt-2">
+                <span className="text-[11px] uppercase font-bold text-slate-400 block tracking-wider mb-2">Constraints</span>
+                <ul className="list-disc pl-4 space-y-1 font-mono text-[11px] text-slate-400">
+                  {problem.constraints.map((c, i) => (
+                    <li key={i}>{c}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Right Panel: Opponent Radar + Editor + Test Console (8 Cols) */}
+        <div className="lg:col-span-8 flex flex-col gap-3">
+          
+          {/* Live Opponent Telemetry Radar */}
+          <OpponentRadar
+            opponent={opponent}
+            opponentProgress={opponentProgress}
+            incomingTaunt={incomingTaunt}
+          />
+
+          {/* Code Editor */}
+          <div className="flex-1 min-h-[320px]">
+            <CodeEditor
+              initialCode={problem.starterCode}
+              starterCode={problem.starterCode}
+              onRunTests={handleRunTests}
+              onSubmit={handleSubmitSolution}
+              onCodeChange={handleCodeChange}
+              isExecuting={isExecuting}
+            />
+          </div>
+
+          {/* Test Case Output Console */}
+          <TestConsole
+            testResults={testResults}
+            isExecuting={isExecuting}
+          />
+
+        </div>
+
+      </div>
+
+    </div>
+  );
+}
