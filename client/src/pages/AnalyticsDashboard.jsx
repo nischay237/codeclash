@@ -447,3 +447,227 @@ export default function AnalyticsDashboard({ onExit }) {
       {activeTab === 'heatmap' && (
         <main className="max-w-7xl mx-auto px-4 sm:px-8 py-6 space-y-6">
           <div className="p-6 rounded-3xl bg-slate-900/90 border border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <h2 className="text-xl font-black text-white flex items-center gap-2">
+                <Flame className="w-5 h-5 text-yellow-300" />
+                <span>Visual Click Heatmap Scanner</span>
+              </h2>
+              <p className="text-xs text-slate-400 font-bold mt-0.5">
+                Renders user interaction density across element coordinates (X, Y)
+              </p>
+            </div>
+
+            {/* Heatmap Controls */}
+            <div className="flex flex-wrap items-center gap-4 text-xs font-bold">
+              <div className="flex items-center gap-2">
+                <span className="text-slate-400">Spot Size:</span>
+                <input
+                  type="range"
+                  min="24"
+                  max="72"
+                  value={spotSize}
+                  onChange={(e) => setSpotSize(Number(e.target.value))}
+                  className="w-24 accent-rose-500 cursor-pointer"
+                />
+                <span className="text-white font-mono">{spotSize}px</span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <span className="text-slate-400">Opacity:</span>
+                <input
+                  type="range"
+                  min="0.2"
+                  max="1.0"
+                  step="0.05"
+                  value={opacity}
+                  onChange={(e) => setOpacity(Number(e.target.value))}
+                  className="w-24 accent-rose-500 cursor-pointer"
+                />
+                <span className="text-white font-mono">{Math.round(opacity * 100)}%</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Interactive Heatmap Preview Canvas */}
+          <div className="relative w-full h-[520px] rounded-3xl bg-[#030611] border-2 border-slate-800 overflow-hidden shadow-2xl flex flex-col justify-between p-6">
+            
+            {/* Background Simulated Store Wireframe */}
+            <div className="absolute inset-0 pointer-events-none opacity-20 p-8 flex flex-col justify-between">
+              <div className="flex justify-between items-center border-b border-white pb-4">
+                <div className="w-32 h-6 bg-white rounded" />
+                <div className="w-64 h-6 bg-white rounded" />
+              </div>
+              <div className="grid grid-cols-3 gap-6 my-auto">
+                <div className="h-44 bg-white rounded-2xl" />
+                <div className="h-44 bg-white rounded-2xl" />
+                <div className="h-44 bg-white rounded-2xl" />
+              </div>
+              <div className="h-8 w-44 bg-white rounded self-end" />
+            </div>
+
+            {/* Dynamic Click Hotspots */}
+            <div className="absolute inset-0">
+              {HEATMAP_CLICKS.map((spot, idx) => (
+                <div
+                  key={idx}
+                  style={{
+                    left: `${spot.x}%`,
+                    top: `${spot.y}%`,
+                    width: `${spotSize}px`,
+                    height: `${spotSize}px`,
+                    opacity: opacity,
+                    transform: 'translate(-50%, -50%)'
+                  }}
+                  className="absolute rounded-full pointer-events-auto cursor-pointer group"
+                >
+                  <div className="w-full h-full rounded-full bg-gradient-to-r from-red-500 via-yellow-400 to-emerald-400 blur-md animate-pulse" />
+                  
+                  {/* Hover Tooltip */}
+                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-black/90 text-white text-[11px] font-black px-2.5 py-1 rounded-xl whitespace-nowrap border border-white/20 z-30">
+                    {spot.label}: {spot.count} Clicks
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Bottom Status Bar */}
+            <div className="relative z-10 flex items-center justify-between text-xs font-bold text-slate-400 bg-black/60 p-3 rounded-2xl backdrop-blur-md border border-slate-800">
+              <span>Selected Page: <strong className="text-white font-mono">{selectedHeatPage}</strong></span>
+              <span className="text-emerald-400">● 6 Interactive Click Clusters Identified</span>
+            </div>
+
+          </div>
+        </main>
+      )}
+
+      {/* ============================================================== */}
+      {/* TAB 3: USER SESSION JOURNEYS */}
+      {/* ============================================================== */}
+      {activeTab === 'sessions' && (
+        <main className="max-w-7xl mx-auto px-4 sm:px-8 py-6 space-y-6">
+          <div className="p-6 rounded-3xl bg-slate-900/90 border border-slate-800 flex items-center justify-between">
+            <div>
+              <h2 className="text-xl font-black text-white flex items-center gap-2">
+                <Compass className="w-5 h-5 text-rose-400" />
+                <span>Captured User Sessions & Chronological Journeys</span>
+              </h2>
+              <p className="text-xs text-slate-400 font-bold mt-0.5">
+                Click any session row to inspect chronological click streams and page transitions
+              </p>
+            </div>
+            <span className="text-xs font-black text-slate-300">
+              Total Ingested: {sessions.length} Sessions
+            </span>
+          </div>
+
+          {/* Sessions Table */}
+          <div className="space-y-3">
+            {sessions.map((sess) => (
+              <div
+                key={sess.sessionId}
+                onClick={() => setSelectedSession(sess)}
+                className="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 hover:border-rose-500/60 hover:bg-slate-850 transition-all cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs font-bold"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="p-2.5 bg-slate-800 text-rose-400 rounded-xl">
+                    <Users className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <span className="font-mono text-white font-black">{sess.sessionId}</span>
+                    <div className="text-[11px] text-slate-400 font-normal">{sess.page}</div>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-4">
+                  <span className="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 text-[11px]">
+                    {sess.device}
+                  </span>
+                  <span className="text-slate-400">
+                    {sess.totalEvents} Events
+                  </span>
+                  {sess.completedOrder ? (
+                    <span className="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[10px] font-black uppercase">
+                      ✓ Paid ${sess.revenue}
+                    </span>
+                  ) : (
+                    <span className="px-2.5 py-1 rounded-full bg-slate-800 text-slate-400 text-[10px] font-bold uppercase">
+                      Browsed Only
+                    </span>
+                  )}
+                  <span className="text-rose-400 font-black">Inspect ➔</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </main>
+      )}
+
+      {/* ============================================================== */}
+      {/* SESSION JOURNEY DRAWER MODAL */}
+      {/* ============================================================== */}
+      {selectedSession && (
+        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-[#0f1429] border border-slate-700 rounded-3xl max-w-lg w-full p-6 space-y-4 shadow-2xl text-white">
+            <div className="flex justify-between items-center pb-3 border-b border-slate-800">
+              <div>
+                <h3 className="text-base font-black text-white">Session User Journey</h3>
+                <span className="text-xs font-mono text-slate-400">{selectedSession.sessionId}</span>
+              </div>
+              <button onClick={() => setSelectedSession(null)} className="text-slate-400 hover:text-white p-1">
+                ✕
+              </button>
+            </div>
+
+            <div className="space-y-3 py-2 text-xs font-bold">
+              <div className="flex items-start gap-3">
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 mt-1 shrink-0" />
+                <div>
+                  <span className="text-white block font-black">Page View</span>
+                  <span className="text-slate-400 text-[11px] font-mono">Landed on /demo-page/index.html</span>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <span className="w-2.5 h-2.5 rounded-full bg-yellow-400 mt-1 shrink-0" />
+                <div>
+                  <span className="text-white block font-black">Searched Query</span>
+                  <span className="text-slate-400 text-[11px] font-mono">Internal Search: "anc headphones"</span>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <span className="w-2.5 h-2.5 rounded-full bg-indigo-400 mt-1 shrink-0" />
+                <div>
+                  <span className="text-white block font-black">Product Click</span>
+                  <span className="text-slate-400 text-[11px] font-mono">Clicked #product-1 (Apex ANC Headphones)</span>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <span className="w-2.5 h-2.5 rounded-full bg-purple-400 mt-1 shrink-0" />
+                <div>
+                  <span className="text-white block font-black">Added to Cart</span>
+                  <span className="text-slate-400 text-[11px] font-mono">Event: add_to_cart (Qty: 1)</span>
+                </div>
+              </div>
+              {selectedSession.completedOrder && (
+                <div className="flex items-start gap-3">
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 mt-1 shrink-0" />
+                  <div>
+                    <span className="text-emerald-400 block font-black">Order Completed</span>
+                    <span className="text-slate-400 text-[11px] font-mono">Total Paid: ${selectedSession.revenue}</span>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <button
+              onClick={() => setSelectedSession(null)}
+              className="w-full bg-slate-800 hover:bg-slate-700 text-white font-black py-2.5 rounded-xl text-xs uppercase"
+            >
+              Close Journey View
+            </button>
+          </div>
+        </div>
+      )}
+
+    </div>
+  );
+}
