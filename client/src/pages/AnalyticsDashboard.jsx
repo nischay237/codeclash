@@ -222,3 +222,228 @@ export default function AnalyticsDashboard({ onExit }) {
       {activeTab === 'dashboard' && (
         <main className="max-w-7xl mx-auto px-4 sm:px-8 py-6 space-y-6">
           
+          {/* Top Banner */}
+          <div className="bg-gradient-to-r from-rose-950 via-slate-900 to-indigo-950 p-6 sm:p-8 rounded-3xl border border-rose-500/30 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xl">
+            <div>
+              <div className="flex items-center gap-2 text-xs font-black text-rose-400 uppercase tracking-wider mb-1">
+                <Sparkles className="w-4 h-4 text-yellow-300 animate-spin" />
+                <span>CausalFunnel Telemetry Engine</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+                Real-Time Visitor Purchase Signals & Conversion Tunnels
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-300 font-bold mt-1">
+                Monitors page_view, click coordinates, add-to-cart events, and cart abandonment with lightweight client tracker under 3KB.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-3 bg-black/40 p-4 rounded-2xl border border-rose-500/20 shrink-0">
+              <div className="text-center">
+                <span className="text-3xl font-black text-white">{activeVisitors}</span>
+                <div className="text-[10px] font-black text-emerald-400 uppercase">● Live Visitors</div>
+              </div>
+              <div className="h-8 w-px bg-slate-800" />
+              <div className="text-center">
+                <span className="text-3xl font-black text-yellow-300">14ms</span>
+                <div className="text-[10px] font-black text-slate-400 uppercase">Socket Pulse</div>
+              </div>
+            </div>
+          </div>
+
+          {/* 4 Financial KPI Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="bg-slate-900/90 p-5 rounded-2xl border border-slate-800 flex items-center justify-between">
+              <div>
+                <p className="text-xs font-bold text-slate-400 uppercase">Total Sales (Revenue)</p>
+                <h3 className="text-2xl sm:text-3xl font-black text-white mt-1">${totalRevenue.toLocaleString()}</h3>
+                <p className="text-[11px] text-emerald-400 font-bold mt-0.5">Live payments decrypted</p>
+              </div>
+              <div className="p-3 bg-emerald-500/20 text-emerald-400 rounded-xl">
+                <DollarSign className="w-6 h-6" />
+              </div>
+            </div>
+
+            <div className="bg-slate-900/90 p-5 rounded-2xl border border-slate-800 flex items-center justify-between">
+              <div>
+                <p className="text-xs font-bold text-slate-400 uppercase">Average Order Value (AOV)</p>
+                <h3 className="text-2xl sm:text-3xl font-black text-white mt-1">${aovValue.toFixed(2)}</h3>
+                <p className="text-[11px] text-slate-400 font-bold mt-0.5">Simulated ticket averages</p>
+              </div>
+              <div className="p-3 bg-indigo-500/20 text-indigo-400 rounded-xl">
+                <ShoppingCart className="w-6 h-6" />
+              </div>
+            </div>
+
+            <div className="bg-slate-900/90 p-5 rounded-2xl border border-slate-800 flex items-center justify-between">
+              <div>
+                <p className="text-xs font-bold text-slate-400 uppercase">Cart Abandonment</p>
+                <h3 className="text-2xl sm:text-3xl font-black text-white mt-1">{cartAbandonmentRate}%</h3>
+                <p className="text-[11px] text-rose-400 font-bold mt-0.5">Dropped carts before checkout</p>
+              </div>
+              <div className="p-3 bg-rose-500/20 text-rose-400 rounded-xl">
+                <Percent className="w-6 h-6" />
+              </div>
+            </div>
+
+            <div className="bg-slate-900/90 p-5 rounded-2xl border border-slate-800 flex items-center justify-between">
+              <div>
+                <p className="text-xs font-bold text-slate-400 uppercase">Conversion Rate</p>
+                <h3 className="text-2xl sm:text-3xl font-black text-white mt-1">{conversionRate}%</h3>
+                <p className="text-[11px] text-slate-400 font-bold mt-0.5">Visitor to checkout ratio</p>
+              </div>
+              <div className="p-3 bg-amber-500/20 text-amber-400 rounded-xl">
+                <Target className="w-6 h-6" />
+              </div>
+            </div>
+          </div>
+
+          {/* Funnel & Traffic Visualizations */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            {/* Checkout Funnel Analysis */}
+            <div className="lg:col-span-2 bg-slate-900/90 p-6 rounded-3xl border border-slate-800 space-y-4">
+              <div>
+                <h3 className="text-base font-black text-white flex items-center gap-2">
+                  <ShoppingCart className="w-4 h-4 text-rose-400" />
+                  <span>Checkout Funnel Drop-off Analysis</span>
+                </h3>
+                <p className="text-xs text-slate-400 font-bold">
+                  Identifies friction points where store visitors abandon before purchasing
+                </p>
+              </div>
+
+              <div className="space-y-3 pt-2">
+                {[
+                  { step: "1. Product Views", count: "12,480 Users", pct: 100, color: "bg-indigo-500" },
+                  { step: "2. Added to Cart", count: "3,890 Users", pct: 31.2, color: "bg-purple-500" },
+                  { step: "3. Checkout Started", count: "1,450 Users", pct: 11.6, color: "bg-rose-500" },
+                  { step: "4. Orders Completed", count: "524 Sales", pct: 4.2, color: "bg-emerald-500" }
+                ].map((row, i) => (
+                  <div key={i} className="space-y-1 text-xs font-bold">
+                    <div className="flex justify-between text-slate-300">
+                      <span>{row.step}</span>
+                      <span className="font-mono text-white">{row.count} ({row.pct}%)</span>
+                    </div>
+                    <div className="h-3 w-full bg-slate-800 rounded-full overflow-hidden">
+                      <div className={`h-full ${row.color} rounded-full transition-all duration-700`} style={{ width: `${row.pct}%` }} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Terminal Distribution */}
+            <div className="bg-slate-900/90 p-6 rounded-3xl border border-slate-800 flex flex-col justify-between">
+              <div>
+                <h3 className="text-base font-black text-white flex items-center gap-2">
+                  <Monitor className="w-4 h-4 text-cyan-400" />
+                  <span>Terminal Distribution</span>
+                </h3>
+                <p className="text-xs text-slate-400 font-bold">Shopper browser viewports</p>
+              </div>
+
+              {/* Visual Ring */}
+              <div className="my-6 flex items-center justify-center">
+                <div className="relative w-36 h-36 rounded-full border-8 border-indigo-500 flex items-center justify-center">
+                  <div className="text-center">
+                    <span className="text-2xl font-black text-white">68%</span>
+                    <span className="block text-[10px] font-bold text-slate-400 uppercase">Desktop</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-3 gap-2 text-center text-[10px] font-bold uppercase">
+                <div className="p-2 bg-slate-800/80 rounded-xl">
+                  <span className="text-indigo-400 block font-black text-xs">68%</span>
+                  <span className="text-slate-400">Desktop</span>
+                </div>
+                <div className="p-2 bg-slate-800/80 rounded-xl">
+                  <span className="text-emerald-400 block font-black text-xs">24%</span>
+                  <span className="text-slate-400">Mobile</span>
+                </div>
+                <div className="p-2 bg-slate-800/80 rounded-xl">
+                  <span className="text-amber-400 block font-black text-xs">8%</span>
+                  <span className="text-slate-400">Tablet</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          {/* Weekly Summary & Searched Keywords */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            {/* Weekly Performance Breakdown */}
+            <div className="bg-slate-900/90 p-6 rounded-3xl border border-slate-800 space-y-4">
+              <h3 className="text-base font-black text-white flex items-center gap-2">
+                <Calendar className="w-4 h-4 text-indigo-400" />
+                <span>Weekly Store Performance Summary</span>
+              </h3>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                {WEEKLY_SUMMARY.map((w, idx) => (
+                  <div key={idx} className="p-3.5 bg-slate-800/60 rounded-2xl border border-slate-700/60 space-y-2">
+                    <div className="text-indigo-300 font-black">{w.week}</div>
+                    <div className="grid grid-cols-2 gap-1 text-[11px] font-bold text-slate-400">
+                      <div>Users: <span className="text-white">{w.sessionsCount}</span></div>
+                      <div>Clicks: <span className="text-white">{w.interactions}</span></div>
+                      <div>Orders: <span className="text-white">{w.orders}</span></div>
+                      <div>Sales: <span className="text-emerald-400">${w.revenue}</span></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Top Searched Keywords */}
+            <div className="bg-slate-900/90 p-6 rounded-3xl border border-slate-800 space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-base font-black text-white flex items-center gap-2">
+                  <Search className="w-4 h-4 text-rose-400" />
+                  <span>Internal Search Query Trends</span>
+                </h3>
+                <span className="text-[10px] font-black text-slate-400 uppercase">Live Aggregated</span>
+              </div>
+
+              <div className="space-y-2">
+                {SEARCHED_KEYWORDS.map((k, idx) => (
+                  <div key={idx} className="p-3 bg-slate-800/60 rounded-xl border border-slate-700/60 flex items-center justify-between text-xs font-bold">
+                    <span className="text-slate-200 font-mono">"{k.text}"</span>
+                    <span className="px-2.5 py-0.5 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/30 text-[11px] font-black">
+                      {k.count} queries
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+          </div>
+
+          {/* Quick Embed Snippet */}
+          <div className="p-6 rounded-3xl bg-slate-900/90 border border-slate-800">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs font-black text-white uppercase tracking-wide">
+                Embed Lightweight Tracking Snippet (&lt; 3KB)
+              </span>
+              <button
+                onClick={handleCopySnippet}
+                className="text-xs font-black text-emerald-400 hover:text-emerald-300 flex items-center gap-1 cursor-pointer"
+              >
+                {copiedSnippet ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                <span>{copiedSnippet ? 'Copied to Clipboard!' : 'Copy Script Tag'}</span>
+              </button>
+            </div>
+            <pre className="p-3 rounded-2xl bg-black/60 text-slate-300 font-mono text-xs overflow-x-auto border border-slate-800">
+              {trackingCodeSnippet}
+            </pre>
+          </div>
+
+        </main>
+      )}
+
+      {/* ============================================================== */}
+      {/* TAB 2: VISUAL CLICK HEATMAP SCANNER */}
+      {/* ============================================================== */}
+      {activeTab === 'heatmap' && (
+        <main className="max-w-7xl mx-auto px-4 sm:px-8 py-6 space-y-6">
+          <div className="p-6 rounded-3xl bg-slate-900/90 border border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-4">
