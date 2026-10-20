@@ -278,3 +278,283 @@ export default function B2BProcurementPortal({ onExit }) {
   const placeOrder = () => {
     const orderId = `ORD-KNP-${Math.floor(100000 + Math.random() * 900000)}`;
     setConfirmedOrder({
+      orderId,
+      items: [...cart],
+      totalPaid: cartTotal,
+      paymentMethod: selectedPaymentMethod,
+      deliveryEta: Math.min(...cart.map(c => c.etaHours || 2.5))
+    });
+    setCart([]);
+    setIsCartOpen(false);
+    setIsCheckoutModalOpen(true);
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-50 text-slate-800 font-sans pb-16">
+      
+      {/* ============================================================== */}
+      {/* TOP STICKY PORTFOLIO RETURN & GITHUB HEADER */}
+      {/* ============================================================== */}
+      <div className="sticky top-0 z-50 bg-[#0f172a] text-white px-4 sm:px-8 py-3 flex items-center justify-between border-b border-slate-700 shadow-md">
+        <div className="flex items-center gap-3">
+          <button
+            onClick={onExit}
+            className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-black transition-all cursor-pointer border border-slate-700 hover:border-slate-500"
+          >
+            <ArrowLeft className="w-4 h-4 text-emerald-400" />
+            <span>Return to Portfolio</span>
+          </button>
+          
+          <div className="h-4 w-px bg-slate-700 hidden sm:block" />
+
+          <div className="flex items-center gap-2">
+            <span className="w-2.5 h-2.5 rounded-full bg-purple-400 animate-ping" />
+            <span className="text-xs font-black tracking-wider uppercase text-white hidden sm:inline">
+              B2B Wholesale Mandi — Direct Merchant Procurement Platform
+            </span>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <span className="text-[11px] font-bold text-slate-300 hidden md:inline">
+            Original Full-Stack Project • MERN MVC Architecture
+          </span>
+          <a
+            href="https://github.com/nischay237/b2b-merchant-procurement-platform"
+            target="_blank"
+            rel="noreferrer"
+            className="px-3.5 py-1.5 rounded-xl bg-[#7c3aed] hover:bg-[#6d28d9] text-white text-xs font-black transition-all flex items-center gap-1.5 shadow-lg shadow-purple-900/30"
+          >
+            <span>GitHub Repo</span>
+            <ExternalLink className="w-3.5 h-3.5" />
+          </a>
+        </div>
+      </div>
+
+      {/* ============================================================== */}
+      {/* B2B MANDI BRANDED NAVBAR */}
+      {/* ============================================================== */}
+      <header className="bg-white border-b border-slate-200 sticky top-12 z-40 shadow-sm">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+          <nav className="flex items-center gap-6 md:gap-8 text-sm font-semibold">
+            <button
+              onClick={() => setActiveNav("HOME")}
+              className={`transition-colors py-1 ${activeNav === "HOME" ? "font-black text-slate-900 border-b-2 border-slate-900" : "text-slate-500 hover:text-slate-800"}`}
+            >
+              Wholesale Home
+            </button>
+            <button
+              onClick={() => { setActiveNav("SERVICES"); setIsCatalogModalOpen(true); }}
+              className={`transition-colors py-1 ${activeNav === "SERVICES" ? "font-black text-slate-900 border-b-2 border-slate-900" : "text-slate-500 hover:text-slate-800"}`}
+            >
+              Catalog & Search
+            </button>
+            <button
+              onClick={loadKanpurDemo}
+              className="text-[#FF7A59] font-black hover:text-[#e06344] transition-colors py-1"
+            >
+              ⚡ 500kg Demo
+            </button>
+          </nav>
+
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setIsProfileModalOpen(true)}
+              className="bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold px-4 py-2 rounded-full text-xs flex items-center gap-2 transition-all border border-slate-200"
+            >
+              <User className="w-3.5 h-3.5 text-purple-700" />
+              <span>{merchantProfile.shopName}</span>
+            </button>
+
+            <button
+              onClick={() => setIsCartOpen(true)}
+              className="relative p-2.5 bg-slate-100 hover:bg-slate-200 rounded-full text-slate-800 transition-colors"
+            >
+              <ShoppingBag className="w-4 h-4" />
+              {cart.length > 0 && (
+                <span className="absolute -top-1 -right-1 bg-[#FF7A59] text-white font-black text-[10px] w-5 h-5 rounded-full flex items-center justify-center shadow">
+                  {cart.reduce((s, i) => s + i.qty, 0)}
+                </span>
+              )}
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* ============================================================== */}
+      {/* SECTION 1: HERO SERVICES GRID */}
+      {/* ============================================================== */}
+      <section className="max-w-7xl mx-auto px-6 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+          
+          {/* Left Box: Wholesale Services Cards */}
+          <div className="lg:col-span-7 bg-white p-8 md:p-10 rounded-3xl shadow-xl border border-slate-200/80 flex flex-col justify-between">
+            <div>
+              <div className="flex items-center gap-2 text-xs font-black text-[#FF7A59] uppercase tracking-wider mb-2">
+                <Factory className="w-4 h-4" />
+                <span>Zero Middleman Procurement Network</span>
+              </div>
+              <h1 className="text-3xl md:text-5xl font-black text-slate-900 leading-tight mb-6">
+                Wholesale Sourcing for Retailers
+              </h1>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 mb-8 text-xs">
+                <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100">
+                  <h4 className="font-black text-slate-900 text-sm mb-1">Kirana & FMCG</h4>
+                  <p className="text-slate-500 leading-relaxed">Aata, Rice, Oil, Sugar & Pulses in bulk.</p>
+                </div>
+                <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100">
+                  <h4 className="font-black text-slate-900 text-sm mb-1">Sabun & Hygiene</h4>
+                  <p className="text-slate-500 leading-relaxed">Bath Soaps, Surf & Vim Bar cartons.</p>
+                </div>
+                <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100">
+                  <h4 className="font-black text-slate-900 text-sm mb-1">Apparel Lots</h4>
+                  <p className="text-slate-500 leading-relaxed">Surat Sarees, T-Shirts & Jeans lots.</p>
+                </div>
+                <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100">
+                  <h4 className="font-black text-slate-900 text-sm mb-1">Electronics</h4>
+                  <p className="text-slate-500 leading-relaxed">Delhi Chargers, Bulbs & Accessories.</p>
+                </div>
+                <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100">
+                  <h4 className="font-black text-slate-900 text-sm mb-1">Hardware & Pipes</h4>
+                  <p className="text-slate-500 leading-relaxed">PVC Pipes, Brass Taps & Screws.</p>
+                </div>
+                <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100">
+                  <h4 className="font-black text-slate-900 text-sm mb-1">Stationery</h4>
+                  <p className="text-slate-500 leading-relaxed">Classmate Registers & Pen Boxes.</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex flex-wrap gap-4 items-center">
+              <button
+                onClick={() => setIsCatalogModalOpen(true)}
+                className="bg-[#FF7A59] hover:bg-[#e06344] text-white font-black px-8 py-3.5 rounded-full text-xs tracking-wider uppercase transition-all shadow-lg shadow-orange-500/30 flex items-center gap-2 cursor-pointer"
+              >
+                <Search className="w-4 h-4" />
+                <span>SEARCH WHOLESALE CATALOG</span>
+              </button>
+              <button
+                onClick={loadKanpurDemo}
+                className="bg-[#FCD385] hover:bg-[#f6c66a] text-slate-900 font-black px-6 py-3.5 rounded-full text-xs uppercase transition-all shadow-sm cursor-pointer"
+              >
+                ⚡ Kanpur 500kg Demo
+              </button>
+            </div>
+          </div>
+
+          {/* Right Box: Hero Metrics & Direct Support */}
+          <div className="lg:col-span-5 flex flex-col rounded-3xl overflow-hidden shadow-xl border border-slate-200">
+            <div className="h-60 bg-gradient-to-br from-purple-900 to-indigo-950 p-6 flex flex-col justify-between text-white relative">
+              <div className="flex justify-between items-center">
+                <span className="px-3 py-1 bg-white/10 rounded-full text-[11px] font-black tracking-wider uppercase border border-white/20">
+                  Direct Mill Connection
+                </span>
+                <span className="text-emerald-400 font-black text-xs flex items-center gap-1">
+                  ● Verified GST Mills
+                </span>
+              </div>
+
+              <div>
+                <div className="text-4xl font-black text-white">15%–20%</div>
+                <p className="text-xs text-purple-200 font-bold mt-1">Average profit margin saved per bulk order</p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3 text-xs font-bold pt-3 border-t border-white/15">
+                <div>
+                  <span className="text-slate-400 block text-[10px]">DISPATCH</span>
+                  <span>48h Direct Mill</span>
+                </div>
+                <div>
+                  <span className="text-slate-400 block text-[10px]">FREIGHT</span>
+                  <span>Haversine Matrix</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-[#4ECDC4] p-8 text-center text-slate-950 flex-1 flex flex-col items-center justify-center">
+              <h3 className="text-xl font-black tracking-tight mb-1 text-slate-900">Direct Wholesale Hotline</h3>
+              <a href="tel:+91999999999" className="text-3xl font-black tracking-wider hover:underline text-slate-950">
+                +91 99999 9999
+              </a>
+              <span className="text-xs font-bold text-slate-800 mt-2">
+                Kanpur • Unnao • Surat • Delhi Mandi Network
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================================== */}
+      {/* SECTION 2: TEAL HOW IT WORKS BANNER */}
+      {/* ============================================================== */}
+      <section className="bg-[#4ECDC4] text-slate-950 py-12 px-6 my-8">
+        <div className="max-w-4xl mx-auto text-center space-y-6">
+          <h2 className="text-3xl md:text-4xl font-black text-slate-900">The Easiest Way to Source Wholesale Products</h2>
+          <p className="text-slate-900 text-sm max-w-2xl mx-auto font-bold leading-relaxed">
+            Search items, compare wholesale rates across verified manufacturers, calculate lowest landed cost, and get express delivery straight to your retail store.
+          </p>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pt-4">
+            <div className="flex flex-col items-center gap-2">
+              <div className="w-14 h-14 bg-white text-[#FF7A59] rounded-2xl flex items-center justify-center text-xl font-black shadow-md">
+                🔍
+              </div>
+              <span className="text-xs font-black tracking-wide text-slate-900">1. Search Items</span>
+            </div>
+            <div className="flex flex-col items-center gap-2">
+              <div className="w-14 h-14 bg-white text-[#FF7A59] rounded-2xl flex items-center justify-center text-xl font-black shadow-md">
+                🏷️
+              </div>
+              <span className="text-xs font-black tracking-wide text-slate-900">2. Compare Rates</span>
+            </div>
+            <div className="flex flex-col items-center gap-2">
+              <div className="w-14 h-14 bg-white text-emerald-600 rounded-2xl flex items-center justify-center text-xl font-black shadow-md">
+                🟢
+              </div>
+              <span className="text-xs font-black tracking-wide text-slate-900">3. Sabse Sasta</span>
+            </div>
+            <div className="flex flex-col items-center gap-2">
+              <div className="w-14 h-14 bg-white text-purple-600 rounded-2xl flex items-center justify-center text-xl font-black shadow-md">
+                🚚
+              </div>
+              <span className="text-xs font-black tracking-wide text-slate-900">4. Express Delivery</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================================== */}
+      {/* SECTION 3: TRI-OBJECTIVE PRODUCT CATALOG */}
+      {/* ============================================================== */}
+      <section className="max-w-7xl mx-auto px-6 py-8">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+          <div>
+            <h3 className="text-2xl font-black text-slate-900">Live Wholesale Catalog</h3>
+            <p className="text-xs text-slate-500 font-bold">
+              Comparing manufacturers based on Landed Cost, Delivery ETA, and Verified Ratings
+            </p>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2">
+            {["ALL", "KIRANA", "SABUN_HYGIENE", "APPAREL_CLOTHES", "ELECTRONICS"].map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setSelectedCategory(cat)}
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer ${
+                  selectedCategory === cat
+                    ? "bg-[#4ECDC4] text-slate-950 shadow-sm"
+                    : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-100"
+                }`}
+              >
+                {cat.replace("_", " ")}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Products Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredResults.map((seller, idx) => (
+            <div key={idx} className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex flex-col justify-between hover:shadow-lg transition-all">
+              <div>
