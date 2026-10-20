@@ -558,3 +558,282 @@ export default function B2BProcurementPortal({ onExit }) {
           {filteredResults.map((seller, idx) => (
             <div key={idx} className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex flex-col justify-between hover:shadow-lg transition-all">
               <div>
+                <div className="flex items-center justify-between mb-3">
+                  <span className={`text-[10px] font-black px-2.5 py-0.5 rounded-full ${
+                    seller.isCheapest 
+                      ? "bg-emerald-100 text-emerald-800" 
+                      : seller.isFastest 
+                      ? "bg-amber-100 text-amber-800" 
+                      : "bg-purple-100 text-purple-800"
+                  }`}>
+                    {seller.isCheapest ? "🟢 SABSE SASTA" : seller.isFastest ? "⚡ SABSE TEZ" : "⭐ TOP RATED"}
+                  </span>
+                  
+                  <button 
+                    onClick={() => setSelectedSellerForReview(seller)}
+                    className="text-amber-500 text-xs font-black flex items-center gap-1 hover:underline cursor-pointer"
+                  >
+                    <Star className="w-3.5 h-3.5 fill-current" />
+                    <span>{seller.rating}★ ({seller.reviews.length})</span>
+                  </button>
+                </div>
+
+                <h4 className="font-black text-slate-900 text-base">{seller.item}</h4>
+                <p className="text-xs text-slate-500 font-bold mt-0.5">{seller.sellerName} • {seller.location}</p>
+
+                <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 my-4 flex justify-between items-center">
+                  <div>
+                    <div className="text-[10px] font-bold text-slate-400 uppercase">Wholesale Price</div>
+                    <div className="text-xl font-black text-slate-900">₹{seller.wholesalePrice.toLocaleString()} / {seller.unit}</div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-[10px] font-bold text-slate-400 uppercase">Delivery ETA</div>
+                    <div className="text-xs font-black text-slate-700">⏱️ {seller.etaHours} Hours</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex gap-2 pt-3 border-t border-slate-100 text-xs font-bold">
+                <a 
+                  href={`tel:${seller.phone}`} 
+                  className="p-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl flex items-center justify-center"
+                  title="Direct Call"
+                >
+                  <Phone className="w-4 h-4" />
+                </a>
+                <a 
+                  href={`https://wa.me/${seller.whatsapp}?text=Hi%20${encodeURIComponent(seller.sellerName)},%20I%20want%20to%20order%20${encodeURIComponent(seller.item)}%20via%20B2B%20Mandi`} 
+                  target="_blank" 
+                  rel="noreferrer"
+                  className="flex-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 rounded-xl py-2 flex items-center justify-center gap-1 border border-emerald-200"
+                >
+                  <MessageSquare className="w-3.5 h-3.5" />
+                  <span>WhatsApp</span>
+                </a>
+                <button 
+                  onClick={() => addToCart(seller, seller.minQty)} 
+                  className="flex-1 bg-[#4ECDC4] hover:bg-[#45b7af] text-slate-950 font-black py-2 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1 shadow-sm"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  <span>Add Cart</span>
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ============================================================== */}
+      {/* CART DRAWER / MODAL */}
+      {/* ============================================================== */}
+      {isCartOpen && (
+        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-xl w-full p-6 max-h-[90vh] flex flex-col justify-between shadow-2xl">
+            <div>
+              <div className="flex justify-between items-center pb-4 border-b border-slate-200">
+                <div className="flex items-center gap-2">
+                  <ShoppingBag className="w-5 h-5 text-[#FF7A59]" />
+                  <h3 className="text-lg font-black text-slate-900">Wholesale Procurement Cart</h3>
+                </div>
+                <button onClick={() => setIsCartOpen(false)} className="text-slate-400 hover:text-slate-700 p-1">
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <div className="my-4 space-y-3 max-h-72 overflow-y-auto">
+                {cart.length === 0 ? (
+                  <p className="text-center text-xs text-slate-400 py-8">Your procurement cart is empty.</p>
+                ) : (
+                  cart.map((item, idx) => (
+                    <div key={idx} className="p-3 bg-slate-50 rounded-2xl border border-slate-200 flex items-center justify-between text-xs">
+                      <div>
+                        <div className="font-black text-slate-900">{item.item}</div>
+                        <span className="text-[11px] text-slate-500 font-bold">{item.sellerName} • ₹{item.wholesalePrice}/{item.unit}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono font-black text-slate-900">Qty: {item.qty}</span>
+                        <span className="font-black text-[#FF7A59]">₹{(item.wholesalePrice * item.qty).toLocaleString()}</span>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+
+            <div className="pt-4 border-t border-slate-200 space-y-2">
+              <div className="flex justify-between text-xs font-bold text-slate-600">
+                <span>Wholesale Subtotal:</span>
+                <span className="font-black text-slate-900">₹{cartSubtotal.toLocaleString()}</span>
+              </div>
+              <div className="flex justify-between text-xs font-bold text-slate-600">
+                <span>Direct Haversine Freight:</span>
+                <span className="font-black text-slate-900">₹{cartLogistics.toLocaleString()}</span>
+              </div>
+              <div className="flex justify-between text-xs font-bold text-slate-600">
+                <span>GST Tax (5%):</span>
+                <span className="font-black text-slate-900">₹{cartTax.toLocaleString()}</span>
+              </div>
+              <div className="flex justify-between text-sm font-black text-slate-900 pt-2 border-t border-slate-200">
+                <span>Total Landed Cost:</span>
+                <span className="text-lg text-emerald-600">₹{cartTotal.toLocaleString()}</span>
+              </div>
+
+              <button
+                disabled={cart.length === 0}
+                onClick={placeOrder}
+                className="w-full mt-3 bg-[#FF7A59] hover:bg-[#e06344] disabled:opacity-50 text-white font-black py-3 rounded-2xl text-xs uppercase tracking-wider transition-all shadow-lg shadow-orange-500/30 cursor-pointer"
+              >
+                PLACE WHOLESALE ORDER / GENERATE PO
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ============================================================== */}
+      {/* CHECKOUT CONFIRMED MODAL */}
+      {/* ============================================================== */}
+      {isCheckoutModalOpen && confirmedOrder && (
+        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 text-center space-y-4 shadow-2xl">
+            <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto">
+              <CheckCircle2 className="w-8 h-8" />
+            </div>
+            
+            <h3 className="text-xl font-black text-slate-900">Order Dispatched to Factory!</h3>
+            <p className="text-xs text-slate-500 font-bold">
+              Purchase Order <span className="font-mono text-purple-700 font-black">{confirmedOrder.orderId}</span> has been confirmed. Factory aggregation unit will dispatch inventory within {confirmedOrder.deliveryEta} hours.
+            </p>
+
+            <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100 text-xs font-bold space-y-1.5 text-left">
+              <div className="flex justify-between">
+                <span className="text-slate-400">Total Landed Amount:</span>
+                <span className="text-slate-900 font-black">₹{confirmedOrder.totalPaid.toLocaleString()}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-400">Merchant Store:</span>
+                <span className="text-slate-900">{merchantProfile.shopName}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-400">GSTIN:</span>
+                <span className="text-slate-900 font-mono">{merchantProfile.gstin}</span>
+              </div>
+            </div>
+
+            <button
+              onClick={() => setIsCheckoutModalOpen(false)}
+              className="w-full bg-slate-900 text-white font-black py-3 rounded-2xl text-xs uppercase tracking-wider hover:bg-slate-800 transition-colors"
+            >
+              Done & Return
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ============================================================== */}
+      {/* MERCHANT PROFILE DRAWER */}
+      {/* ============================================================== */}
+      {isProfileModalOpen && (
+        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-lg w-full p-6 space-y-4 shadow-2xl">
+            <div className="flex justify-between items-center pb-3 border-b border-slate-200">
+              <h3 className="text-base font-black text-slate-900 flex items-center gap-2">
+                <User className="w-4 h-4 text-purple-600" />
+                <span>Verified Merchant Profile</span>
+              </h3>
+              <button onClick={() => setIsProfileModalOpen(false)} className="text-slate-400 hover:text-slate-700">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3 text-xs font-bold">
+              <div>
+                <label className="text-slate-400 block text-[10px] uppercase mb-1">Retailer Name</label>
+                <input
+                  type="text"
+                  value={merchantProfile.merchantName}
+                  onChange={(e) => setMerchantProfile({ ...merchantProfile, merchantName: e.target.value })}
+                  className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900"
+                />
+              </div>
+              <div>
+                <label className="text-slate-400 block text-[10px] uppercase mb-1">Store / Shop Name</label>
+                <input
+                  type="text"
+                  value={merchantProfile.shopName}
+                  onChange={(e) => setMerchantProfile({ ...merchantProfile, shopName: e.target.value })}
+                  className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900"
+                />
+              </div>
+              <div>
+                <label className="text-slate-400 block text-[10px] uppercase mb-1">GSTIN Number</label>
+                <input
+                  type="text"
+                  value={merchantProfile.gstin}
+                  onChange={(e) => setMerchantProfile({ ...merchantProfile, gstin: e.target.value })}
+                  className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-mono"
+                />
+              </div>
+              <div>
+                <label className="text-slate-400 block text-[10px] uppercase mb-1">City & State</label>
+                <input
+                  type="text"
+                  value={`${merchantProfile.city}, ${merchantProfile.state}`}
+                  readOnly
+                  className="w-full p-2.5 bg-slate-100 border border-slate-200 rounded-xl text-slate-700"
+                />
+              </div>
+            </div>
+
+            <button
+              onClick={() => setIsProfileModalOpen(false)}
+              className="w-full bg-[#4ECDC4] hover:bg-[#42b7af] text-slate-950 font-black py-2.5 rounded-xl text-xs uppercase"
+            >
+              Save Profile
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ============================================================== */}
+      {/* SELLER REVIEWS MODAL */}
+      {/* ============================================================== */}
+      {selectedSellerForReview && (
+        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl">
+            <div className="flex justify-between items-center pb-3 border-b border-slate-200">
+              <div>
+                <h3 className="text-base font-black text-slate-900">{selectedSellerForReview.sellerName}</h3>
+                <span className="text-xs text-amber-500 font-black">⭐ {selectedSellerForReview.rating} Rating</span>
+              </div>
+              <button onClick={() => setSelectedSellerForReview(null)} className="text-slate-400 hover:text-slate-700">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="space-y-3 max-h-60 overflow-y-auto">
+              {selectedSellerForReview.reviews.map((rev, i) => (
+                <div key={i} className="p-3 bg-slate-50 rounded-2xl border border-slate-100 text-xs">
+                  <div className="flex justify-between font-black text-slate-900 mb-1">
+                    <span>{rev.reviewer} ({rev.shop})</span>
+                    <span className="text-amber-500">⭐ {rev.rating}</span>
+                  </div>
+                  <p className="text-slate-600 font-medium">{rev.comment}</p>
+                  <span className="text-[10px] text-slate-400 mt-1 block">{rev.location} • {rev.date}</span>
+                </div>
+              ))}
+            </div>
+
+            <button
+              onClick={() => setSelectedSellerForReview(null)}
+              className="w-full bg-slate-900 text-white font-black py-2.5 rounded-xl text-xs"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+
+    </div>
+  );
+}
