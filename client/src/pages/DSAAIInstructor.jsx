@@ -284,3 +284,290 @@ HOW TO HANDLE SPECIFIC REQUESTS:
           <div className="h-4 w-px bg-slate-700 hidden sm:block" />
 
           <div className="flex items-center gap-2">
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" />
+            <span className="text-xs font-black tracking-wider uppercase text-white hidden sm:inline">
+              DSA AI Instructor — Interactive Algorithm Mentor
+            </span>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <span className="text-[11px] font-bold text-slate-400 hidden md:inline">
+            Powered by Google Gemini 2.5 Flash • Multimodal Dry-Runs
+          </span>
+          <a
+            href="https://github.com/nischay237/DSA-AI-INSTRUCTOR"
+            target="_blank"
+            rel="noreferrer"
+            className="px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black transition-all flex items-center gap-1.5 shadow-lg shadow-emerald-900/30"
+          >
+            <span>GitHub Repo</span>
+            <ExternalLink className="w-3.5 h-3.5" />
+          </a>
+        </div>
+      </div>
+
+      {/* ============================================================== */}
+      {/* MAIN 3-COLUMN RETRO-FUTURISTIC INTERFACE (MATCHING DESKTOP APP) */}
+      {/* ============================================================== */}
+      <div className="flex-1 max-w-7xl w-full mx-auto p-3 sm:p-5 flex flex-col lg:flex-row gap-4 overflow-hidden">
+        
+        {/* ============================================================== */}
+        {/* 1. LEFT SIDEBAR MENU */}
+        {/* ============================================================== */}
+        <aside className="lg:w-64 bg-[#0f111a]/80 backdrop-blur-xl border border-white/5 rounded-2xl p-5 flex flex-col justify-between shadow-2xl shrink-0">
+          <div className="space-y-6">
+            
+            {/* Logo Section */}
+            <div className="flex items-center gap-3">
+              <div className="p-3 rounded-2xl bg-gradient-to-br from-indigo-500 to-cyan-500 text-white font-black text-sm shadow-lg shadow-indigo-500/20">
+                DSA AI
+              </div>
+              <div>
+                <h2 className="text-sm font-black text-white tracking-tight leading-none">DSA Instructor</h2>
+                <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">AI Mentor</p>
+              </div>
+            </div>
+
+            {/* Menu Items */}
+            <nav className="space-y-1.5 text-xs font-bold">
+              <button
+                onClick={() => setActiveTab('chat')}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all cursor-pointer text-left ${
+                  activeTab === 'chat'
+                    ? 'bg-gradient-to-r from-indigo-500/20 to-transparent text-white border-l-4 border-indigo-500 font-black'
+                    : 'text-slate-400 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                <Bot className="w-4 h-4 text-cyan-400" />
+                <span>Chat Assistant</span>
+              </button>
+
+              <button
+                onClick={() => setActiveTab('visualizer')}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all cursor-pointer text-left ${
+                  activeTab === 'visualizer'
+                    ? 'bg-gradient-to-r from-indigo-500/20 to-transparent text-white border-l-4 border-indigo-500 font-black'
+                    : 'text-slate-400 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                <Brain className="w-4 h-4 text-yellow-300" />
+                <span>Memory Dry-Runs</span>
+              </button>
+
+              <button
+                onClick={() => setActiveTab('tutorials')}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all cursor-pointer text-left ${
+                  activeTab === 'tutorials'
+                    ? 'bg-gradient-to-r from-indigo-500/20 to-transparent text-white border-l-4 border-indigo-500 font-black'
+                    : 'text-slate-400 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                <BookOpen className="w-4 h-4 text-emerald-400" />
+                <span>Tutorial Portal</span>
+              </button>
+
+              <button
+                onClick={() => setActiveTab('history')}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all cursor-pointer text-left ${
+                  activeTab === 'history'
+                    ? 'bg-gradient-to-r from-indigo-500/20 to-transparent text-white border-l-4 border-indigo-500 font-black'
+                    : 'text-slate-400 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                <Clock className="w-4 h-4 text-rose-400" />
+                <span>Search History</span>
+              </button>
+            </nav>
+
+          </div>
+
+          {/* Developer Note */}
+          <div className="p-3 bg-white/5 rounded-xl border border-white/5 text-[11px] text-slate-400 font-bold leading-relaxed mt-4">
+            <span className="text-white block font-black mb-0.5">Nishchay Srivastava</span>
+            <span>Created for making DSA learning easy with visual dry-runs & Gemini AI.</span>
+          </div>
+        </aside>
+
+        {/* ============================================================== */}
+        {/* 2. CENTER SECTION (CHAT OR VISUALIZER) */}
+        {/* ============================================================== */}
+        <section className="flex-1 flex flex-col gap-3 min-w-0">
+          
+          {/* Top Metric Header */}
+          <div className="bg-[#0f111a]/80 backdrop-blur-xl border border-white/5 rounded-2xl p-4 sm:p-5 flex items-center justify-between shadow-xl">
+            <div className="flex items-center gap-3.5">
+              <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400">
+                <Cpu className="w-6 h-6 animate-pulse" />
+              </div>
+              <div>
+                <h1 className="text-lg sm:text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-indigo-200 to-cyan-300">
+                  DSA Master Mentor
+                </h1>
+                <p className="text-xs text-slate-400 font-bold flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping inline-block" />
+                  <span>Gemini 2.5 Flash Intelligence • Hinglish Explanations</span>
+                </p>
+              </div>
+            </div>
+
+            <div className="hidden sm:flex items-center gap-2">
+              <span className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[10px] font-black uppercase text-slate-300">
+                Multimodal Input
+              </span>
+            </div>
+          </div>
+
+          {/* TAB: LIVE CHAT ASSISTANT */}
+          {activeTab === 'chat' && (
+            <div className="flex-1 bg-[#0f111a]/80 backdrop-blur-xl border border-white/5 rounded-2xl flex flex-col overflow-hidden shadow-2xl min-h-[480px]">
+              
+              {/* Message Feed */}
+              <div className="flex-1 p-4 sm:p-6 overflow-y-auto space-y-4 max-h-[500px]">
+                {messages.map((m) => (
+                  <div
+                    key={m.id}
+                    className={`flex items-start gap-3 ${
+                      m.sender === 'user' ? 'justify-end flex-row-reverse' : 'justify-start'
+                    }`}
+                  >
+                    <div
+                      className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 text-sm shadow ${
+                        m.sender === 'bot'
+                          ? 'bg-gradient-to-br from-indigo-500 to-cyan-500 text-white'
+                          : 'bg-slate-800 text-slate-300 border border-slate-700'
+                      }`}
+                    >
+                      {m.sender === 'bot' ? <Bot className="w-4 h-4" /> : <User className="w-4 h-4" />}
+                    </div>
+
+                    <div
+                      className={`max-w-[85%] rounded-2xl p-4 text-xs sm:text-sm leading-relaxed shadow-lg ${
+                        m.sender === 'user'
+                          ? 'bg-gradient-to-r from-indigo-600 to-indigo-700 text-white font-bold'
+                          : 'bg-[#151824] text-slate-100 border border-white/5 font-medium'
+                      }`}
+                    >
+                      {m.imgUrl && (
+                        <img
+                          src={m.imgUrl}
+                          alt="Uploaded Snippet"
+                          className="max-w-xs max-h-48 rounded-xl mb-3 border border-white/10 object-cover"
+                        />
+                      )}
+                      <div className="whitespace-pre-wrap space-y-1">
+                        {m.text}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+
+                {loading && (
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-500 to-cyan-500 text-white flex items-center justify-center">
+                      <Bot className="w-4 h-4" />
+                    </div>
+                    <div className="p-3 bg-[#151824] rounded-2xl border border-white/5 text-xs text-slate-400 font-bold flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
+                      <span>Thinking & generating solution...</span>
+                    </div>
+                  </div>
+                )}
+                <div ref={messagesEndRef} />
+              </div>
+
+              {/* Image Preview Thumbnail */}
+              {imagePreviewSrc && (
+                <div className="px-4 py-2 bg-slate-900 border-t border-white/5 flex items-center gap-2">
+                  <div className="relative w-12 h-12 rounded-lg overflow-hidden border-2 border-cyan-400">
+                    <img src={imagePreviewSrc} alt="Preview" className="w-full h-full object-cover" />
+                    <button
+                      onClick={removeSelectedImage}
+                      className="absolute top-0 right-0 bg-black/80 text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                  <span className="text-xs text-slate-400 font-bold">Image ready for multimodal explanation</span>
+                </div>
+              )}
+
+              {/* Chat Input Capsule */}
+              <div className="p-3 sm:p-4 bg-slate-950/80 border-t border-white/5 flex items-center gap-2">
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={handleImageSelect}
+                  accept="image/*"
+                  className="hidden"
+                />
+                
+                <button
+                  onClick={() => fileInputRef.current?.click()}
+                  className="p-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-cyan-400 border border-white/5 transition-all cursor-pointer"
+                  title="Upload whiteboard, diagram, or code screenshot"
+                >
+                  <ImageIcon className="w-4 h-4" />
+                </button>
+
+                <input
+                  type="text"
+                  value={inputQuery}
+                  onChange={(e) => setInputQuery(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
+                  placeholder="Ask anything on DSA, dry-runs, trees, recursion, or upload code..."
+                  className="flex-1 bg-slate-900 border border-white/5 focus:border-indigo-500 rounded-xl px-4 py-3 text-xs sm:text-sm text-white focus:outline-none transition-all"
+                />
+
+                <button
+                  onClick={() => handleSendMessage()}
+                  disabled={loading}
+                  className="p-3 rounded-xl bg-gradient-to-r from-indigo-500 to-cyan-500 hover:opacity-90 disabled:opacity-50 text-white font-black transition-all cursor-pointer shadow-lg shadow-indigo-500/20"
+                >
+                  <Send className="w-4 h-4" />
+                </button>
+              </div>
+
+            </div>
+          )}
+
+          {/* TAB: VISUAL MEMORY STATE & DRY-RUNS */}
+          {activeTab === 'visualizer' && (
+            <div className="flex-1 bg-[#0f111a]/80 backdrop-blur-xl border border-white/5 rounded-2xl p-6 flex flex-col justify-between shadow-2xl space-y-6">
+              
+              <div className="space-y-4">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div>
+                    <h3 className="text-lg font-black text-white">{selectedAlgo.name}</h3>
+                    <p className="text-xs text-yellow-300 font-bold">{selectedAlgo.tagline}</p>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    {ALGORITHMS.map((algo) => (
+                      <button
+                        key={algo.id}
+                        onClick={() => {
+                          setSelectedAlgo(algo);
+                          setCurrentStepIdx(0);
+                        }}
+                        className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer ${
+                          selectedAlgo.id === algo.id
+                            ? 'bg-emerald-500 text-slate-950 shadow'
+                            : 'bg-slate-800 text-slate-400 hover:text-white'
+                        }`}
+                      >
+                        {algo.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Interactive Array Blocks */}
+                <div className="p-6 bg-black/40 rounded-2xl border border-white/5 flex flex-wrap items-center justify-center gap-2.5 sm:gap-4 my-4">
+                  {selectedAlgo.array.map((num, idx) => {
+                    const isLeft = idx === currentStep.left;
+                    const isRight = idx === currentStep.right;
+                    const isMid = idx === currentStep.mid;
+                    const isTarget = num === selectedAlgo.target;
+
+                    return (
