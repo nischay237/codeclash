@@ -571,3 +571,289 @@ HOW TO HANDLE SPECIFIC REQUESTS:
                     const isTarget = num === selectedAlgo.target;
 
                     return (
+                      <div key={idx} className="flex flex-col items-center gap-1.5">
+                        <div className="h-5 flex items-center justify-center">
+                          {isMid ? (
+                            <span className="px-1.5 py-0.5 rounded text-[9px] font-black bg-yellow-400 text-slate-950">MID</span>
+                          ) : isLeft ? (
+                            <span className="px-1.5 py-0.5 rounded text-[9px] font-black bg-cyan-400 text-slate-950">L</span>
+                          ) : isRight ? (
+                            <span className="px-1.5 py-0.5 rounded text-[9px] font-black bg-rose-400 text-slate-950">R</span>
+                          ) : null}
+                        </div>
+
+                        <div
+                          className={`w-11 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center font-mono font-black text-sm sm:text-base border-2 transition-all ${
+                            isMid
+                              ? 'bg-yellow-400 text-slate-950 border-yellow-300 scale-105 shadow-[0_0_15px_rgba(250,204,21,0.5)]'
+                              : isLeft || isRight
+                              ? 'bg-slate-800 text-cyan-300 border-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.3)]'
+                              : isTarget && currentStepIdx === selectedAlgo.steps.length - 1
+                              ? 'bg-emerald-500 text-slate-950 border-emerald-400'
+                              : 'bg-slate-900/90 text-slate-300 border-slate-800'
+                          }`}
+                        >
+                          {num}
+                        </div>
+                        <span className="text-[10px] text-slate-400 font-mono">[{idx}]</span>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Step Description */}
+                <div className="p-4 bg-emerald-950/30 rounded-2xl border border-emerald-500/30 text-xs text-slate-200 font-bold flex items-start gap-2.5">
+                  <Zap className="w-4 h-4 text-yellow-300 shrink-0 mt-0.5" />
+                  <span>{currentStep.desc}</span>
+                </div>
+              </div>
+
+              {/* Step Controls */}
+              <div className="flex items-center justify-between pt-4 border-t border-white/5">
+                <button
+                  onClick={() => setCurrentStepIdx(0)}
+                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold flex items-center gap-1.5 cursor-pointer"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                  <span>Reset</span>
+                </button>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    disabled={currentStepIdx === 0}
+                    onClick={() => setCurrentStepIdx(p => Math.max(0, p - 1))}
+                    className="px-4 py-2 rounded-xl bg-slate-800 disabled:opacity-40 text-xs font-bold cursor-pointer"
+                  >
+                    ← Prev Step
+                  </button>
+
+                  <button
+                    disabled={currentStepIdx === selectedAlgo.steps.length - 1}
+                    onClick={() => setCurrentStepIdx(p => Math.min(selectedAlgo.steps.length - 1, p + 1))}
+                    className="px-5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 disabled:opacity-40 text-slate-950 font-black text-xs cursor-pointer shadow-lg shadow-emerald-500/20"
+                  >
+                    Next Step →
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          )}
+
+          {/* TAB: TUTORIALS PORTAL VIEW */}
+          {activeTab === 'tutorials' && (
+            <div className="flex-1 bg-[#0f111a]/80 backdrop-blur-xl border border-white/5 rounded-2xl p-6 overflow-y-auto space-y-6 shadow-2xl">
+              <div>
+                <h3 className="text-base font-black text-white flex items-center gap-2">
+                  <BookOpen className="w-4 h-4 text-emerald-400" />
+                  <span>DSA Interactive Tutorial Portal</span>
+                </h3>
+                <p className="text-xs text-slate-400 font-bold mt-0.5">Click any concept button to trigger instant Hinglish explanations with Gemini AI</p>
+              </div>
+
+              <div className="space-y-4 text-xs">
+                <div>
+                  <h4 className="font-black text-cyan-400 uppercase tracking-wider text-[11px] mb-2">Basic Data Structures</h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {["What is an Array?", "Explain Linked Lists", "Teach me about Stacks", "How does a Queue work?"].map((q, i) => (
+                      <button
+                        key={i}
+                        onClick={() => {
+                          setActiveTab('chat');
+                          handleSendMessage(q);
+                        }}
+                        className="p-3 bg-white/5 hover:bg-indigo-600/30 border border-white/5 hover:border-indigo-400 rounded-xl text-left font-bold transition-all cursor-pointer flex items-center justify-between"
+                      >
+                        <span>{q}</span>
+                        <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="font-black text-yellow-300 uppercase tracking-wider text-[11px] mb-2">Advanced Data Structures</h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {["What are Hash Tables?", "Explain Binary Trees", "What is a Graph in DSA?", "Explain Binary Search Trees"].map((q, i) => (
+                      <button
+                        key={i}
+                        onClick={() => {
+                          setActiveTab('chat');
+                          handleSendMessage(q);
+                        }}
+                        className="p-3 bg-white/5 hover:bg-indigo-600/30 border border-white/5 hover:border-indigo-400 rounded-xl text-left font-bold transition-all cursor-pointer flex items-center justify-between"
+                      >
+                        <span>{q}</span>
+                        <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="font-black text-rose-400 uppercase tracking-wider text-[11px] mb-2">Algorithms & Complexity</h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {["What is Big O Notation?", "Explain Binary Search Algorithm", "How does Bubble Sort work?", "What is Recursion?"].map((q, i) => (
+                      <button
+                        key={i}
+                        onClick={() => {
+                          setActiveTab('chat');
+                          handleSendMessage(q);
+                        }}
+                        className="p-3 bg-white/5 hover:bg-indigo-600/30 border border-white/5 hover:border-indigo-400 rounded-xl text-left font-bold transition-all cursor-pointer flex items-center justify-between"
+                      >
+                        <span>{q}</span>
+                        <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: SEARCH HISTORY VIEW */}
+          {activeTab === 'history' && (
+            <div className="flex-1 bg-[#0f111a]/80 backdrop-blur-xl border border-white/5 rounded-2xl p-6 overflow-y-auto space-y-4 shadow-2xl">
+              <div className="flex items-center justify-between pb-3 border-b border-white/5">
+                <div>
+                  <h3 className="text-base font-black text-white flex items-center gap-2">
+                    <Clock className="w-4 h-4 text-rose-400" />
+                    <span>Search History Logs</span>
+                  </h3>
+                  <p className="text-xs text-slate-400 font-bold">Stored locally in your browser</p>
+                </div>
+                <button
+                  onClick={clearAllHistory}
+                  className="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-rose-950 text-rose-300 border border-slate-700 text-xs font-bold cursor-pointer transition-colors"
+                >
+                  Clear All History
+                </button>
+              </div>
+
+              <div className="space-y-2">
+                {searchHistory.length === 0 ? (
+                  <p className="text-xs text-slate-400 text-center py-8">No search history recorded yet.</p>
+                ) : (
+                  searchHistory.map((h, i) => (
+                    <div
+                      key={i}
+                      className="p-3 bg-white/5 hover:bg-white/10 rounded-xl border border-white/5 flex items-center justify-between text-xs font-bold"
+                    >
+                      <button
+                        onClick={() => {
+                          setActiveTab('chat');
+                          handleSendMessage(h);
+                        }}
+                        className="flex-1 text-left text-slate-200 hover:text-cyan-400 cursor-pointer"
+                      >
+                        {h}
+                      </button>
+                      <button
+                        onClick={() => deleteHistoryItem(h)}
+                        className="p-1 text-slate-500 hover:text-rose-400 cursor-pointer"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          )}
+
+        </section>
+
+        {/* ============================================================== */}
+        {/* 3. RIGHT SIDEBAR (TUTORIALS, RECENT HISTORY, ABOUT) */}
+        {/* ============================================================== */}
+        <aside className="lg:w-80 flex flex-col gap-4 shrink-0">
+          
+          {/* Quick Tutorials Box */}
+          <div className="bg-[#0f111a]/80 backdrop-blur-xl border border-white/5 rounded-2xl p-5 shadow-2xl space-y-3">
+            <h3 className="text-xs font-black text-white uppercase tracking-wider flex items-center gap-2">
+              <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+              <span>DSA Quick Tutorials</span>
+            </h3>
+
+            <div className="space-y-2 text-xs font-bold">
+              {[
+                "How does binary search work?",
+                "Explain Bubble Sort in Hinglish",
+                "What is Big O Notation?",
+                "Explain Stack using real life analogy"
+              ].map((q, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => {
+                    setActiveTab('chat');
+                    handleSendMessage(q);
+                  }}
+                  className="w-full p-2.5 bg-white/5 hover:bg-indigo-600/20 border border-white/5 hover:border-indigo-400/50 rounded-xl text-left text-slate-300 hover:text-white transition-all cursor-pointer flex items-center justify-between"
+                >
+                  <span className="truncate">{q}</span>
+                  <ChevronRight className="w-3 h-3 text-slate-500 shrink-0" />
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Recent History Box */}
+          <div className="bg-[#0f111a]/80 backdrop-blur-xl border border-white/5 rounded-2xl p-5 shadow-2xl space-y-3">
+            <div className="flex items-center justify-between">
+              <h3 className="text-xs font-black text-white uppercase tracking-wider flex items-center gap-2">
+                <Clock className="w-3.5 h-3.5 text-rose-400" />
+                <span>Recent History</span>
+              </h3>
+              <button
+                onClick={clearAllHistory}
+                className="text-[10px] text-slate-500 hover:text-rose-400 font-bold cursor-pointer"
+              >
+                Clear
+              </button>
+            </div>
+
+            <div className="space-y-1.5 text-xs font-bold max-h-36 overflow-y-auto">
+              {searchHistory.slice(0, 5).map((h, i) => (
+                <div
+                  key={i}
+                  className="flex items-center justify-between p-2 rounded-lg bg-black/30 hover:bg-black/50 text-slate-300"
+                >
+                  <button
+                    onClick={() => {
+                      setActiveTab('chat');
+                      handleSendMessage(h);
+                    }}
+                    className="truncate text-left text-slate-300 hover:text-cyan-400 flex-1 cursor-pointer"
+                  >
+                    {h}
+                  </button>
+                  <button
+                    onClick={() => deleteHistoryItem(h)}
+                    className="text-slate-600 hover:text-rose-400 ml-2 cursor-pointer"
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* About Box (Exact User Original String) */}
+          <div className="bg-[#0f111a]/80 backdrop-blur-xl border border-white/5 rounded-2xl p-5 shadow-2xl space-y-2">
+            <div className="flex items-center gap-2 text-xs font-black text-indigo-400 uppercase tracking-wider">
+              <Info className="w-3.5 h-3.5 text-cyan-400" />
+              <span>About this AI</span>
+            </div>
+            <p className="text-xs text-slate-300 font-bold leading-relaxed">
+              THIS DSA AI BOT IS MADE BY NISCHAY SRIVASTAVA FOR MAKING DSA LEARNING EASY !!
+            </p>
+          </div>
+
+        </aside>
+
+      </div>
+
+    </div>
+  );
+}
