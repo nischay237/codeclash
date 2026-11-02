@@ -301,3 +301,306 @@ const SKILLS = [
     id: "ai",
     label: "AI Systems & Tooling", 
     tagline: "Gemini API integrations & developer tools",
+    accentColor: "from-amber-500 to-orange-600",
+    badgeBg: "bg-amber-500 text-white",
+    iconColor: "text-amber-600",
+    borderColor: "group-hover:border-amber-400",
+    glowColor: "group-hover:shadow-amber-500/20",
+    icon: Brain,
+    animType: "pulse",
+    items: [
+      { name: "Google Gemini API", hot: true },
+      { name: "Git & GitHub", hot: true },
+      { name: "Postman API Suite" },
+      { name: "Linux / Bash CLI" },
+      { name: "VS Code & Tooling" }
+    ]
+  },
+  { 
+    id: "cs",
+    label: "Computer Science Core", 
+    tagline: "Algorithmic thinking & system fundamentals",
+    accentColor: "from-blue-600 to-indigo-700",
+    badgeBg: "bg-blue-600 text-white",
+    iconColor: "text-blue-600",
+    borderColor: "group-hover:border-blue-400",
+    glowColor: "group-hover:shadow-blue-500/20",
+    icon: Cpu,
+    animType: "spin",
+    items: [
+      { name: "Data Structures", hot: true },
+      { name: "Algorithms & Elo", hot: true },
+      { name: "OOP Principles" },
+      { name: "DBMS & SQL" },
+      { name: "Operating Systems" }
+    ]
+  }
+];
+
+export default function Portfolio({ onOpenArena, onOpenLeaderboard, onOpenAnalytics, onOpenB2B, onOpenAI }) {
+  const [hoveredProjectId, setHoveredProjectId] = useState(null);
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [scrollY, setScrollY] = useState(0);
+
+  // Parallax Scroll Tracking for background emojis
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const handleOpenProject = (project) => {
+    if (project.previewType === 'codeclash') {
+      onOpenArena?.();
+    } else if (project.previewType === 'analytics') {
+      onOpenAnalytics?.();
+    } else if (project.previewType === 'b2b') {
+      onOpenB2B?.();
+    } else if (project.previewType === 'ai') {
+      onOpenAI?.();
+    } else {
+      setSelectedProject(project);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-[#fed836] text-slate-900 py-6 sm:py-10 px-3 sm:px-6 lg:px-8 font-sans relative overflow-x-hidden">
+      
+      {/* ============================================================== */}
+      {/* INTERACTIVE SCROLL-REACTIVE FLOATING EMOJIS BACKGROUND LAYER */}
+      {/* ============================================================== */}
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none">
+        {FLOATING_EMOJIS.map((item, idx) => {
+          const parallaxOffset = scrollY * item.speed;
+          return (
+            <div
+              key={idx}
+              className={`absolute ${item.anim} transition-transform duration-100 ease-out opacity-85 hover:opacity-100 cursor-pointer pointer-events-auto filter drop-shadow-md`}
+              style={{
+                top: item.top,
+                left: item.left,
+                right: item.right,
+                transform: `translate3d(0, ${parallaxOffset}px, 0)`
+              }}
+              title="Interactive floating emoji"
+            >
+              {item.image ? (
+                <img
+                  src={item.image}
+                  alt="Robot Mascot"
+                  className={`${item.size} object-contain select-none pointer-events-none drop-shadow-xl hover:scale-110 transition-transform`}
+                />
+              ) : (
+                <span className={item.size}>{item.emoji}</span>
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      {/* ============================================================== */}
+      {/* CANVA-THEMED HERO CARD FRAME (ROYAL BLUE FLOATING WINDOW) */}
+      {/* ============================================================== */}
+      <div className="max-w-6xl mx-auto rounded-[28px] sm:rounded-[38px] bg-gradient-to-b from-[#2b3ff2] via-[#2f42f5] to-[#2235e0] text-white shadow-2xl shadow-blue-950/30 border-4 border-[#2235e0]/40 overflow-hidden relative z-10">
+        
+        {/* Subtle decorative glow circles */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-400/10 rounded-full blur-3xl pointer-events-none" />
+
+        {/* HERO CONTAINER PADDING */}
+        <div className="px-5 sm:px-10 lg:px-14 pt-8 pb-10 sm:pb-12 relative z-10 flex flex-col justify-between min-h-[580px]">
+          
+          {/* TOP NAV INSIDE THE HERO WINDOW */}
+          <div className="flex items-center justify-between pb-6 sm:pb-8 border-b border-white/10 gap-3">
+            {/* Brand Logo */}
+            <div className="flex items-center gap-2.5">
+              <span className="font-black text-lg sm:text-2xl tracking-tighter uppercase text-white">
+                NISCHAY<span className="text-[#86efac]">.DEV</span>
+              </span>
+            </div>
+
+            {/* Menu Items */}
+            <nav className="flex items-center gap-3 sm:gap-6 text-xs sm:text-sm font-semibold text-white/90">
+              <button 
+                onClick={() => {
+                  const el = document.getElementById('projects-shelf');
+                  el?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="hover:text-[#86efac] transition-colors cursor-pointer"
+              >
+                Projects
+              </button>
+              <button 
+                onClick={() => {
+                  const el = document.getElementById('skills-section');
+                  el?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="hover:text-[#86efac] transition-colors cursor-pointer hidden sm:block"
+              >
+                Skills
+              </button>
+              <button 
+                onClick={onOpenArena}
+                className="hover:text-[#86efac] transition-colors cursor-pointer flex items-center gap-1"
+              >
+                <Swords className="w-3.5 h-3.5 text-[#4ade80]" />
+                <span>CodeClash</span>
+              </button>
+              <button 
+                onClick={onOpenLeaderboard}
+                className="hover:text-[#86efac] transition-colors cursor-pointer hidden md:flex items-center gap-1"
+              >
+                <Award className="w-3.5 h-3.5 text-[#86efac]" />
+                <span>Leaderboard</span>
+              </button>
+              <a 
+                href="/resume.pdf" 
+                target="_blank" 
+                rel="noreferrer"
+                className="hover:text-[#86efac] transition-colors hidden md:block"
+              >
+                Resume
+              </a>
+              <a 
+                href="https://github.com/nischay237"
+                target="_blank"
+                rel="noreferrer"
+                className="p-1.5 rounded-xl bg-white/10 hover:bg-white/20 transition-colors hidden sm:block"
+                title="GitHub @nischay237"
+              >
+                <GithubIcon className="w-4 h-4" />
+              </a>
+              <a 
+                href="mailto:nischaysrivastava2@gmail.com" 
+                className="px-3.5 py-1.5 rounded-xl bg-white/15 hover:bg-white/25 border border-white/20 text-xs font-bold transition-all"
+              >
+                Contact
+              </a>
+            </nav>
+          </div>
+
+          {/* CENTER TYPOGRAPHY & HEADLINE (CANVA POSTER STYLE) */}
+          <div className="text-center my-6 sm:my-8 max-w-4xl mx-auto">
+            {/* Signature Bold Canva Lockup */}
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight uppercase leading-[1.08] text-white">
+              WHAT I BUILD <br />
+              <span className="font-black text-white">JUST </span>
+              <span className="italic font-serif text-[#4ade80] lowercase tracking-normal">
+                smarter.
+              </span>
+            </h1>
+
+            {/* Authentic Human Subtitle */}
+            <p className="text-white text-sm sm:text-base max-w-xl mx-auto mt-3 font-bold leading-relaxed">
+              Hey, I'm <strong className="text-white font-black">Nischay Srivastava</strong>. I'm a developer who loves building competitive real-time web apps, interactive games, and practical AI tools that feel snappy and solve real problems.
+            </p>
+
+            {/* Center Action Button */}
+            <div className="mt-6 flex items-center justify-center">
+              <button
+                onClick={() => {
+                  const el = document.getElementById('projects-shelf');
+                  el?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="px-7 py-3 rounded-xl bg-white text-[#2235e0] font-black text-xs sm:text-sm tracking-wider uppercase hover:bg-slate-100 hover:scale-105 active:scale-95 transition-all shadow-xl shadow-black/20 cursor-pointer flex items-center gap-2"
+              >
+                <span>EXPLORE PROJECTS</span>
+                <ArrowRight className="w-4 h-4 text-[#2235e0]" />
+              </button>
+            </div>
+          </div>
+
+          {/* ============================================================== */}
+          {/* BOTTOM SHELF: VIBRANT COLORED PROJECT CARDS (ORANGE, GREEN, RED, PURPLE) */}
+          {/* ============================================================== */}
+          <div id="projects-shelf" className="pt-5 border-t border-white/15">
+            <div className="flex items-center justify-between mb-3.5">
+              <div className="text-xs sm:text-sm font-black uppercase tracking-widest text-white">
+                FEATURED PROJECTS
+              </div>
+              <span className="text-[11px] text-white/90 font-bold hidden sm:block">
+                Hover on any card for details • Click to open
+              </span>
+            </div>
+
+            {/* 4 VIBRANT COLORED CARDS ROW */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+              {PROJECTS.map((project) => {
+                const isHovered = hoveredProjectId === project.id;
+
+                return (
+                  <div
+                    key={project.id}
+                    id={`shelf-card-${project.id}`}
+                    onMouseEnter={() => setHoveredProjectId(project.id)}
+                    onMouseLeave={() => setHoveredProjectId(null)}
+                    onClick={() => handleOpenProject(project)}
+                    className="relative group cursor-pointer"
+                  >
+                    {/* Visual Card Container with its own punchy vibrant background */}
+                    <div className={`h-[238px] rounded-2xl bg-gradient-to-b ${project.bgGradient} border-2 ${project.cardBorder} p-3.5 flex flex-col justify-between overflow-hidden shadow-xl ${project.hoverBorder} group-hover:shadow-2xl ${project.hoverGlow} group-hover:-translate-y-1.5 transition-all duration-300 text-white`}>
+                      
+                      {/* Top card header */}
+                      <div className="flex items-center justify-between gap-1">
+                        <span className={`font-black text-base tracking-tight ${project.numberColor}`}>
+                          {project.number}
+                        </span>
+                        <span className="text-[10px] font-black tracking-wider uppercase text-white/90">
+                          {project.badge}
+                        </span>
+                      </div>
+
+                      {/* ============================================================== */}
+                      {/* 1. CODECLASH: ANIMATED CLASHING SWORDS (ORANGE CARD) */}
+                      {/* ============================================================== */}
+                      {project.previewType === 'codeclash' && (
+                        <div className="my-auto py-1 flex flex-col items-center justify-center text-center">
+                          {/* Swords clashing container */}
+                          <div className="relative flex items-center justify-center gap-2 w-full py-2.5 bg-black/35 backdrop-blur-sm rounded-xl border border-white/20 overflow-hidden shadow-inner">
+                            
+                            {/* Left Clashing Sword */}
+                            <div className="animate-sword-left text-yellow-300">
+                              <Swords className="w-6 h-6 drop-shadow-[0_0_8px_rgba(253,224,71,0.8)]" />
+                            </div>
+
+                            {/* Centered Bold CODECLASH Title with Spark */}
+                            <div className="relative z-10 flex flex-col items-center">
+                              <div className="font-black text-sm tracking-wider uppercase text-white drop-shadow">
+                                CODECLASH
+                              </div>
+                              <span className="text-[9px] font-black tracking-wider text-amber-200 uppercase">
+                                1V1 CODE BATTLES
+                              </span>
+                            </div>
+
+                            {/* Right Clashing Sword */}
+                            <div className="animate-sword-right text-yellow-300">
+                              <Swords className="w-6 h-6 drop-shadow-[0_0_8px_rgba(253,224,71,0.8)]" />
+                            </div>
+
+                            {/* Center Clashing Spark */}
+                            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                              <Sparkles className="w-5 h-5 text-white animate-spark" />
+                            </div>
+                          </div>
+                          
+                          <div className="flex items-center gap-1.5 mt-2 text-xs font-black text-amber-100 tracking-wide">
+                            <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping" />
+                            <span>Live WebSocket Keystrokes</span>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* ============================================================== */}
+                      {/* 2. DSA AI INSTRUCTOR: ANIMATED AI & SCANNER WAVES (GREEN CARD) */}
+                      {/* ============================================================== */}
+                      {project.previewType === 'ai' && (
+                        <div className="my-auto py-1 flex flex-col items-center justify-center text-center">
+                          <div className="relative w-full py-2.5 px-3 bg-black/35 backdrop-blur-sm rounded-xl border border-white/20 overflow-hidden shadow-inner flex flex-col items-center">
+                            
+                            {/* AI Bot Icon with glowing pulse ring */}
+                            <div className="relative mb-1">
+                              <div className="absolute inset-0 rounded-full bg-white/20 animate-ai-ring" />
+                              <Bot className="w-7 h-7 text-emerald-100 relative z-10 drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]" />
