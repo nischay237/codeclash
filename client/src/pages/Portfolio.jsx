@@ -907,3 +907,305 @@ export default function Portfolio({ onOpenArena, onOpenLeaderboard, onOpenAnalyt
                   <div className="flex items-center justify-between gap-3 mb-3">
                     <div className="flex items-center gap-3">
                       <IconComponent className={`w-7 h-7 sm:w-8 sm:h-8 ${skillGroup.iconColor} shrink-0 ${
+                        skillGroup.animType === 'spin' ? 'animate-spin-slow' :
+                        skillGroup.animType === 'pulse' ? 'animate-pulse' : 'animate-bounce-subtle'
+                      }`} />
+                      <div>
+                        <h4 className="text-lg sm:text-xl font-black text-slate-950 tracking-tight leading-tight">
+                          {skillGroup.label}
+                        </h4>
+                        <span className="text-xs sm:text-sm font-bold text-slate-700 block mt-0.5">
+                          {skillGroup.tagline}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Clean Professional 2-Column Skills List (No Curved Boxes, Big Bold Font) */}
+                  <div className="grid grid-cols-2 gap-y-3.5 gap-x-2.5 mt-4 pt-4 border-t border-slate-200/80">
+                    {skillGroup.items.map((item, i) => (
+                      <div
+                        key={i}
+                        className="flex items-start gap-2 text-sm sm:text-base font-black text-slate-950 group/item hover:text-blue-600 transition-colors leading-snug"
+                      >
+                        <span className="w-2 h-2 rounded-full bg-slate-500 group-hover/item:bg-blue-600 shrink-0 mt-1.5 transition-colors" />
+                        <span>{item.name}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* ============================================================== */}
+      {/* ABOUT & EDUCATION SECTION (3D ORBS & ANIME SPEED CLASH THEME) */}
+      {/* ============================================================== */}
+      <section className="max-w-6xl mx-auto mt-20 pt-8 border-t-2 border-slate-900/20 relative z-10">
+        
+        {/* Masterpiece Showcase Window (Inspired by Image 4 & Image 2) */}
+        <div className="relative rounded-[36px] bg-gradient-to-br from-[#1b2ecc] via-[#1a2ec0] to-[#0c1874] text-white p-7 sm:p-12 border-4 border-blue-400/30 shadow-2xl shadow-blue-950/40 overflow-hidden">
+          
+          {/* Floating 3D Golden Orbs (Directly inspired by Image 4!) */}
+          <div className="absolute -top-6 -right-6 w-28 h-28 rounded-full sphere-3d-gold animate-orb-1 pointer-events-none opacity-90 z-0" />
+          <div className="absolute bottom-4 -left-8 w-20 h-20 rounded-full sphere-3d-gold animate-orb-2 pointer-events-none opacity-85 z-0" />
+          <div className="absolute top-1/2 right-1/4 w-12 h-12 rounded-full sphere-3d-cyan animate-orb-2 pointer-events-none opacity-75 z-0 hidden lg:block" />
+
+          {/* Background curved organic ribbons (Image 4 style) */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-25 z-0">
+            <div className="absolute -top-24 left-1/3 w-[600px] h-[300px] rounded-full border-[18px] border-blue-300/30 blur-sm transform -rotate-12" />
+            <div className="absolute -bottom-24 right-10 w-[500px] h-[250px] rounded-full border-[14px] border-amber-300/20 blur-sm transform rotate-6" />
+          </div>
+
+          {/* Content Container (relative z-10) */}
+          <div className="relative z-10 flex flex-col lg:flex-row gap-8 lg:gap-12 items-center justify-between">
+            
+            {/* Left: Avatar with Orbital Tech Rings + Live Status */}
+            <div className="flex flex-col items-center shrink-0">
+              
+              {/* Orbital Rings Avatar Container */}
+              <div className="relative w-32 h-32 sm:w-36 sm:h-36 flex items-center justify-center">
+                
+                {/* Outer dashed spinning ring */}
+                <div className="absolute inset-0 rounded-full border-2 border-dashed border-[#4ade80]/60 animate-spin-slow" />
+                
+                {/* Middle counter-spinning ring */}
+                <div className="absolute inset-2 rounded-full border border-cyan-400/40 animate-spin-reverse-slow" />
+                
+                {/* Inner Glowing Monogram Orb */}
+                <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-gradient-to-tr from-slate-950 via-slate-900 to-blue-950 border-2 border-white/40 flex items-center justify-center shadow-2xl shadow-emerald-400/20 group">
+                  <span className="font-black text-3xl sm:text-4xl text-white tracking-tighter drop-shadow-md">
+                    NS
+                  </span>
+                </div>
+
+                {/* Floating animated sparkles */}
+                <div className="absolute -top-1 -right-1">
+                  <Sparkles className="w-6 h-6 text-yellow-300 animate-pulse" />
+                </div>
+              </div>
+
+            </div>
+
+            {/* Center / Right: Bio, Metrics & Contact Buttons */}
+            <div className="flex-1 text-center lg:text-left">
+              
+              {/* Top Eyebrow */}
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2.5 mb-3 text-xs font-black tracking-widest uppercase">
+                <span className="text-yellow-300">About The Developer</span>
+                <span className="text-white/40">•</span>
+                <span className="text-[#86efac]">CS Pre-Final Year (AKTU)</span>
+              </div>
+
+              <h4 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight mb-3">
+                Nischay Srivastava
+              </h4>
+
+              <p className="text-white text-xs sm:text-sm sm:text-base leading-relaxed max-w-2xl font-bold mb-6">
+                I'm a Computer Science undergraduate at <strong className="font-black text-yellow-300">Feroze Gandhi Institute of Engineering and Technology (AKTU)</strong>. I love turning complex algorithmic challenges into fast, interactive real-time products. Whether it's crafting 1v1 WebSocket battle arenas, multimodal Gemini developer tools, or responsive web platforms, I'm passionate about building software that feels polished and snappy.
+              </p>
+
+              {/* 4 Interactive Feature Highlights (Esports & High-Energy) */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mb-6">
+                <div className="p-3 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/15 text-center hover:bg-white/20 hover:scale-105 transition-all">
+                  <div className="h-6 flex items-center justify-center">
+                    <Swords className="w-5 h-5 text-yellow-300" />
+                  </div>
+                  <div className="text-xs font-black text-white mt-1">CodeClash</div>
+                  <div className="text-[10px] font-bold text-white/90">1v1 PvP Arena</div>
+                </div>
+                <div className="p-3 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/15 text-center hover:bg-white/20 hover:scale-105 transition-all">
+                  <div className="h-6 flex items-center justify-center">
+                    <Zap className="w-5 h-5 text-yellow-300" />
+                  </div>
+                  <div className="text-xs font-black text-white mt-1">WebSockets</div>
+                  <div className="text-[10px] font-bold text-white/90">Zero-Lag Sync</div>
+                </div>
+                <div className="p-3 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/15 text-center hover:bg-white/20 hover:scale-105 transition-all">
+                  <div className="h-6 flex items-center justify-center">
+                    <Bot className="w-5 h-5 text-yellow-300" />
+                  </div>
+                  <div className="text-xs font-black text-white mt-1">Gemini AI</div>
+                  <div className="text-[10px] font-bold text-white/90">Multimodal Tools</div>
+                </div>
+                <div className="p-3 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/15 text-center hover:bg-white/20 hover:scale-105 transition-all">
+                  <div className="h-6 flex items-center justify-center">
+                    <Award className="w-5 h-5 text-yellow-300" />
+                  </div>
+                  <div className="text-xs font-black text-white mt-1">B.Tech CSE</div>
+                  <div className="text-[10px] font-bold text-white/90">2023 – Present</div>
+                </div>
+              </div>
+
+              {/* Contact Links & CTA Buttons */}
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3">
+                <a
+                  href="mailto:nischaysrivastava2@gmail.com"
+                  className="px-5 py-2.5 rounded-xl bg-white text-[#1d4ed8] hover:bg-yellow-300 hover:text-slate-950 font-black text-xs sm:text-sm tracking-wider uppercase transition-all shadow-lg shadow-black/20 flex items-center gap-2 cursor-pointer"
+                >
+                  <Mail className="w-4 h-4" />
+                  <span>Say Hello / Email</span>
+                </a>
+
+                <a
+                  href="/resume.pdf"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="px-5 py-2.5 rounded-xl bg-white/15 hover:bg-white/25 border border-white/30 text-white font-black text-xs sm:text-sm tracking-wider uppercase transition-all flex items-center gap-2"
+                >
+                  <FileText className="w-4 h-4 text-yellow-300" />
+                  <span>View Resume</span>
+                </a>
+
+                <a
+                  href="https://github.com/nischay237"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="p-2.5 rounded-xl bg-white/15 hover:bg-white/25 border border-white/30 text-white transition-all"
+                  title="GitHub @nischay237"
+                >
+                  <GithubIcon className="w-4 h-4" />
+                </a>
+
+                <div className="flex items-center gap-1.5 text-xs font-bold text-white">
+                  <MapPin className="w-3.5 h-3.5 text-[#4ade80]" />
+                  <span>Raebareli, UP, India</span>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      {/* ============================================================== */}
+      {/* POPUP MODAL FOR NON-CODECLASH PROJECTS */}
+      {/* ============================================================== */}
+      {selectedProject && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
+          <div className="relative w-full max-w-2xl bg-[#090d1c] border border-slate-700 rounded-3xl shadow-2xl p-6 sm:p-8 max-h-[90vh] overflow-y-auto text-white">
+            
+            {/* Close Button */}
+            <button
+              onClick={() => setSelectedProject(null)}
+              className="absolute top-5 right-5 p-2 rounded-xl bg-slate-800 text-slate-400 hover:text-white transition-colors cursor-pointer"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            {/* Header */}
+            <div className="mb-4">
+              <span className="text-xs font-black uppercase tracking-wider text-[#4ade80]">
+                PROJECT {selectedProject.id} • {selectedProject.category}
+              </span>
+              <h3 className="text-2xl font-black text-white mt-1">
+                {selectedProject.title}
+              </h3>
+              <p className="text-xs text-yellow-300 font-bold mt-1">
+                {selectedProject.tagline}
+              </p>
+            </div>
+
+            {/* Tech Stack */}
+            <div className="flex flex-wrap gap-1.5 mb-6">
+              {selectedProject.techStack.map((tech, idx) => (
+                <span
+                  key={idx}
+                  className="text-xs font-black px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-[#4ade80]"
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
+
+            {/* Hindi Overview */}
+            <div className="mb-6 p-4 rounded-2xl bg-white/5 border border-white/10">
+              <h4 className="text-xs font-black uppercase tracking-wider text-[#4ade80] mb-1.5 flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>Project Overview (Quick Summary)</span>
+              </h4>
+              <p className="text-xs sm:text-sm text-slate-100 font-bold leading-relaxed">
+                {selectedProject.aboutHindi}
+              </p>
+            </div>
+
+            {/* English In-Depth Description */}
+            <div className="mb-6">
+              <h4 className="text-xs font-black uppercase tracking-wider text-slate-300 mb-2">
+                What Was Built
+              </h4>
+              <p className="text-xs sm:text-sm text-slate-100 font-bold leading-relaxed mb-4">
+                {selectedProject.aboutEnglish}
+              </p>
+
+              <h4 className="text-xs font-black uppercase tracking-wider text-slate-300 mb-2">
+                Key Technical Details
+              </h4>
+              <div className="space-y-2">
+                {selectedProject.highlights.map((h, i) => (
+                  <div key={i} className="flex items-start gap-2 text-xs text-slate-100 font-bold">
+                    <CheckCircle2 className="w-4 h-4 text-[#4ade80] shrink-0 mt-0.5" />
+                    <span>{h}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Modal Actions */}
+            <div className="flex flex-wrap items-center justify-end gap-3 pt-4 border-t border-slate-800">
+              <button
+                onClick={() => {
+                  const proj = selectedProject;
+                  setSelectedProject(null);
+                  handleOpenProject(proj);
+                }}
+                className="px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black transition-colors flex items-center gap-2 text-xs shadow-md shadow-emerald-500/20 cursor-pointer"
+              >
+                <Play className="w-3.5 h-3.5 fill-current" />
+                <span>Launch Live Demo ↗</span>
+              </button>
+
+              {selectedProject.githubUrl && (
+                <a
+                  href={selectedProject.githubUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="px-5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white hover:bg-slate-800 transition-colors flex items-center gap-2 text-xs font-black"
+                >
+                  <GithubIcon className="w-4 h-4" />
+                  <span>View GitHub Repo ↗</span>
+                </a>
+              )}
+
+              {selectedProject.driveUrl && (
+                <a
+                  href={selectedProject.driveUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="px-5 py-2.5 rounded-xl bg-[#2b3ff2] hover:bg-blue-600 text-white transition-colors flex items-center gap-2 text-xs font-black shadow-md shadow-blue-600/20"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                  <span>View Demo & Artifacts ↗</span>
+                </a>
+              )}
+
+              <button
+                onClick={() => setSelectedProject(null)}
+                className="px-4 py-2.5 rounded-xl bg-slate-800 text-white hover:bg-slate-700 text-xs font-bold cursor-pointer"
+              >
+                Close
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
+
+    </div>
+  );
+}
