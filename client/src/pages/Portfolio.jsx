@@ -604,3 +604,306 @@ export default function Portfolio({ onOpenArena, onOpenLeaderboard, onOpenAnalyt
                             <div className="relative mb-1">
                               <div className="absolute inset-0 rounded-full bg-white/20 animate-ai-ring" />
                               <Bot className="w-7 h-7 text-emerald-100 relative z-10 drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]" />
+                            </div>
+
+                            {/* Centered Name */}
+                            <div className="font-black text-xs tracking-wider uppercase text-white">
+                              DSA AI INSTRUCTOR
+                            </div>
+
+                            <p className="text-[10px] text-emerald-100 font-black mt-0.5 truncate max-w-[170px] tracking-wide">
+                              Gemini Code Walkthroughs
+                            </p>
+                          </div>
+
+                          <div className="flex items-center gap-1 mt-2 text-xs font-black text-emerald-100 tracking-wide">
+                            <Zap className="w-3 h-3 text-yellow-300 animate-bounce" />
+                            <span>Step-By-Step Dry Runs</span>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* ============================================================== */}
+                      {/* 3. ANALYTICS TRACKER: REAL-TIME FLUCTUATING GRAPHS (RED CARD) */}
+                      {/* ============================================================== */}
+                      {project.previewType === 'analytics' && (
+                        <div className="my-auto py-1 flex flex-col items-center justify-center text-center">
+                          <div className="w-full py-2 px-3 bg-black/35 backdrop-blur-sm rounded-xl border border-white/20 shadow-inner flex flex-col items-center">
+                            
+                            {/* Header with Title */}
+                            <div className="flex items-center justify-between w-full mb-1">
+                              <span className="font-black text-[11px] tracking-wide uppercase text-white">
+                                ANALYTICS TRACKER
+                              </span>
+                              <span className="text-[10px] text-emerald-300 font-black tracking-wider">
+                                ● LIVE
+                              </span>
+                            </div>
+
+                            {/* Animated Fluctuating Bar Chart */}
+                            <div className="flex items-end justify-center gap-1.5 h-10 w-full pt-1 px-4 border-b border-white/20">
+                              <div className="w-2.5 bg-white rounded-t animate-bar-1" />
+                              <div className="w-2.5 bg-yellow-300 rounded-t animate-bar-2" />
+                              <div className="w-2.5 bg-cyan-300 rounded-t animate-bar-3" />
+                              <div className="w-2.5 bg-white rounded-t animate-bar-4" />
+                              <div className="w-2.5 bg-emerald-300 rounded-t animate-bar-5" />
+                            </div>
+                          </div>
+
+                          <div className="flex items-center gap-1 mt-2 text-xs font-black text-red-100 tracking-wide">
+                            <TrendingUp className="w-3 h-3 text-yellow-300" />
+                            <span>Live Visitor Heartbeats</span>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* ============================================================== */}
+                      {/* 4. B2B PROCUREMENT: ANIMATED CONVEYOR FLOW (PURPLE CARD) */}
+                      {/* ============================================================== */}
+                      {project.previewType === 'b2b' && (
+                        <div className="my-auto py-1 flex flex-col items-center justify-center text-center">
+                          <div className="w-full py-2.5 px-3 bg-black/35 backdrop-blur-sm rounded-xl border border-white/20 shadow-inner flex flex-col items-center">
+                            
+                            <div className="font-black text-xs tracking-wider uppercase text-white mb-1">
+                              B2B PROCUREMENT
+                            </div>
+
+                            {/* Animated Conveyor Flow */}
+                            <div className="flex items-center justify-center gap-2 py-1 w-full text-base animate-conveyor">
+                              <Factory className="w-4 h-4 text-purple-200" />
+                              <span className="text-[10px] text-purple-200">➔</span>
+                              <Truck className="w-4 h-4 text-yellow-300 animate-pulse" />
+                              <span className="text-[10px] text-purple-200">➔</span>
+                              <ShoppingBag className="w-4 h-4 text-purple-200" />
+                            </div>
+
+                            <span className="text-[10px] font-black text-purple-200 tracking-wide">
+                              Factory Direct • Skip Middlemen
+                            </span>
+                          </div>
+
+                          <div className="flex items-center gap-1 mt-2 text-xs font-black text-purple-100 tracking-wide">
+                            <Activity className="w-3 h-3 text-yellow-300" />
+                            <span>Wholesale for Local Kirana</span>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Card Bottom: Title & Launch Prompt */}
+                      <div className="pt-2 border-t border-white/25 flex items-center justify-between text-xs">
+                        <h4 className="font-black text-white group-hover:text-yellow-200 transition-colors truncate tracking-tight">
+                          {project.shortTitle}
+                        </h4>
+                        <span className="text-white font-black flex items-center gap-1 group-hover:translate-x-1 group-hover:text-yellow-200 transition-all">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-300 animate-ping inline-block" />
+                          <span>Live Demo</span>
+                          <ChevronRight className="w-3.5 h-3.5" />
+                        </span>
+                      </div>
+
+                    </div>
+
+                    {/* ============================================================== */}
+                    {/* ANIMATED THEMED POPUP HOVER INTRO */}
+                    {/* ============================================================== */}
+                    {isHovered && (
+                      <div className="absolute bottom-full left-0 right-0 mb-3.5 z-40 pointer-events-none">
+                        <div className={`relative p-3.5 rounded-2xl bg-gradient-to-b ${project.popupBg} backdrop-blur-xl border-2 ${project.popupBorder} shadow-2xl ${project.popupGlow} text-left animate-popup-spring`}>
+                          
+                          {/* Top glowing accent line */}
+                          <div className={`absolute top-0 left-3 right-3 h-1 rounded-full bg-gradient-to-r ${project.popupAccentGradient}`} />
+
+                          {/* Mini Badge Header */}
+                          <div className="flex items-center justify-between mb-2.5 pt-0.5">
+                            <span className={`text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md border ${project.popupBadgeStyle}`}>
+                              {project.popupBadge}
+                            </span>
+                            <span className={`text-[10px] font-black tracking-wider uppercase ${project.popupNumberColor}`}>
+                              3 Highlights
+                            </span>
+                          </div>
+
+                          {/* 3 Numbered Points */}
+                          <div className="space-y-2 text-xs text-white leading-snug font-bold">
+                            {project.introLines.map((line, idx) => (
+                              <p key={idx} className="flex items-start gap-2">
+                                <span className={`font-black ${project.popupNumberColor} shrink-0 text-xs mt-0.5`}>
+                                  {idx + 1}.
+                                </span>
+                                <span className="text-white/95 leading-relaxed">
+                                  {line}
+                                </span>
+                              </p>
+                            ))}
+                          </div>
+
+                          {/* Bottom Pointer Triangle */}
+                          <div className={`absolute -bottom-2 left-1/2 -translate-x-1/2 w-3.5 h-3.5 rotate-45 border-r-2 border-b-2 ${project.popupPointerBg}`} />
+                        </div>
+                      </div>
+                    )}
+
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      {/* ============================================================== */}
+      {/* DETAILED PROJECTS ARCHIVE (CANVA POST TEMPLATE FORMAT) */}
+      {/* ============================================================== */}
+      <section className="max-w-6xl mx-auto mt-16 pt-8 border-t-2 border-slate-900/20 relative z-10">
+        
+        {/* Section Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+          <div>
+            <h3 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-950 tracking-tight leading-none">
+              Things I've Built & Shipped.
+            </h3>
+          </div>
+          <p className="text-xs sm:text-sm text-slate-950 font-bold max-w-md leading-relaxed">
+            Here is a deeper look at the architecture, key decisions, and live codebases for each featured engineering project.
+          </p>
+        </div>
+
+        {/* 4 Canva Post Style Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
+          {PROJECTS.map((project) => (
+            <div
+              key={project.id}
+              onClick={() => handleOpenProject(project)}
+              className="group relative bg-white rounded-[32px] border-2 border-slate-900/10 p-6 sm:p-8 flex flex-col justify-between shadow-2xl shadow-slate-950/10 hover:shadow-slate-950/20 hover:-translate-y-1.5 transition-all duration-300 cursor-pointer overflow-hidden text-slate-900"
+            >
+              {/* Canva Signature Top Accent Bar */}
+              <div className={`absolute top-0 left-0 right-0 h-2.5 bg-gradient-to-r ${project.bgGradient}`} />
+
+              <div>
+                {/* Top Row: Clean Category Eyebrow with Dot + Big Bold Number */}
+                <div className="flex items-center justify-between gap-2 mb-4">
+                  <div className="flex items-center gap-2">
+                    <span className={`text-base sm:text-lg font-black leading-none ${project.categoryColor}`}>
+                      •
+                    </span>
+                    <span className={`text-sm sm:text-base font-black tracking-wider uppercase ${project.categoryColor}`}>
+                      {project.category}
+                    </span>
+                  </div>
+
+                  {/* Big Bold Number */}
+                  <span className="font-black text-4xl sm:text-5xl text-slate-950 tracking-tighter group-hover:text-blue-600 transition-colors">
+                    {project.number}
+                  </span>
+                </div>
+
+                {/* Card Title */}
+                <h4 className="text-2xl sm:text-3xl font-black text-slate-950 group-hover:text-blue-600 transition-colors tracking-tight leading-snug mb-2">
+                  {project.title}
+                </h4>
+
+                {/* Standard Clean Tagline / Subtitle (No Box, Bigger Font) */}
+                <p className="text-sm sm:text-base font-extrabold text-slate-950 mb-3.5 leading-snug">
+                  {project.tagline}
+                </p>
+
+                {/* Description Paragraph (Human, Clean English, Bigger Font) */}
+                <p className="text-sm sm:text-base text-slate-900 leading-relaxed mb-5 font-bold">
+                  {project.aboutEnglish}
+                </p>
+
+                {/* Checklist Highlights (Bigger Font & Icons) */}
+                <div className="space-y-2.5 mb-6">
+                  {project.highlights.slice(0, 2).map((h, i) => (
+                    <div key={i} className="flex items-start gap-2.5 text-sm sm:text-[15px] text-slate-950 font-extrabold leading-snug">
+                      <div className="w-5 h-5 rounded-full bg-emerald-100 border border-emerald-300 flex items-center justify-center shrink-0 mt-0.5">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                      </div>
+                      <span>{h}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Card Bottom: Clean Tech Stack Typography + Action Buttons */}
+              <div className="pt-4 border-t border-slate-200 flex flex-wrap items-center justify-between gap-3">
+                <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1.5 text-xs sm:text-sm">
+                  {project.techStack.map((tech, idx) => (
+                    <span key={idx} className="font-black text-slate-900 flex items-center gap-2">
+                      <span>{tech}</span>
+                      {idx < project.techStack.length - 1 && (
+                        <span className="text-slate-400 font-bold select-none">•</span>
+                      )}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="flex items-center gap-2">
+                  {project.githubUrl && (
+                    <a
+                      href={project.githubUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-950 transition-colors"
+                      title="View GitHub Repository"
+                    >
+                      <GithubIcon className="w-4 h-4" />
+                    </a>
+                  )}
+
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleOpenProject(project);
+                    }}
+                    className="px-5 py-2.5 rounded-xl bg-slate-950 hover:bg-blue-600 text-white text-sm font-black tracking-wide transition-all flex items-center gap-2 shadow-md shadow-slate-950/20 cursor-pointer group-hover:bg-blue-600"
+                  >
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse inline-block" />
+                    <span>Live Demo</span>
+                    <ArrowUpRight className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ============================================================== */}
+      {/* TECHNICAL SKILLS SECTION (ANIMATED & HIGHLY INTERACTIVE) */}
+      {/* ============================================================== */}
+      <section id="skills-section" className="max-w-6xl mx-auto mt-20 pt-8 border-t-2 border-slate-900/20 relative z-10">
+        <div className="text-center mb-12">
+          <div className="flex items-center justify-center gap-2 text-xs font-black uppercase tracking-widest text-slate-900 mb-2">
+            <Terminal className="w-4 h-4 text-blue-600" />
+            <span>CORE TECH STACK & ARCHITECTURE</span>
+          </div>
+          <h3 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-950 tracking-tight leading-tight">
+            Tools & Technologies I Use.
+          </h3>
+          <p className="text-xs sm:text-sm text-slate-950 font-bold mt-2 max-w-xl mx-auto">
+            Hover over tech badges to explore stacks, frameworks, and low-latency protocols I build with.
+          </p>
+        </div>
+
+        {/* 5 Animated Category Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {SKILLS.map((skillGroup) => {
+            const IconComponent = skillGroup.icon;
+
+            return (
+              <div
+                key={skillGroup.id}
+                className={`group relative bg-white rounded-[32px] border-2 border-slate-900/10 p-6 sm:p-7 flex flex-col justify-between shadow-xl shadow-slate-950/5 hover:shadow-2xl ${skillGroup.glowColor} ${skillGroup.borderColor} hover:-translate-y-2 transition-all duration-300 text-slate-900 overflow-hidden`}
+              >
+                {/* Top Geometric Accent Bar with Gradient */}
+                <div className={`absolute top-0 left-0 right-0 h-2.5 bg-gradient-to-r ${skillGroup.accentColor}`} />
+
+                <div>
+                  {/* Category Header with Animated Category Icon */}
+                  <div className="flex items-center justify-between gap-3 mb-3">
+                    <div className="flex items-center gap-3">
+                      <IconComponent className={`w-7 h-7 sm:w-8 sm:h-8 ${skillGroup.iconColor} shrink-0 ${
