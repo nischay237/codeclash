@@ -1,0 +1,30 @@
+name: 24/7 Keep Website & Backend Warm
+
+on:
+  schedule:
+    # Run every 10 minutes, 24 hours a day, 365 days a year
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  keepalive:
+    name: Ping Production Endpoints
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Health & Main Domain
+        run: |
+          echo "==== Pinging CodeClash API Health Endpoint ===="
+          curl -s -f -m 30 -I https://nischaysrivastava.com/api/health || true
+          
+          echo "==== Pinging Frontend Web App ===="
+          curl -s -f -m 30 -I https://nischaysrivastava.com || true
+
+          echo "==== Pinging Live Projects Routes ===="
+          curl -s -f -m 30 -I https://nischaysrivastava.com/analytics || true
+          curl -s -f -m 30 -I https://nischaysrivastava.com/b2b || true
+          curl -s -f -m 30 -I https://nischaysrivastava.com/ai || true
+
+          echo "==== KeepAlive Check Completed Successfully ===="
