@@ -4,7 +4,6 @@ import {
   Swords, 
   Bot, 
   BarChart3, 
-  ShoppingBag, 
   ExternalLink, 
   Sparkles, 
   Terminal, 
@@ -28,8 +27,6 @@ import {
   GitBranch,
   ChevronRight,
   TrendingUp,
-  Truck,
-  Factory,
   Flame,
   Brain
 } from 'lucide-react';
@@ -144,96 +141,6 @@ const PROJECTS = [
     driveUrl: "https://drive.google.com/drive/folders/1yDR9xbt8fTiyh9TyWV9C4lS6Y4Th3-61?usp=sharing",
     isLiveApp: true,
     launchLabel: "Launch Live Dashboard"
-  },
-  {
-    id: 3,
-    number: "3.",
-    title: "B2B Merchant Procurement Platform",
-    shortTitle: "B2B Procurement",
-    tagline: "Direct-from-factory wholesale inventory for local retailers",
-    category: "MERN Stack / B2B",
-    categoryColor: "text-purple-600",
-    badge: "LIVE PORTAL",
-    colorName: "purple",
-    bgGradient: "from-[#8b5cf6] via-[#7c3aed] to-[#6d28d9]",
-    cardBorder: "border-purple-300/40",
-    hoverBorder: "group-hover:border-white",
-    hoverGlow: "group-hover:shadow-purple-500/40",
-    numberColor: "text-purple-100",
-    badgeBg: "bg-white/20 text-white border-white/30",
-    accentColor: "#8b5cf6",
-    previewType: "b2b",
-    popupBg: "from-[#1a0733]/95 via-[#110423]/95 to-[#0b0217]/95",
-    popupBorder: "border-purple-400",
-    popupGlow: "shadow-purple-500/50",
-    popupAccentGradient: "from-purple-400 via-violet-300 to-fuchsia-300",
-    popupBadge: "B2B Kirana Platform",
-    popupBadgeStyle: "bg-purple-500/20 text-purple-200 border-purple-400/50",
-    popupNumberColor: "text-purple-300",
-    popupPointerBg: "bg-[#0d031a] border-purple-400",
-    introLines: [
-      "Direct wholesale procurement platform designed for local retail and kirana stores.",
-      "Bypasses intermediate distributor layers to connect shopkeepers directly to factories.",
-      "Delivers 15–20% higher profit margins with automated quotation and freight workflows."
-    ],
-    aboutHindi: "Direct wholesale procurement platform designed for local retail and kirana stores. Bypasses intermediate distributor layers to connect shopkeepers directly to factories. Delivers 15–20% higher profit margins with automated quotation and freight workflows.",
-    aboutEnglish: "A wholesale procurement platform enabling retail shopkeepers (Kirana, Apparel, Hardware) to source goods directly from verified manufacturers, eliminating middleman markups with automated quotation workflows.",
-    highlights: [
-      "Cuts out middleman layers to save 15-20% on retail inventory purchases",
-      "Dynamic freight & landed-cost calculator based on volume and pin codes",
-      "Clear milestone delivery pipeline with simple digital quotation requests",
-      "Full-stack MERN implementation with secure JWT authentication"
-    ],
-    techStack: ["MongoDB", "Express.js", "React.js", "Node.js", "Tailwind CSS", "JWT Auth"],
-    githubUrl: "https://github.com/nischay237/b2b-merchant-procurement-platform",
-    driveUrl: "https://drive.google.com/drive/folders/1Xp__iFKqgaqY-5nIV3XXDM6GuyiH7y17?usp=sharing",
-    isLiveApp: true,
-    launchLabel: "Launch Live Portal"
-  },
-  {
-    id: 4,
-    number: "4.",
-    title: "DSA AI Instructor — Interactive Algorithm Mentor",
-    shortTitle: "DSA AI Instructor",
-    tagline: "Step-by-step visual code dry-runs powered by Gemini",
-    category: "AI & Education",
-    categoryColor: "text-emerald-600",
-    badge: "LIVE AI MENTOR",
-    colorName: "green",
-    bgGradient: "from-[#10b981] via-[#059669] to-[#047857]",
-    cardBorder: "border-emerald-300/40",
-    hoverBorder: "group-hover:border-white",
-    hoverGlow: "group-hover:shadow-emerald-500/40",
-    numberColor: "text-emerald-100",
-    badgeBg: "bg-white/20 text-white border-white/30",
-    accentColor: "#10b981",
-    previewType: "ai",
-    popupBg: "from-[#031d14]/95 via-[#02130d]/95 to-[#010c08]/95",
-    popupBorder: "border-emerald-400",
-    popupGlow: "shadow-emerald-500/50",
-    popupAccentGradient: "from-emerald-400 via-teal-300 to-cyan-300",
-    popupBadge: "Gemini AI Mentor",
-    popupBadgeStyle: "bg-emerald-500/20 text-emerald-200 border-emerald-400/50",
-    popupNumberColor: "text-emerald-300",
-    popupPointerBg: "bg-[#02110c] border-emerald-400",
-    introLines: [
-      "Interactive algorithm tutor powered by Google Gemini to master tough DSA concepts.",
-      "Guides with progressive Socratic hints and intuition building instead of spoiling answers.",
-      "Visual line-by-line dry-runs of recursion trees, pointers, and memory state changes."
-    ],
-    aboutHindi: "Interactive algorithm tutor powered by Google Gemini to master tough DSA concepts. Guides with progressive Socratic hints and intuition building instead of spoiling answers. Visual line-by-line dry-runs of recursion trees, pointers, and memory state changes.",
-    aboutEnglish: "An interactive algorithm mentor built with Google Gemini. Instead of just dumping solutions, it asks guiding questions, gives progressive hints, and visually dry-runs recursion trees and loops line by line.",
-    highlights: [
-      "Multimodal input: accepts handwritten code snippets and whiteboard diagrams",
-      "Visual step-by-step execution walkthrough with custom test inputs",
-      "Socratic progressive hints that teach problem-solving intuition",
-      "Futuristic lightweight UI with zero external runtime dependencies"
-    ],
-    techStack: ["Gemini API", "JavaScript (ES6+)", "Glassmorphic CSS", "HTML5", "LocalStorage"],
-    githubUrl: "https://github.com/nischay237/DSA-AI-INSTRUCTOR",
-    driveUrl: "https://drive.google.com/drive/folders/1ID3t-IX57I6kGOGFmYmDU0UzRG169Gn9?usp=sharing",
-    isLiveApp: true,
-    launchLabel: "Launch Live AI Mentor"
   }
 ];
 
@@ -337,7 +244,7 @@ const SKILLS = [
   }
 ];
 
-export default function Portfolio({ onOpenArena, onOpenLeaderboard, onOpenAnalytics, onOpenB2B, onOpenAI }) {
+export default function Portfolio({ onOpenArena, onOpenLeaderboard, onOpenAnalytics }) {
   const [hoveredProjectId, setHoveredProjectId] = useState(null);
   const [selectedProject, setSelectedProject] = useState(null);
   const [scrollY, setScrollY] = useState(0);
@@ -356,10 +263,6 @@ export default function Portfolio({ onOpenArena, onOpenLeaderboard, onOpenAnalyt
       onOpenArena?.();
     } else if (project.previewType === 'analytics') {
       onOpenAnalytics?.();
-    } else if (project.previewType === 'b2b') {
-      onOpenB2B?.();
-    } else if (project.previewType === 'ai') {
-      onOpenAI?.();
     } else {
       setSelectedProject(project);
     }
@@ -513,7 +416,7 @@ export default function Portfolio({ onOpenArena, onOpenLeaderboard, onOpenAnalyt
           </div>
 
           {/* ============================================================== */}
-          {/* BOTTOM SHELF: VIBRANT COLORED PROJECT CARDS (ORANGE, GREEN, RED, PURPLE) */}
+          {/* BOTTOM SHELF: VIBRANT COLORED PROJECT CARDS (ORANGE, RED) */}
           {/* ============================================================== */}
           <div id="projects-shelf" className="pt-5 border-t border-white/15">
             <div className="flex items-center justify-between mb-3.5">
@@ -525,8 +428,8 @@ export default function Portfolio({ onOpenArena, onOpenLeaderboard, onOpenAnalyt
               </span>
             </div>
 
-            {/* 4 VIBRANT COLORED CARDS ROW */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+            {/* 2 VIBRANT COLORED CARDS ROW */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
               {PROJECTS.map((project) => {
                 const isHovered = hoveredProjectId === project.id;
 
@@ -594,37 +497,7 @@ export default function Portfolio({ onOpenArena, onOpenLeaderboard, onOpenAnalyt
                       )}
 
                       {/* ============================================================== */}
-                      {/* 2. DSA AI INSTRUCTOR: ANIMATED AI & SCANNER WAVES (GREEN CARD) */}
-                      {/* ============================================================== */}
-                      {project.previewType === 'ai' && (
-                        <div className="my-auto py-1 flex flex-col items-center justify-center text-center">
-                          <div className="relative w-full py-2.5 px-3 bg-black/35 backdrop-blur-sm rounded-xl border border-white/20 overflow-hidden shadow-inner flex flex-col items-center">
-                            
-                            {/* AI Bot Icon with glowing pulse ring */}
-                            <div className="relative mb-1">
-                              <div className="absolute inset-0 rounded-full bg-white/20 animate-ai-ring" />
-                              <Bot className="w-7 h-7 text-emerald-100 relative z-10 drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]" />
-                            </div>
-
-                            {/* Centered Name */}
-                            <div className="font-black text-xs tracking-wider uppercase text-white">
-                              DSA AI INSTRUCTOR
-                            </div>
-
-                            <p className="text-[10px] text-emerald-100 font-black mt-0.5 truncate max-w-[170px] tracking-wide">
-                              Gemini Code Walkthroughs
-                            </p>
-                          </div>
-
-                          <div className="flex items-center gap-1 mt-2 text-xs font-black text-emerald-100 tracking-wide">
-                            <Zap className="w-3 h-3 text-yellow-300 animate-bounce" />
-                            <span>Step-By-Step Dry Runs</span>
-                          </div>
-                        </div>
-                      )}
-
-                      {/* ============================================================== */}
-                      {/* 3. ANALYTICS TRACKER: REAL-TIME FLUCTUATING GRAPHS (RED CARD) */}
+                      {/* 2. ANALYTICS TRACKER: REAL-TIME FLUCTUATING GRAPHS (RED CARD) */}
                       {/* ============================================================== */}
                       {project.previewType === 'analytics' && (
                         <div className="my-auto py-1 flex flex-col items-center justify-center text-center">
@@ -653,38 +526,6 @@ export default function Portfolio({ onOpenArena, onOpenLeaderboard, onOpenAnalyt
                           <div className="flex items-center gap-1 mt-2 text-xs font-black text-red-100 tracking-wide">
                             <TrendingUp className="w-3 h-3 text-yellow-300" />
                             <span>Live Visitor Heartbeats</span>
-                          </div>
-                        </div>
-                      )}
-
-                      {/* ============================================================== */}
-                      {/* 4. B2B PROCUREMENT: ANIMATED CONVEYOR FLOW (PURPLE CARD) */}
-                      {/* ============================================================== */}
-                      {project.previewType === 'b2b' && (
-                        <div className="my-auto py-1 flex flex-col items-center justify-center text-center">
-                          <div className="w-full py-2.5 px-3 bg-black/35 backdrop-blur-sm rounded-xl border border-white/20 shadow-inner flex flex-col items-center">
-                            
-                            <div className="font-black text-xs tracking-wider uppercase text-white mb-1">
-                              B2B PROCUREMENT
-                            </div>
-
-                            {/* Animated Conveyor Flow */}
-                            <div className="flex items-center justify-center gap-2 py-1 w-full text-base animate-conveyor">
-                              <Factory className="w-4 h-4 text-purple-200" />
-                              <span className="text-[10px] text-purple-200">➔</span>
-                              <Truck className="w-4 h-4 text-yellow-300 animate-pulse" />
-                              <span className="text-[10px] text-purple-200">➔</span>
-                              <ShoppingBag className="w-4 h-4 text-purple-200" />
-                            </div>
-
-                            <span className="text-[10px] font-black text-purple-200 tracking-wide">
-                              Factory Direct • Skip Middlemen
-                            </span>
-                          </div>
-
-                          <div className="flex items-center gap-1 mt-2 text-xs font-black text-purple-100 tracking-wide">
-                            <Activity className="w-3 h-3 text-yellow-300" />
-                            <span>Wholesale for Local Kirana</span>
                           </div>
                         </div>
                       )}
@@ -770,7 +611,7 @@ export default function Portfolio({ onOpenArena, onOpenLeaderboard, onOpenAnalyt
           </p>
         </div>
 
-        {/* 4 Canva Post Style Cards */}
+        {/* 2 Canva Post Style Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
           {PROJECTS.map((project) => (
             <div

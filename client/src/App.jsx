@@ -7,8 +7,6 @@ import LandingLobby from './pages/LandingLobby';
 import BattleArena from './pages/BattleArena';
 import Leaderboard from './pages/Leaderboard';
 import AnalyticsDashboard from './pages/AnalyticsDashboard';
-import B2BProcurementPortal from './pages/B2BProcurementPortal';
-import DSAAIInstructor from './pages/DSAAIInstructor';
 
 class ErrorBoundary extends Component {
   constructor(props) {
@@ -51,8 +49,6 @@ class ErrorBoundary extends Component {
 const VIEW_PATH_MAP = {
   portfolio: '/',
   analytics: '/analytics',
-  b2b: '/b2b',
-  ai: '/ai',
   lobby: '/arena',
   battle: '/battle',
   leaderboard: '/leaderboard'
@@ -61,9 +57,6 @@ const VIEW_PATH_MAP = {
 const PATH_VIEW_MAP = {
   '/': 'portfolio',
   '/analytics': 'analytics',
-  '/b2b': 'b2b',
-  '/ai': 'ai',
-  '/dsa-ai': 'ai',
   '/arena': 'lobby',
   '/lobby': 'lobby',
   '/battle': 'battle',
@@ -143,15 +136,9 @@ function AppContent() {
             onOpenArena={() => setCurrentView('lobby')} 
             onOpenLeaderboard={() => setCurrentView('leaderboard')}
             onOpenAnalytics={() => setCurrentView('analytics')}
-            onOpenB2B={() => setCurrentView('b2b')}
-            onOpenAI={() => setCurrentView('ai')}
           />
         ) : currentView === 'analytics' ? (
           <AnalyticsDashboard onExit={() => setCurrentView('portfolio')} />
-        ) : currentView === 'b2b' ? (
-          <B2BProcurementPortal onExit={() => setCurrentView('portfolio')} />
-        ) : currentView === 'ai' ? (
-          <DSAAIInstructor onExit={() => setCurrentView('portfolio')} />
         ) : currentView === 'battle' && currentMatch ? (
           <BattleArena
             matchData={currentMatch}
@@ -197,20 +184,6 @@ function AppContent() {
               className="hover:text-emerald-400 transition-colors cursor-pointer"
             >
               2. Live Analytics
-            </button>
-            <span>•</span>
-            <button 
-              onClick={() => setCurrentView('b2b')} 
-              className="hover:text-emerald-400 transition-colors cursor-pointer"
-            >
-              3. B2B Wholesale
-            </button>
-            <span>•</span>
-            <button 
-              onClick={() => setCurrentView('ai')} 
-              className="hover:text-emerald-400 transition-colors cursor-pointer"
-            >
-              4. DSA AI Instructor
             </button>
             <span>•</span>
             <a 
