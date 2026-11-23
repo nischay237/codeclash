@@ -141,6 +141,50 @@ const PROJECTS = [
     driveUrl: "https://drive.google.com/drive/folders/1yDR9xbt8fTiyh9TyWV9C4lS6Y4Th3-61?usp=sharing",
     isLiveApp: true,
     launchLabel: "Launch Live Dashboard"
+  },
+  {
+    id: 3,
+    number: "3.",
+    title: "FORGE — AI Software Engineering Intelligence Platform",
+    shortTitle: "FORGE AI Platform",
+    tagline: "Spring Boot 3.5, Kafka Outbox, Redis, JavaParser AST & Contextual PR Review",
+    category: "Java 21 · Spring Boot · AI",
+    categoryColor: "text-indigo-600",
+    badge: "SPRING BOOT + AI",
+    colorName: "indigo",
+    bgGradient: "from-[#312e81] via-[#3730a3] to-[#1e1b4b]",
+    cardBorder: "border-indigo-300/40",
+    hoverBorder: "group-hover:border-white",
+    hoverGlow: "group-hover:shadow-indigo-500/40",
+    numberColor: "text-indigo-200",
+    badgeBg: "bg-white/20 text-white border-white/30",
+    accentColor: "#6366f1",
+    previewType: "forge",
+    popupBg: "from-[#0e0c26]/95 via-[#09081b]/95 to-[#060512]/95",
+    popupBorder: "border-indigo-400",
+    popupGlow: "shadow-indigo-500/50",
+    popupAccentGradient: "from-indigo-400 via-sky-400 to-emerald-400",
+    popupBadge: "Spring Boot 3.5 · Kafka · AST",
+    popupBadgeStyle: "bg-indigo-500/20 text-indigo-200 border-indigo-400/50",
+    popupNumberColor: "text-indigo-300",
+    popupPointerBg: "bg-[#09081b] border-indigo-400",
+    introLines: [
+      "Multi-tenant Spring Boot 3.5 modular monolith with Transactional Outbox, Kafka DLT, Redis & ArchUnit.",
+      "JavaParser AST dependency graph + BFS Change Impact Analysis computing affected classes & tests.",
+      "Contextual AI PR review with Gitleaks secret masking, Semgrep SAST, prompt-injection defense & eval suite."
+    ],
+    aboutHindi: "Multi-tenant Java 21 + Spring Boot 3.5 AI Software Engineering Intelligence Platform with Kafka Transactional Outbox, Redis rate limiting, JavaParser AST dependency graphs, secret & SAST scanning, CI log diagnosis, and an 8-case reproducible evaluation benchmark.",
+    aboutEnglish: "A production-style multi-tenant AI Software Engineering Intelligence Platform built with Java 21 LTS and Spring Boot 3.5. Connects GitHub repositories via HMAC-signed webhooks, parses Java ASTs with JavaParser to compute BFS change-impact blast radius, dispatches async PR reviews via Transactional Outbox + Apache Kafka + Redis, enforces human-in-the-loop approval, and verifies boundaries with ArchUnit.",
+    highlights: [
+      "Java 21 + Spring Boot 3.5 modular monolith with Transactional Outbox, Kafka DLT, Redis & Resilience4j",
+      "JavaParser AST Dependency Graph & BFS Change Impact Analysis with interactive React Flow + Monaco UI",
+      "Gitleaks secret masking, Semgrep SAST, prompt-injection defense, and 8-case AI Evaluation Benchmark (100% F1)",
+      "Multi-tenant JWT + RBAC isolation, Flyway migrations, MapStruct, OpenTelemetry & ArchUnit architecture tests"
+    ],
+    techStack: ["Java 21", "Spring Boot 3.5", "Apache Kafka", "Redis", "PostgreSQL", "JavaParser AST", "Spring AI", "React + TS"],
+    githubUrl: "https://github.com/nischay237/forge-ai-platform",
+    isLiveApp: true,
+    launchLabel: "Launch Live Workbench"
   }
 ];
 
@@ -167,8 +211,8 @@ const SKILLS = [
   },
   { 
     id: "backend",
-    label: "Backend & Real-Time", 
-    tagline: "Low-latency WebSockets & REST APIs",
+    label: "Backend & Distributed Systems", 
+    tagline: "Spring Boot, Kafka Outbox, WebSockets & APIs",
     accentColor: "from-emerald-500 to-teal-600",
     badgeBg: "bg-emerald-600 text-white",
     iconColor: "text-emerald-600",
@@ -177,18 +221,18 @@ const SKILLS = [
     icon: Activity,
     animType: "pulse",
     items: [
-      { name: "Node.js", hot: true },
-      { name: "Express.js", hot: true },
+      { name: "Java 21 & Spring Boot", hot: true },
+      { name: "Apache Kafka & Outbox", hot: true },
+      { name: "Node.js & Express.js", hot: true },
+      { name: "Spring Security & JWT", hot: true },
       { name: "Socket.io (WebSockets)", hot: true },
-      { name: "RESTful Architecture" },
-      { name: "JWT Authentication", hot: true },
-      { name: "bcrypt & Middleware" }
+      { name: "Resilience4j & ArchUnit" }
     ]
   },
   { 
     id: "databases",
-    label: "Databases & Storage", 
-    tagline: "Persistent models & dual caching",
+    label: "Databases & Caching", 
+    tagline: "PostgreSQL, Redis, Flyway & MongoDB",
     accentColor: "from-purple-500 to-indigo-600",
     badgeBg: "bg-purple-600 text-white",
     iconColor: "text-purple-600",
@@ -197,11 +241,11 @@ const SKILLS = [
     icon: Database,
     animType: "bounce",
     items: [
-      { name: "MongoDB", hot: true },
-      { name: "Mongoose ODM", hot: true },
-      { name: "MongoDB Atlas", hot: true },
-      { name: "In-Memory Store" },
-      { name: "Aggregation Pipelines" }
+      { name: "PostgreSQL & pgvector", hot: true },
+      { name: "Redis (Cache & Limits)", hot: true },
+      { name: "Flyway Migrations", hot: true },
+      { name: "MongoDB & Atlas", hot: true },
+      { name: "Spring Data JPA" }
     ]
   },
   { 
@@ -244,7 +288,7 @@ const SKILLS = [
   }
 ];
 
-export default function Portfolio({ onOpenArena, onOpenLeaderboard, onOpenAnalytics }) {
+export default function Portfolio({ onOpenArena, onOpenLeaderboard, onOpenAnalytics, onOpenForge }) {
   const [hoveredProjectId, setHoveredProjectId] = useState(null);
   const [selectedProject, setSelectedProject] = useState(null);
   const [scrollY, setScrollY] = useState(0);
@@ -263,6 +307,8 @@ export default function Portfolio({ onOpenArena, onOpenLeaderboard, onOpenAnalyt
       onOpenArena?.();
     } else if (project.previewType === 'analytics') {
       onOpenAnalytics?.();
+    } else if (project.previewType === 'forge') {
+      onOpenForge?.();
     } else {
       setSelectedProject(project);
     }
@@ -416,7 +462,7 @@ export default function Portfolio({ onOpenArena, onOpenLeaderboard, onOpenAnalyt
           </div>
 
           {/* ============================================================== */}
-          {/* BOTTOM SHELF: VIBRANT COLORED PROJECT CARDS (ORANGE, RED) */}
+          {/* BOTTOM SHELF: VIBRANT COLORED PROJECT CARDS (ORANGE, RED, INDIGO) */}
           {/* ============================================================== */}
           <div id="projects-shelf" className="pt-5 border-t border-white/15">
             <div className="flex items-center justify-between mb-3.5">
@@ -428,8 +474,8 @@ export default function Portfolio({ onOpenArena, onOpenLeaderboard, onOpenAnalyt
               </span>
             </div>
 
-            {/* 2 VIBRANT COLORED CARDS ROW */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+            {/* 3 VIBRANT COLORED CARDS ROW */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {PROJECTS.map((project) => {
                 const isHovered = hoveredProjectId === project.id;
 
@@ -530,6 +576,37 @@ export default function Portfolio({ onOpenArena, onOpenLeaderboard, onOpenAnalyt
                         </div>
                       )}
 
+                      {/* ============================================================== */}
+                      {/* 3. FORGE: SPRING BOOT AST & KAFKA ENGINE (INDIGO CARD) */}
+                      {/* ============================================================== */}
+                      {project.previewType === 'forge' && (
+                        <div className="my-auto py-1 flex flex-col items-center justify-center text-center">
+                          <div className="w-full py-2.5 px-3 bg-black/40 backdrop-blur-sm rounded-xl border border-indigo-300/30 shadow-inner flex flex-col items-center">
+                            <div className="flex items-center justify-between w-full mb-1.5">
+                              <span className="font-black text-xs tracking-wider uppercase text-white flex items-center gap-1.5">
+                                <GitBranch className="w-3.5 h-3.5 text-indigo-300" />
+                                FORGE AI
+                              </span>
+                              <span className="text-[9px] text-emerald-300 font-black tracking-wider">
+                                F1 100%
+                              </span>
+                            </div>
+                            <div className="flex items-center justify-center gap-1.5 w-full py-1 text-[10px] font-mono font-black">
+                              <span className="px-1.5 py-0.5 rounded bg-indigo-500/30 border border-indigo-300/40 text-indigo-100">AST</span>
+                              <span className="text-indigo-300">➔</span>
+                              <span className="px-1.5 py-0.5 rounded bg-emerald-500/25 border border-emerald-300/40 text-emerald-100">KAFKA</span>
+                              <span className="text-indigo-300">➔</span>
+                              <span className="px-1.5 py-0.5 rounded bg-rose-500/25 border border-rose-300/40 text-rose-100">SAST</span>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center gap-1.5 mt-2 text-xs font-black text-indigo-100 tracking-wide">
+                            <ShieldCheck className="w-3.5 h-3.5 text-emerald-300" />
+                            <span>Java 21 · Spring Boot · Redis</span>
+                          </div>
+                        </div>
+                      )}
+
                       {/* Card Bottom: Title & Launch Prompt */}
                       <div className="pt-2 border-t border-white/25 flex items-center justify-between text-xs">
                         <h4 className="font-black text-white group-hover:text-yellow-200 transition-colors truncate tracking-tight">
@@ -611,7 +688,7 @@ export default function Portfolio({ onOpenArena, onOpenLeaderboard, onOpenAnalyt
           </p>
         </div>
 
-        {/* 2 Canva Post Style Cards */}
+        {/* 3 Canva Post Style Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
           {PROJECTS.map((project) => (
             <div

@@ -7,6 +7,7 @@ import LandingLobby from './pages/LandingLobby';
 import BattleArena from './pages/BattleArena';
 import Leaderboard from './pages/Leaderboard';
 import AnalyticsDashboard from './pages/AnalyticsDashboard';
+import ForgePlatformDemo from './pages/ForgePlatformDemo';
 
 class ErrorBoundary extends Component {
   constructor(props) {
@@ -49,6 +50,7 @@ class ErrorBoundary extends Component {
 const VIEW_PATH_MAP = {
   portfolio: '/',
   analytics: '/analytics',
+  forge: '/forge',
   lobby: '/arena',
   battle: '/battle',
   leaderboard: '/leaderboard'
@@ -57,6 +59,7 @@ const VIEW_PATH_MAP = {
 const PATH_VIEW_MAP = {
   '/': 'portfolio',
   '/analytics': 'analytics',
+  '/forge': 'forge',
   '/arena': 'lobby',
   '/lobby': 'lobby',
   '/battle': 'battle',
@@ -136,9 +139,12 @@ function AppContent() {
             onOpenArena={() => setCurrentView('lobby')} 
             onOpenLeaderboard={() => setCurrentView('leaderboard')}
             onOpenAnalytics={() => setCurrentView('analytics')}
+            onOpenForge={() => setCurrentView('forge')}
           />
         ) : currentView === 'analytics' ? (
           <AnalyticsDashboard onExit={() => setCurrentView('portfolio')} />
+        ) : currentView === 'forge' ? (
+          <ForgePlatformDemo onExit={() => setCurrentView('portfolio')} />
         ) : currentView === 'battle' && currentMatch ? (
           <BattleArena
             matchData={currentMatch}
@@ -184,6 +190,13 @@ function AppContent() {
               className="hover:text-emerald-400 transition-colors cursor-pointer"
             >
               2. Live Analytics
+            </button>
+            <span>•</span>
+            <button 
+              onClick={() => setCurrentView('forge')} 
+              className="hover:text-emerald-400 transition-colors cursor-pointer"
+            >
+              3. FORGE AI Platform
             </button>
             <span>•</span>
             <a 
