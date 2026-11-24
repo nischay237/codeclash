@@ -1,19 +1,24 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import {
-  ArrowDown,
+  Activity,
   ArrowUpRight,
   Award,
   BarChart3,
   Check,
   CheckCircle2,
+  ChevronRight,
   Command,
   Copy,
   ExternalLink,
   FileText,
+  GraduationCap,
+  Layers,
   Mail,
+  MapPin,
   Network,
   Play,
   Search,
+  ShieldCheck,
   Swords,
   X,
   Zap,
@@ -32,85 +37,81 @@ const GithubIcon = ({ className = 'w-4 h-4' }) => (
 const PROJECTS = [
   {
     id: 'forge',
-    index: '01',
-    displayTitle: 'FORGE AI',
-    fullTitle: 'FORGE — AI Software Engineering Intelligence Platform',
-    subtitle: 'JAVA 21 · SPRING BOOT 3.5 · KAFKA OUTBOX · AST BLAST RADIUS',
+    icon: Network,
+    iconBg: 'bg-rose-50 text-[#E64978]',
     badge: '100% F1 EVAL',
-    accentBg: 'bg-[#FBBF04]',
-    accentText: 'text-[#111111]',
-    accentHex: '#FBBF04',
+    badgeClass: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+    shortTitle: 'FORGE AI Platform',
+    title: 'FORGE — AI Software Engineering Intelligence Platform',
+    category: 'Java 21 · Spring Boot 3.5 · Kafka · AI',
     summary:
-      'Multi-tenant Spring Boot 3.5 control plane that parses JavaParser AST dependency graphs, computes BFS blast radius, masks leaked secrets & blocks prompt injections, and proves accuracy with an 8-case reproducible evaluation benchmark.',
+      'Multi-tenant Spring Boot 3.5 control plane parsing JavaParser AST dependency graphs, computing exact BFS blast radius, masking leaked secrets & blocking prompt injections with reproducible 100% F1 benchmarks.',
     highlights: [
-      'Java 21 + Spring Boot 3.5 modular monolith with Transactional Outbox, Kafka DLT, Redis & Resilience4j',
-      'JavaParser AST Dependency Graph & BFS Change Impact Analysis computing affected classes & tests',
-      'Gitleaks secret masking, Semgrep SAST, prompt-injection defense & 8-case Eval Suite (100% F1 / 0% FPR)',
-      'Multi-tenant JWT + RBAC isolation, Flyway migrations, OpenTelemetry & 4 ArchUnit boundary rules',
+      'Java 21 + Spring Boot 3.5 modular monolith with Kafka Transactional Outbox, DLT & Redis',
+      'JavaParser AST Dependency Graph & BFS Change Impact Analysis for callers & tests',
+      'Gitleaks secret masking, Semgrep SAST, prompt-injection defense & 8-case Eval Suite',
+      'Multi-tenant JWT + RBAC isolation, Flyway migrations, OpenTelemetry & ArchUnit tests',
     ],
-    techStack: ['Java 21', 'Spring Boot 3.5', 'Apache Kafka', 'Redis', 'PostgreSQL', 'JavaParser AST', 'Spring AI', 'React + TS'],
+    techStack: ['Java 21', 'Spring Boot 3.5', 'Apache Kafka', 'Redis', 'PostgreSQL', 'JavaParser AST', 'React + TS'],
     githubUrl: 'https://github.com/nischay237/forge-ai-platform',
-    cta: 'OPEN CONTROL PLANE',
+    cta: 'Open Control Plane',
   },
   {
     id: 'codeclash',
-    index: '02',
-    displayTitle: 'CODECLASH',
-    fullTitle: 'CodeClash — 1v1 Real-Time Coding Battle Arena',
-    subtitle: 'WEBSOCKETS · NODE.JS · SANDBOX JUDGE · FIDE ELO RATINGS',
+    icon: Swords,
+    iconBg: 'bg-amber-50 text-amber-600',
     badge: 'PLAYABLE LIVE',
-    accentBg: 'bg-[#F94144]',
-    accentText: 'text-white',
-    accentHex: '#F94144',
+    badgeClass: 'bg-amber-50 text-amber-700 border-amber-200',
+    shortTitle: 'CodeClash 1v1 Arena',
+    title: 'CodeClash — 1v1 Real-Time Coding Battle Arena',
+    category: 'WebSockets · Node.js · Sandbox · FIDE Elo',
     summary:
-      'Head-to-head competitive DSA battle arena syncing live keystrokes & test-case progress over low-latency Socket.io channels, evaluating submissions inside an isolated sandbox, and computing real FIDE Elo ratings.',
+      'Head-to-head competitive DSA battle arena synchronizing live keystrokes and test progress over Socket.io, judging code inside an isolated sandbox, and updating live FIDE Elo leaderboards.',
     highlights: [
-      'Bidirectional Socket.io WebSocket engine for zero-lag keystroke and match progress sync',
+      'Bidirectional Socket.io WebSocket engine for zero-lag keystroke and match sync',
       'Isolated code execution sandbox with strict security and timeout guards',
       'FIDE-grade Elo rating system updating global player standings after every match',
-      'Dual persistence on MongoDB Atlas with resilient in-memory fallback',
+      'Dual persistence backed by MongoDB Atlas with resilient in-memory fallback',
     ],
     techStack: ['React.js', 'Node.js', 'Express.js', 'Socket.io', 'Tailwind CSS', 'MongoDB'],
     githubUrl: 'https://github.com/nischay237/codeclash',
-    cta: 'LAUNCH 1V1 ARENA',
+    cta: 'Launch 1v1 Arena',
   },
   {
     id: 'analytics',
-    index: '03',
-    displayTitle: 'ANALYTICS',
-    fullTitle: 'Real-Time Analytics Tracker & Telemetry Dashboard',
-    subtitle: '<3KB SCRIPT · ZERO COOKIES · LIVE HEARTBEATS · FUNNELS',
-    badge: '<3KB LIVE',
-    accentBg: 'bg-[#00B86B]',
-    accentText: 'text-white',
-    accentHex: '#00B86B',
+    icon: BarChart3,
+    iconBg: 'bg-sky-50 text-sky-600',
+    badge: '<3KB SCRIPT',
+    badgeClass: 'bg-sky-50 text-sky-700 border-sky-200',
+    shortTitle: 'Analytics Tracker',
+    title: 'Real-Time Analytics Tracker & Telemetry Dashboard',
+    category: 'Privacy-First · Node.js · Live Telemetry',
     summary:
-      'Self-hosted, privacy-first web telemetry platform under 3KB with zero third-party cookie bloat. Streams active visitor heartbeats, pageview velocity, and clean conversion funnels in real time.',
+      'Self-hosted, cookieless web telemetry platform under 3KB replacing heavy trackers with real-time visitor heartbeats, pageview velocity streams, and clean conversion funnels.',
     highlights: [
       'Ultra-lightweight embeddable tracking snippet under 3KB with zero tracking cookies',
-      'Real-time active visitor count synchronized over WebSocket session heartbeats',
-      'High-throughput ingestion pipeline built with Node.js, Express, and MongoDB',
-      'Interactive analytics dashboard with live session graphs and conversion funnels',
+      'Real-time active visitor counts synchronized via WebSocket session heartbeats',
+      'High-throughput ingestion pipeline engineered on Node.js, Express, and MongoDB',
+      'Interactive analytics dashboard displaying live session graphs and funnels',
     ],
     techStack: ['React.js', 'Node.js', 'Express.js', 'MongoDB', 'Tailwind CSS', 'REST APIs'],
     githubUrl: 'https://github.com/nischay237/analytics-tracker',
     driveUrl: 'https://drive.google.com/drive/folders/1yDR9xbt8fTiyh9TyWV9C4lS6Y4Th3-61?usp=sharing',
-    cta: 'OPEN DASHBOARD',
+    cta: 'Open Live Dashboard',
   },
 ];
 
 const FORGE_NODES = {
-  TransferController: { layer: '01 API', callers: [], risk: 'LOW' },
-  SettlementService: { layer: '02 SERVICE', callers: ['TransferController', 'SettlementServiceTest'], risk: 'HIGH' },
-  FraudRiskEngine: { layer: '02 SERVICE', callers: ['SettlementService', 'TransferController', 'SettlementServiceTest'], risk: 'HIGH' },
-  LedgerRepository: { layer: '03 DATA', callers: ['SettlementService', 'TransferController', 'SettlementServiceTest'], risk: 'HIGH' },
+  TransferController: { layer: 'API', callers: [], risk: 'LOW' },
+  SettlementService: { layer: 'SERVICE', callers: ['TransferController', 'SettlementServiceTest'], risk: 'HIGH' },
+  FraudRiskEngine: { layer: 'SERVICE', callers: ['SettlementService', 'TransferController', 'SettlementServiceTest'], risk: 'HIGH' },
+  LedgerRepository: { layer: 'DATA', callers: ['SettlementService', 'TransferController', 'SettlementServiceTest'], risk: 'HIGH' },
 };
 
 const SKILL_GROUPS = [
   {
     id: 'backend',
-    label: 'BACKEND & DISTRIBUTED',
-    dot: 'bg-[#2B44B8]',
+    label: 'Backend & Distributed',
     items: [
       { name: 'Java 21 LTS', projects: ['forge'] },
       { name: 'Spring Boot 3.5', projects: ['forge'] },
@@ -123,8 +124,7 @@ const SKILL_GROUPS = [
   },
   {
     id: 'frontend',
-    label: 'FRONTEND UI',
-    dot: 'bg-[#FBBF04]',
+    label: 'Frontend UI',
     items: [
       { name: 'React 18 & TypeScript', projects: ['forge', 'codeclash', 'analytics'] },
       { name: 'Tailwind CSS', projects: ['forge', 'codeclash', 'analytics'] },
@@ -135,8 +135,7 @@ const SKILL_GROUPS = [
   },
   {
     id: 'data',
-    label: 'DATABASES & CACHE',
-    dot: 'bg-[#00B86B]',
+    label: 'Databases & Cache',
     items: [
       { name: 'PostgreSQL + pgvector', projects: ['forge'] },
       { name: 'Redis Rate Limiting', projects: ['forge'] },
@@ -147,8 +146,7 @@ const SKILL_GROUPS = [
   },
   {
     id: 'ai',
-    label: 'AI & DEVOPS',
-    dot: 'bg-[#F94144]',
+    label: 'AI & DevOps',
     items: [
       { name: 'JavaParser AST & BFS', projects: ['forge'] },
       { name: 'Spring AI / Gemini API', projects: ['forge'] },
@@ -159,13 +157,12 @@ const SKILL_GROUPS = [
   },
   {
     id: 'cs',
-    label: 'CS CORE',
-    dot: 'bg-[#F26CA7]',
+    label: 'CS Core',
     items: [
       { name: 'Data Structures & Graphs', projects: ['forge', 'codeclash'] },
       { name: 'FIDE Elo Algorithms', projects: ['codeclash'] },
       { name: 'Transactional Outbox', projects: ['forge'] },
-      { name: 'DBMS & Query Tuning', projects: ['forge', 'analytics'] },
+      { name: 'DBMS & Indexing', projects: ['forge', 'analytics'] },
       { name: 'Concurrency & OS', projects: ['forge', 'codeclash'] },
     ],
   },
@@ -177,8 +174,8 @@ export default function Portfolio({
   onOpenAnalytics,
   onOpenForge,
 }) {
-  const [hoveredId, setHoveredId] = useState(null);
-  const [activeProjectId, setActiveProjectId] = useState('forge');
+  const [showBanner, setShowBanner] = useState(true);
+  const [activeLabId, setActiveLabId] = useState('forge');
   const [selectedAstNode, setSelectedAstNode] = useState('FraudRiskEngine');
   const [duelRunning, setDuelRunning] = useState(false);
   const [p1Tests, setP1Tests] = useState(12);
@@ -207,14 +204,9 @@ export default function Portfolio({
     return () => window.removeEventListener('keydown', onKey);
   }, []);
 
-  const focusedHeroProject = useMemo(
-    () => PROJECTS.find((p) => p.id === (hoveredId || activeProjectId)) || PROJECTS[0],
-    [hoveredId, activeProjectId]
-  );
-
-  const activeLabProject = useMemo(
-    () => PROJECTS.find((p) => p.id === activeProjectId) || PROJECTS[0],
-    [activeProjectId]
+  const activeLab = useMemo(
+    () => PROJECTS.find((p) => p.id === activeLabId) || PROJECTS[0],
+    [activeLabId]
   );
 
   const launchProject = (id) => {
@@ -270,13 +262,13 @@ export default function Portfolio({
 
   const commands = useMemo(
     () => [
-      { label: '01 / OPEN FORGE AI CONTROL PLANE', meta: '/forge', icon: Network, run: () => onOpenForge?.() },
-      { label: '02 / LAUNCH CODECLASH 1V1 ARENA', meta: '/arena', icon: Swords, run: () => onOpenArena?.() },
-      { label: '03 / CODECLASH GLOBAL LEADERBOARD', meta: '/leaderboard', icon: Award, run: () => onOpenLeaderboard?.() },
-      { label: '04 / LAUNCH ANALYTICS DASHBOARD', meta: '/analytics', icon: BarChart3, run: () => onOpenAnalytics?.() },
-      { label: '05 / VIEW RESUME.PDF', meta: 'PDF', icon: FileText, run: () => window.open('/resume.pdf', '_blank', 'noopener,noreferrer') },
-      { label: '06 / COPY EMAIL ADDRESS', meta: 'CLIPBOARD', icon: Copy, run: handleCopyEmail },
-      { label: '07 / GITHUB @NISCHAY237', meta: 'GITHUB', icon: GithubIcon, run: () => window.open('https://github.com/nischay237', '_blank', 'noopener,noreferrer') },
+      { label: 'Open FORGE AI Control Plane', meta: '/forge', icon: Network, run: () => onOpenForge?.() },
+      { label: 'Launch CodeClash 1v1 Battle Arena', meta: '/arena', icon: Swords, run: () => onOpenArena?.() },
+      { label: 'View CodeClash Global Leaderboard', meta: '/leaderboard', icon: Award, run: () => onOpenLeaderboard?.() },
+      { label: 'Launch Real-Time Analytics Tracker', meta: '/analytics', icon: BarChart3, run: () => onOpenAnalytics?.() },
+      { label: 'Open Resume PDF', meta: '/resume.pdf', icon: FileText, run: () => window.open('/resume.pdf', '_blank', 'noopener,noreferrer') },
+      { label: 'Copy Email (nischaysrivastava2@gmail.com)', meta: 'Clipboard', icon: Copy, run: handleCopyEmail },
+      { label: 'Open GitHub Profile (@nischay237)', meta: 'GitHub', icon: GithubIcon, run: () => window.open('https://github.com/nischay237', '_blank', 'noopener,noreferrer') },
     ],
     [onOpenForge, onOpenArena, onOpenLeaderboard, onOpenAnalytics]
   );
@@ -289,370 +281,469 @@ export default function Portfolio({
 
   return (
     <div
-      className="min-h-screen bg-[#EAE8E4] text-[#111111] selection:bg-[#FBBF04] selection:text-[#111111]"
-      style={{ fontFamily: "'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif" }}
+      className="min-h-screen bg-white text-[#1E2438] selection:bg-[#E64978] selection:text-white"
+      style={{ fontFamily: "'Inter', system-ui, -apple-system, sans-serif" }}
     >
-      {/* ============================================================== */}
-      {/* 1. CLEAN FROSTED EDITORIAL TOP NAVBAR                          */}
-      {/* ============================================================== */}
-      <header className="sticky top-0 z-40 bg-[#EAE8E4]/85 backdrop-blur-md border-b border-[#111111]/12">
-        <div className="max-w-[1360px] mx-auto px-5 sm:px-8 h-16 flex items-center justify-between gap-4">
+      {/* 1. DEEP NAVY TOP ANNOUNCEMENT BAR (Signature GrowFast Header Strip) */}
+      {showBanner && (
+        <div className="bg-[#232946] text-white/90 text-[11.5px] py-2 px-4 relative">
+          <div className="max-w-[1200px] mx-auto flex items-center justify-center gap-2 text-center pr-6">
+            <span>
+              Open to Software Engineering, Backend &amp; Full-Stack Roles — Explore{' '}
+              <button
+                onClick={onOpenForge}
+                className="underline underline-offset-2 font-semibold text-white hover:text-rose-300 cursor-pointer"
+              >
+                FORGE AI Platform
+              </button>{' '}
+              &amp;{' '}
+              <button
+                onClick={onOpenArena}
+                className="underline underline-offset-2 font-semibold text-white hover:text-rose-300 cursor-pointer"
+              >
+                CodeClash 1v1
+              </button>{' '}
+              live.
+            </span>
+          </div>
+          <button
+            onClick={() => setShowBanner(false)}
+            aria-label="Dismiss announcement"
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-white/60 hover:text-white cursor-pointer"
+          >
+            <X className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      )}
+
+      {/* 2. CRISP PURE-WHITE CLEAN NAVBAR */}
+      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-100">
+        <div className="max-w-[1200px] mx-auto px-5 sm:px-8 h-[72px] flex items-center justify-between gap-4">
+          {/* Brand Logo */}
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             className="flex items-center gap-2.5 cursor-pointer"
           >
-            <span className="w-7 h-7 bg-[#111111] text-[#FBBF04] font-mono font-black text-xs flex items-center justify-center">
-              NS
-            </span>
-            <span className="font-black text-sm sm:text-[15px] tracking-[-0.03em] uppercase text-[#111111]">
-              NISCHAY SRIVASTAVA
+            <span
+              className="w-7 h-7 rounded-full shrink-0"
+              style={{
+                background: 'linear-gradient(135deg, #F687B3 0%, #E64978 55%, #C5305C 100%)',
+              }}
+            />
+            <span className="text-[19px] tracking-[-0.03em] text-[#1E2438]">
+              <strong className="font-bold">Nischay</strong>
+              <span className="italic font-semibold text-[#E64978]">Dev</span>
             </span>
           </button>
 
-          <nav className="hidden md:flex items-center gap-7 text-xs font-bold uppercase tracking-[0.08em] text-[#111111]/70">
-            <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="hover:text-[#111111] cursor-pointer">
+          {/* Center Nav Links */}
+          <nav className="hidden md:flex items-center gap-8 text-[13.5px] font-medium text-slate-600">
+            <button
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="text-[#1E2438] font-semibold cursor-pointer"
+            >
+              Home
+            </button>
+            <button
+              onClick={() => scrollTo('projects-section')}
+              className="hover:text-[#E64978] transition-colors cursor-pointer"
+            >
               Projects
             </button>
-            <button onClick={() => scrollTo('interactive-lab')} className="hover:text-[#111111] cursor-pointer">
+            <button
+              onClick={() => scrollTo('interactive-lab')}
+              className="hover:text-[#E64978] transition-colors cursor-pointer"
+            >
               Interactive Lab
             </button>
-            <button onClick={() => scrollTo('skills-section')} className="hover:text-[#111111] cursor-pointer">
+            <button
+              onClick={() => scrollTo('skills-section')}
+              className="hover:text-[#E64978] transition-colors cursor-pointer"
+            >
               Skills
             </button>
-            <button onClick={() => scrollTo('about-section')} className="hover:text-[#111111] cursor-pointer">
+            <button
+              onClick={() => scrollTo('about-section')}
+              className="hover:text-[#E64978] transition-colors cursor-pointer"
+            >
               About
             </button>
           </nav>
 
-          <div className="flex items-center gap-2">
+          {/* Right Controls: Search Icon + Resume + Rose-Coral Pill CTA */}
+          <div className="flex items-center gap-3">
             <button
               onClick={() => setCmdOpen(true)}
-              className="hidden sm:inline-flex items-center gap-2 h-9 px-3 bg-white/75 hover:bg-white border border-[#111111]/20 text-[11px] font-mono font-bold text-[#111111] transition-colors cursor-pointer"
+              title="Quick Jump (Ctrl + K)"
+              className="w-9 h-9 rounded-full hover:bg-slate-100 text-slate-600 hover:text-[#1E2438] inline-flex items-center justify-center transition-colors cursor-pointer"
             >
-              <Search className="w-3.5 h-3.5" />
-              <span>INDEX</span>
-              <span className="px-1 bg-[#111111]/10 text-[10px]">⌘K</span>
+              <Search className="w-4 h-4" />
             </button>
             <a
               href="/resume.pdf"
               target="_blank"
               rel="noreferrer"
-              className="h-9 px-3.5 bg-white/80 hover:bg-white border border-[#111111] text-[11px] font-mono font-bold uppercase inline-flex items-center gap-1 transition-colors"
+              className="hidden sm:inline-flex items-center gap-1 text-xs font-semibold text-slate-600 hover:text-[#1E2438] transition-colors"
             >
-              RESUME <ArrowUpRight className="w-3.5 h-3.5" />
+              Resume <ArrowUpRight className="w-3.5 h-3.5" />
             </a>
-            <a
-              href="mailto:nischaysrivastava2@gmail.com"
-              className="h-9 px-4 bg-[#111111] hover:bg-[#2B44B8] text-white text-[11px] font-mono font-bold uppercase inline-flex items-center transition-colors"
+            <button
+              onClick={onOpenForge}
+              className="h-10 px-5 rounded-full bg-[#E64978] hover:bg-[#D43666] text-white text-xs font-semibold shadow-sm shadow-rose-500/25 inline-flex items-center gap-1 transition-all cursor-pointer"
             >
-              CONTACT
-            </a>
+              Launch FORGE AI <ChevronRight className="w-3.5 h-3.5" />
+            </button>
           </div>
         </div>
       </header>
 
-      {/* ============================================================== */}
-      {/* 2. FULL-BLEED BLURRED ARTWORK HERO + MASSIVE BOLD PROJECTS     */}
-      {/* ============================================================== */}
-      <section className="relative min-h-[calc(100vh-64px)] overflow-hidden bg-[#EAE8E4] border-b-2 border-[#111111]">
-        {/* BACKGROUND LAYER: Full-Bleed Edge-to-Edge Softly Blurred Artwork */}
-        <div className="absolute inset-0 pointer-events-none select-none overflow-hidden">
-          <img
-            src="/hero-creative-bg.jpg"
-            alt="Creative blurred background illustration"
-            className={`w-full h-full object-cover object-[50%_84%] transition-all duration-500 ${
-              hoveredId ? 'blur-[6px] scale-[1.05] opacity-80' : 'blur-[3.5px] scale-[1.03] opacity-90'
-            }`}
-          />
+      {/* 3. WARM HUMAN TEAM HERO BANNER (Crisp Smiling Engineers + Left White Editorial Copy) */}
+      <section className="relative min-h-[540px] lg:min-h-[600px] flex items-center overflow-hidden bg-[#1D1B29]">
+        {/* Crisp Full-Width Human Photograph */}
+        <img
+          src="/hero-team-bg.jpg"
+          alt="Software engineers collaborating warmly in a sunlit studio"
+          className="absolute inset-0 w-full h-full object-cover object-[65%_center]"
+        />
 
-          {/* Gentle Editorial Ivory Wash so Giant Black Letters Have Razor-Sharp Contrast */}
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                'linear-gradient(180deg, rgba(234,232,228,0.44) 0%, rgba(234,232,228,0.26) 50%, rgba(234,232,228,0.48) 100%)',
-            }}
-          />
-        </div>
+        {/* Smooth Directional Scrim: Left dark-warm for crisp white text, Right open & sunlit for people */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              'linear-gradient(96deg, rgba(24,20,34,0.86) 0%, rgba(30,22,38,0.68) 42%, rgba(28,22,36,0.22) 72%, rgba(24,20,34,0.08) 100%)',
+          }}
+        />
 
-        {/* FOREGROUND LAYER: MASSIVE BOLD INTERACTIVE PROJECT TITLES */}
-        <div className="relative z-10 max-w-[1360px] mx-auto px-5 sm:px-10 py-8 sm:py-10 min-h-[calc(100vh-64px)] flex flex-col justify-between gap-8">
-          {/* Top Minimal Identity Strip */}
-          <div className="flex flex-wrap items-center justify-between gap-3 text-[11px] font-mono font-bold uppercase tracking-[0.14em] text-[#111111]">
-            <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm px-3 py-1.5 border border-[#111111]/15">
-              <span className="w-2 h-2 bg-[#00B86B]" />
-              <span>FULL-STACK &amp; DISTRIBUTED SYSTEMS ENGINEER</span>
-            </div>
-            <div className="inline-flex items-center gap-3 bg-white/80 backdrop-blur-sm px-3 py-1.5 border border-[#111111]/15">
-              <span>B.TECH CSE (AKTU)</span>
-              <span className="opacity-35">/</span>
-              <span>SELECT A PROJECT TO LAUNCH LIVE</span>
-            </div>
-          </div>
-
-          {/* GIANT ULTRA-BOLD INTERACTIVE PROJECT LIST (Hover & Click!) */}
-          <div className="my-auto py-4">
-            <div className="border-t-2 border-[#111111] divide-y-2 divide-[#111111]/85">
-              {PROJECTS.map((project) => {
-                const isDimmed = hoveredId && hoveredId !== project.id;
-                const isFocused = hoveredId === project.id;
-                return (
-                  <div
-                    key={project.id}
-                    onMouseEnter={() => {
-                      setHoveredId(project.id);
-                      setActiveProjectId(project.id);
-                    }}
-                    onMouseLeave={() => setHoveredId(null)}
-                    onClick={() => launchProject(project.id)}
-                    role="button"
-                    tabIndex={0}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        launchProject(project.id);
-                      }
-                    }}
-                    className={`group py-4 sm:py-6 flex flex-col lg:flex-row lg:items-center justify-between gap-3 cursor-pointer transition-all duration-300 ${
-                      isDimmed ? 'opacity-45' : 'opacity-100'
-                    }`}
-                  >
-                    {/* Left: Massive Bold Project Index + Giant Bold Letters */}
-                    <div
-                      className={`flex items-baseline gap-4 sm:gap-7 transition-transform duration-300 ${
-                        isFocused ? 'translate-x-2 sm:translate-x-4' : ''
-                      }`}
-                    >
-                      <span className="font-mono text-sm sm:text-base font-black tracking-widest text-[#111111] bg-white/85 px-2 py-0.5 border border-[#111111]">
-                        {project.index}
-                      </span>
-                      <h2
-                        className="text-5xl sm:text-7xl lg:text-[92px] font-black tracking-[-0.055em] uppercase leading-[0.9] text-[#111111]"
-                        style={{
-                          textShadow: '0 2px 24px rgba(234, 232, 228, 0.9)',
-                        }}
-                      >
-                        {project.displayTitle}
-                      </h2>
-                    </div>
-
-                    {/* Right: Bold Category Subtitle + Bauhaus Accent Pill + Launch Arrow */}
-                    <div className="flex flex-wrap items-center gap-3 pl-12 sm:pl-16 lg:pl-0">
-                      <div className="text-left lg:text-right">
-                        <span
-                          className={`inline-block px-2.5 py-0.5 text-[10.5px] font-mono font-black uppercase tracking-wider border border-[#111111] ${project.accentBg} ${project.accentText}`}
-                        >
-                          {project.badge}
-                        </span>
-                        <div className="text-[11px] font-mono font-bold text-[#111111] bg-[#EAE8E4]/85 px-2 py-0.5 mt-1">
-                          {project.subtitle}
-                        </div>
-                      </div>
-
-                      <span
-                        className={`w-12 h-12 sm:w-14 sm:h-14 border-2 border-[#111111] flex items-center justify-center shrink-0 transition-all duration-300 ${
-                          isFocused
-                            ? 'bg-[#111111] text-[#FBBF04] rotate-12 scale-105'
-                            : 'bg-white/90 text-[#111111]'
-                        }`}
-                      >
-                        <ArrowUpRight className="w-6 h-6 stroke-[2.5]" />
-                      </span>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Bottom Frosted Interactive Spotlight Strip (Updates Live on Hover!) */}
-          <div className="bg-white/90 backdrop-blur-md border-2 border-[#111111] p-4 sm:px-6 flex flex-col lg:flex-row lg:items-center justify-between gap-4 shadow-[6px_6px_0px_#111111]">
-            <div className="min-w-0 flex items-start sm:items-center gap-3.5">
-              <span
-                className={`px-2 py-1 text-[11px] font-mono font-black uppercase border border-[#111111] shrink-0 ${focusedHeroProject.accentBg} ${focusedHeroProject.accentText}`}
-              >
-                {focusedHeroProject.index} · {focusedHeroProject.displayTitle}
-              </span>
-              <p className="text-xs sm:text-[13px] font-semibold text-[#111111] leading-snug line-clamp-2">
-                {focusedHeroProject.summary}
-              </p>
+        {/* Foreground Left Editorial Hero Content */}
+        <div className="relative z-10 max-w-[1200px] mx-auto px-5 sm:px-8 py-16 sm:py-20 w-full">
+          <div className="max-w-[580px] space-y-5">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 backdrop-blur-sm border border-white/20 text-[11px] font-medium text-white/95">
+              <span className="w-2 h-2 rounded-full bg-emerald-400" />
+              Nischay Srivastava · Full-Stack &amp; Distributed Systems
             </div>
 
-            <div className="flex flex-wrap items-center gap-2 shrink-0">
+            <h1 className="text-3xl sm:text-5xl lg:text-[50px] font-bold tracking-[-0.025em] leading-[1.14] text-white">
+              There&apos;s a Better Way to Build{' '}
+              <span className="relative inline-block">
+                <span className="relative z-10">Scalable</span>
+                <span
+                  className="absolute left-0 right-0 bottom-1 h-3 bg-[#E64978]/80 -z-0 rounded-xs"
+                  aria-hidden="true"
+                />
+              </span>{' '}
+              Software
+            </h1>
+
+            <p className="text-sm sm:text-[16px] text-white/85 leading-relaxed max-w-lg">
+              Computer Science engineer building Java 21 + Spring Boot &amp; Kafka control planes,
+              real-time 1v1 WebSocket coding arenas, and privacy-first analytics tools you can test
+              live.
+            </p>
+
+            <div className="pt-2 flex flex-wrap items-center gap-3">
               <button
-                onClick={() => launchProject(focusedHeroProject.id)}
-                className="h-10 px-4 bg-[#111111] hover:bg-[#2B44B8] text-white text-xs font-mono font-bold uppercase inline-flex items-center gap-1.5 transition-colors cursor-pointer"
+                onClick={() => scrollTo('projects-section')}
+                className="h-11 px-6 rounded-full bg-[#E64978] hover:bg-[#D43666] text-white text-xs sm:text-sm font-semibold shadow-lg shadow-rose-900/30 inline-flex items-center gap-1.5 transition-all cursor-pointer"
               >
-                {focusedHeroProject.cta} <ArrowUpRight className="w-3.5 h-3.5" />
+                Explore Live Projects <ChevronRight className="w-4 h-4" />
+              </button>
+              <a
+                href="/resume.pdf"
+                target="_blank"
+                rel="noreferrer"
+                className="h-11 px-5 rounded-full bg-white/15 hover:bg-white/25 backdrop-blur-sm border border-white/30 text-white text-xs sm:text-sm font-semibold inline-flex items-center gap-1.5 transition-all"
+              >
+                View Resume <ArrowUpRight className="w-4 h-4" />
+              </a>
+            </div>
+
+            {/* Direct Live Project Quick Pills */}
+            <div className="pt-4 flex flex-wrap items-center gap-2 text-xs text-white/80">
+              <span className="text-white/60 mr-1">Jump live:</span>
+              <button
+                onClick={onOpenForge}
+                className="px-3 py-1 rounded-full bg-white/12 hover:bg-white/25 border border-white/20 text-white font-medium transition-colors cursor-pointer"
+              >
+                FORGE AI ↗
               </button>
               <button
-                onClick={() => scrollTo('interactive-lab')}
-                className="h-10 px-4 bg-[#EAE8E4] hover:bg-[#FBBF04] border border-[#111111] text-[#111111] text-xs font-mono font-bold uppercase inline-flex items-center gap-1.5 transition-colors cursor-pointer"
+                onClick={onOpenArena}
+                className="px-3 py-1 rounded-full bg-white/12 hover:bg-white/25 border border-white/20 text-white font-medium transition-colors cursor-pointer"
               >
-                INTERACTIVE LAB <ArrowDown className="w-3.5 h-3.5" />
+                CodeClash 1v1 ↗
+              </button>
+              <button
+                onClick={onOpenAnalytics}
+                className="px-3 py-1 rounded-full bg-white/12 hover:bg-white/25 border border-white/20 text-white font-medium transition-colors cursor-pointer"
+              >
+                Analytics ↗
               </button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ============================================================== */}
-      {/* 3. INTERACTIVE PROJECT SANDBOX STUDIO                          */}
-      {/* ============================================================== */}
-      <section id="interactive-lab" className="bg-[#F6F5F2] py-14 sm:py-20 px-5 sm:px-8 border-b-2 border-[#111111]">
-        <div className="max-w-[1360px] mx-auto space-y-6">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-            <div>
-              <div className="text-[11px] font-mono font-bold uppercase tracking-[0.16em] text-[#2B44B8]">
-                PLAYABLE PREVIEWS // TEST BEFORE LAUNCHING
-              </div>
-              <h2 className="text-3xl sm:text-5xl font-black tracking-[-0.045em] uppercase text-[#111111] mt-1 leading-none">
-                INTERACTIVE LAB.
+      {/* 4. PURE-WHITE "PROJECTS I'VE BUILT" SECTION (Direct GrowFast "Services We Offer" Style) */}
+      <section id="projects-section" className="py-16 sm:py-22 px-5 sm:px-8 bg-white">
+        <div className="max-w-[1200px] mx-auto space-y-10">
+          {/* Editorial Section Header with Rose Highlighter Underline + Outlined Button */}
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-5">
+            <div className="max-w-xl">
+              <h2 className="text-2xl sm:text-4xl font-bold tracking-[-0.025em] text-[#1E2438]">
+                Projects{' '}
+                <span className="relative inline-block">
+                  <span className="relative z-10">I&apos;ve Built</span>
+                  <span
+                    className="absolute left-0 right-0 bottom-1 h-2.5 bg-[#E64978]/25 -z-0"
+                    aria-hidden="true"
+                  />
+                </span>
               </h2>
+              <p className="text-sm text-slate-500 mt-2.5 leading-relaxed">
+                Three production-focused systems covering distributed Java microservices, real-time
+                WebSockets, and lightweight web telemetry — all deployed and interactive.
+              </p>
             </div>
 
-            {/* Bold Project Switcher Tabs */}
-            <div className="flex flex-wrap gap-1.5">
+            <button
+              onClick={onOpenForge}
+              className="h-10 px-5 rounded-md border border-slate-300 hover:border-[#232946] text-xs font-semibold text-[#1E2438] hover:bg-slate-50 inline-flex items-center gap-1.5 shrink-0 transition-colors cursor-pointer self-start sm:self-auto"
+            >
+              Open FORGE Control Plane <ChevronRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
+
+          {/* 3 Clean White Project Cards */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {PROJECTS.map((project) => {
+              const Icon = project.icon;
+              return (
+                <div
+                  key={project.id}
+                  className="rounded-xl bg-white border border-slate-200/85 p-6 sm:p-7 hover:shadow-[0_16px_42px_rgba(30,36,56,0.08)] hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between gap-6"
+                >
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between gap-2">
+                      <div
+                        className={`w-11 h-11 rounded-xl flex items-center justify-center ${project.iconBg}`}
+                      >
+                        <Icon className="w-5 h-5" />
+                      </div>
+                      <span
+                        className={`px-2.5 py-0.5 rounded-full text-[10.5px] font-mono font-semibold border ${project.badgeClass}`}
+                      >
+                        {project.badge}
+                      </span>
+                    </div>
+
+                    <div>
+                      <div className="text-[11px] font-mono text-slate-400 mb-1">
+                        {project.category}
+                      </div>
+                      <h3 className="text-lg font-bold text-[#1E2438] leading-snug">
+                        {project.shortTitle}
+                      </h3>
+                      <p className="text-xs sm:text-[13.5px] text-slate-600 mt-2 leading-relaxed">
+                        {project.summary}
+                      </p>
+                    </div>
+
+                    <ul className="space-y-2 pt-1">
+                      {project.highlights.slice(0, 3).map((h, i) => (
+                        <li
+                          key={i}
+                          className="flex items-start gap-2 text-xs text-slate-700 leading-relaxed"
+                        >
+                          <CheckCircle2 className="w-3.5 h-3.5 text-[#E64978] shrink-0 mt-0.5" />
+                          <span>{h}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="pt-4 border-t border-slate-100 space-y-3">
+                    <div className="flex flex-wrap gap-1.5">
+                      {project.techStack.slice(0, 5).map((t) => (
+                        <span
+                          key={t}
+                          className="px-2 py-0.5 rounded bg-slate-50 border border-slate-200/70 text-[10.5px] font-mono text-slate-600"
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+
+                    <div className="flex items-center justify-between gap-2 pt-1">
+                      <button
+                        onClick={() => launchProject(project.id)}
+                        className="text-xs font-semibold text-[#E64978] hover:text-[#C5305C] inline-flex items-center gap-1 cursor-pointer"
+                      >
+                        {project.cta} <ChevronRight className="w-3.5 h-3.5" />
+                      </button>
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => {
+                            setActiveLabId(project.id);
+                            scrollTo('interactive-lab');
+                          }}
+                          className="px-2.5 py-1 rounded-md bg-slate-100 hover:bg-slate-200 text-[11px] font-semibold text-[#1E2438] transition-colors cursor-pointer"
+                        >
+                          Try Sandbox
+                        </button>
+                        <a
+                          href={project.githubUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          title="GitHub Repository"
+                          className="w-7 h-7 rounded-md border border-slate-200 hover:border-slate-400 text-slate-600 hover:text-[#1E2438] inline-flex items-center justify-center transition-colors"
+                        >
+                          <GithubIcon className="w-3.5 h-3.5" />
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* 5. INTERACTIVE LIVE ENGINEERING LAB (Playable Preview Sandboxes) */}
+      <section
+        id="interactive-lab"
+        className="py-16 sm:py-20 px-5 sm:px-8 bg-[#F7F8FC] border-y border-slate-200/70"
+      >
+        <div className="max-w-[1200px] mx-auto space-y-8">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-[-0.025em] text-[#1E2438]">
+                Interactive{' '}
+                <span className="relative inline-block">
+                  <span className="relative z-10">Engineering Lab</span>
+                  <span
+                    className="absolute left-0 right-0 bottom-1 h-2.5 bg-[#E64978]/25 -z-0"
+                    aria-hidden="true"
+                  />
+                </span>
+              </h2>
+              <p className="text-sm text-slate-500 mt-2">
+                Test each system live right here — trace AST blast radius, simulate a 1v1 Elo duel,
+                or stream live telemetry events.
+              </p>
+            </div>
+
+            <div className="inline-flex items-center gap-1.5 p-1 rounded-full bg-white border border-slate-200 shadow-xs">
               {PROJECTS.map((p) => {
-                const active = p.id === activeProjectId;
+                const act = p.id === activeLabId;
                 return (
                   <button
                     key={p.id}
-                    onClick={() => setActiveProjectId(p.id)}
-                    className={`px-4 py-2 text-xs font-mono font-black uppercase border-2 border-[#111111] transition-all cursor-pointer ${
-                      active
-                        ? 'bg-[#111111] text-[#FBBF04] shadow-[3px_3px_0px_#2B44B8]'
-                        : 'bg-white text-[#111111] hover:bg-[#EAE8E4]'
+                    onClick={() => setActiveLabId(p.id)}
+                    className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
+                      act
+                        ? 'bg-[#E64978] text-white shadow-xs'
+                        : 'text-slate-600 hover:text-[#1E2438]'
                     }`}
                   >
-                    {p.index} // {p.displayTitle}
+                    {p.shortTitle}
                   </button>
                 );
               })}
             </div>
           </div>
 
-          {/* Crisp Elevated Interactive Stage */}
-          <div className="border-2 border-[#111111] bg-white shadow-[8px_8px_0px_#111111] grid grid-cols-1 lg:grid-cols-12">
-            {/* Left: Bold Project Details */}
-            <div className="lg:col-span-6 p-6 sm:p-8 border-b-2 lg:border-b-0 lg:border-r-2 border-[#111111] flex flex-col justify-between gap-6">
-              <div className="space-y-4">
-                <div className="flex flex-wrap items-center gap-2">
-                  <span
-                    className={`px-2.5 py-0.5 text-[10.5px] font-mono font-black uppercase border border-[#111111] ${activeLabProject.accentBg} ${activeLabProject.accentText}`}
-                  >
-                    {activeLabProject.badge}
-                  </span>
-                  <span className="text-[11px] font-mono font-bold text-stone-500">
-                    {activeLabProject.subtitle}
-                  </span>
-                </div>
-
-                <h3 className="text-2xl sm:text-3xl font-black tracking-[-0.035em] uppercase text-[#111111] leading-tight">
-                  {activeLabProject.fullTitle}
-                </h3>
-
-                <p className="text-sm text-stone-700 leading-relaxed">
-                  {activeLabProject.summary}
-                </p>
-
-                <div className="space-y-2 pt-1">
-                  {activeLabProject.highlights.map((h, i) => (
-                    <div key={i} className="flex items-start gap-2.5 text-xs sm:text-[13px] font-medium text-[#111111]">
-                      <CheckCircle2 className="w-4 h-4 text-[#00B86B] shrink-0 mt-0.5" />
-                      <span>{h}</span>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="flex flex-wrap gap-1.5 pt-2">
-                  {activeLabProject.techStack.map((tech) => (
-                    <span
-                      key={tech}
-                      className="px-2.5 py-1 bg-[#EAE8E4] border border-[#111111]/25 text-[11px] font-mono font-bold text-[#111111]"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              <div className="flex flex-wrap items-center gap-2.5 pt-4 border-t border-stone-200">
+          <div className="rounded-2xl bg-white border border-slate-200/90 shadow-[0_12px_36px_rgba(30,36,56,0.06)] p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            {/* Left Info */}
+            <div className="lg:col-span-5 space-y-4">
+              <span
+                className={`inline-block px-2.5 py-0.5 rounded-full text-[10.5px] font-mono font-semibold border ${activeLab.badgeClass}`}
+              >
+                {activeLab.badge}
+              </span>
+              <h3 className="text-xl sm:text-2xl font-bold text-[#1E2438] leading-snug">
+                {activeLab.title}
+              </h3>
+              <p className="text-sm text-slate-600 leading-relaxed">{activeLab.summary}</p>
+              <div className="flex flex-wrap items-center gap-2.5 pt-2">
                 <button
-                  onClick={() => launchProject(activeLabProject.id)}
-                  className="h-10 px-5 bg-[#111111] hover:bg-[#2B44B8] text-white text-xs font-mono font-black uppercase inline-flex items-center gap-1.5 transition-colors cursor-pointer"
+                  onClick={() => launchProject(activeLab.id)}
+                  className="h-10 px-5 rounded-full bg-[#E64978] hover:bg-[#D43666] text-white text-xs font-semibold inline-flex items-center gap-1.5 transition-colors cursor-pointer"
                 >
-                  {activeLabProject.cta} <ArrowUpRight className="w-4 h-4" />
+                  {activeLab.cta} <ArrowUpRight className="w-3.5 h-3.5" />
                 </button>
                 <a
-                  href={activeLabProject.githubUrl}
+                  href={activeLab.githubUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="h-10 px-4 bg-white hover:bg-[#FBBF04] border-2 border-[#111111] text-[#111111] text-xs font-mono font-black uppercase inline-flex items-center gap-1.5 transition-colors"
+                  className="h-10 px-4 rounded-full border border-slate-300 hover:border-[#232946] text-xs font-semibold text-[#1E2438] inline-flex items-center gap-1.5 transition-colors"
                 >
-                  <GithubIcon className="w-3.5 h-3.5" /> GITHUB
+                  <GithubIcon className="w-3.5 h-3.5" /> Source Code
                 </a>
-                {activeLabProject.driveUrl && (
+                {activeLab.driveUrl && (
                   <a
-                    href={activeLabProject.driveUrl}
+                    href={activeLab.driveUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="h-10 px-4 bg-white hover:bg-[#EAE8E4] border-2 border-[#111111] text-[#111111] text-xs font-mono font-black uppercase inline-flex items-center gap-1.5 transition-colors"
+                    className="h-10 px-4 rounded-full border border-slate-200 hover:border-slate-400 text-xs font-semibold text-slate-600 inline-flex items-center gap-1.5"
                   >
-                    <ExternalLink className="w-3.5 h-3.5" /> ARTIFACTS
+                    <ExternalLink className="w-3.5 h-3.5" /> Docs
                   </a>
                 )}
               </div>
             </div>
 
-            {/* Right: Playable Sandbox for Active Project */}
-            <div className="lg:col-span-6 p-6 sm:p-8 bg-[#EAE8E4]/55 flex flex-col justify-center">
-              {activeLabProject.id === 'forge' && (
-                <div className="border-2 border-[#111111] bg-white p-5 space-y-4">
-                  <div className="flex items-center justify-between text-xs font-mono">
-                    <span className="font-black uppercase text-[#111111]">
-                      AST BLAST-RADIUS TRACER
+            {/* Right Interactive Live Widget */}
+            <div className="lg:col-span-7">
+              {activeLab.id === 'forge' && (
+                <div className="rounded-xl bg-[#F8F9FC] border border-slate-200 p-5 space-y-4">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="font-semibold text-[#1E2438] flex items-center gap-2">
+                      <Network className="w-4 h-4 text-[#E64978]" />
+                      JavaParser AST Blast-Radius Tracer
                     </span>
-                    <span className="px-2 py-0.5 bg-[#FBBF04] border border-[#111111] font-bold text-[10px]">
-                      CLICK ANY NODE
-                    </span>
+                    <span className="font-mono text-[11px] text-slate-500">Click any service</span>
                   </div>
 
                   <div className="grid grid-cols-2 gap-2.5">
-                    {Object.entries(FORGE_NODES).map(([nodeName, meta]) => {
-                      const isSel = nodeName === selectedAstNode;
-                      const isImp = astInfo.callers.includes(nodeName);
+                    {Object.entries(FORGE_NODES).map(([name, meta]) => {
+                      const isSel = name === selectedAstNode;
+                      const isImp = astInfo.callers.includes(name);
                       return (
                         <button
-                          key={nodeName}
-                          onClick={() => setSelectedAstNode(nodeName)}
-                          className={`text-left p-3 border-2 transition-all cursor-pointer ${
+                          key={name}
+                          onClick={() => setSelectedAstNode(name)}
+                          className={`text-left p-3.5 rounded-xl border transition-all cursor-pointer ${
                             isSel
-                              ? 'bg-[#111111] text-white border-[#111111]'
+                              ? 'bg-[#232946] text-white border-[#232946] shadow-md'
                               : isImp
-                              ? 'bg-[#FFF1F2] text-[#F94144] border-[#F94144]'
-                              : 'bg-[#F6F5F2] text-[#111111] border-[#111111]/25 hover:border-[#111111]'
+                              ? 'bg-rose-50 text-[#C5305C] border-rose-300'
+                              : 'bg-white text-[#1E2438] border-slate-200 hover:border-slate-400'
                           }`}
                         >
-                          <div className="flex justify-between text-[10px] font-mono font-bold">
-                            <span className={isSel ? 'text-[#FBBF04]' : ''}>{meta.layer}</span>
-                            {isImp && <span>↑ HIT</span>}
+                          <div className="flex justify-between text-[10px] font-mono">
+                            <span className={isSel ? 'text-rose-300' : 'text-slate-400'}>
+                              {meta.layer}
+                            </span>
+                            {isImp && <span className="font-bold text-[#E64978]">↑ Impacted</span>}
                           </div>
-                          <div className="text-xs font-mono font-black truncate mt-1">{nodeName}</div>
+                          <div className="text-xs font-mono font-semibold mt-1 truncate">{name}</div>
                         </button>
                       );
                     })}
                   </div>
 
-                  <div className="border-t-2 border-[#111111] pt-3.5 flex flex-wrap items-center justify-between gap-2 font-mono text-xs">
-                    <span>
-                      IMPACTED: <strong>{astInfo.callers.length}</strong> CALLER(S)
+                  <div className="rounded-lg bg-white border border-slate-200 px-4 py-3 flex flex-wrap items-center justify-between gap-2 text-xs">
+                    <span className="text-slate-600">
+                      BFS Blast Radius for <strong className="text-[#1E2438]">{selectedAstNode}</strong>:{' '}
+                      <strong>{astInfo.callers.length}</strong> downstream caller(s)
                     </span>
                     <span
-                      className={`px-2 py-0.5 font-black text-[10.5px] border border-[#111111] ${
+                      className={`px-2.5 py-0.5 rounded-full text-[10.5px] font-mono font-semibold ${
                         astInfo.risk === 'HIGH'
-                          ? 'bg-[#F94144] text-white'
-                          : 'bg-[#00B86B] text-white'
+                          ? 'bg-rose-100 text-[#C5305C]'
+                          : 'bg-emerald-100 text-emerald-800'
                       }`}
                     >
                       {astInfo.risk} RISK
@@ -661,113 +752,109 @@ export default function Portfolio({
                 </div>
               )}
 
-              {activeLabProject.id === 'codeclash' && (
-                <div className="border-2 border-[#111111] bg-white p-5 space-y-4">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="font-mono text-xs font-black uppercase">
-                      LIVE 1V1 DUEL SIMULATOR
+              {activeLab.id === 'codeclash' && (
+                <div className="rounded-xl bg-[#F8F9FC] border border-slate-200 p-5 space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-semibold text-[#1E2438] flex items-center gap-2">
+                      <Swords className="w-4 h-4 text-amber-600" />
+                      Live 1v1 Match &amp; FIDE Elo Simulator
                     </span>
                     <button
                       onClick={simulateDuel}
                       disabled={duelRunning}
-                      className="px-3 py-1 bg-[#F94144] hover:bg-[#111111] text-white border border-[#111111] font-mono text-[11px] font-black uppercase inline-flex items-center gap-1 cursor-pointer disabled:opacity-50"
+                      className="px-3.5 py-1.5 rounded-full bg-[#E64978] hover:bg-[#D43666] text-white text-xs font-semibold inline-flex items-center gap-1 cursor-pointer disabled:opacity-50"
                     >
                       <Play className="w-3 h-3 fill-current" />
-                      {duelRunning ? 'RUNNING...' : 'SIMULATE DUEL'}
+                      {duelRunning ? 'Simulating...' : 'Simulate Duel'}
                     </button>
                   </div>
 
-                  <div className="space-y-3">
-                    <div className="space-y-1">
-                      <div className="flex justify-between font-mono text-xs font-bold">
-                        <span>NISCHAY_DEV</span>
-                        <span>{p1Tests}/12 CASES</span>
+                  <div className="space-y-3 bg-white rounded-xl border border-slate-200 p-4">
+                    <div className="space-y-1.5">
+                      <div className="flex justify-between text-xs font-mono">
+                        <strong className="text-[#1E2438]">nischay_dev (You)</strong>
+                        <span className="text-emerald-700 font-semibold">{p1Tests}/12 passed</span>
                       </div>
-                      <div className="h-3.5 bg-[#EAE8E4] border border-[#111111]">
+                      <div className="h-2.5 rounded-full bg-slate-100 overflow-hidden">
                         <div
-                          className="h-full bg-[#111111] transition-all duration-200"
+                          className="h-full rounded-full bg-[#232946] transition-all duration-200"
                           style={{ width: `${(p1Tests / 12) * 100}%` }}
                         />
                       </div>
                     </div>
 
-                    <div className="space-y-1">
-                      <div className="flex justify-between font-mono text-xs font-bold text-stone-600">
-                        <span>ALGO_RIVAL</span>
-                        <span>{p2Tests}/12 CASES</span>
+                    <div className="space-y-1.5">
+                      <div className="flex justify-between text-xs font-mono text-slate-500">
+                        <span>algo_rival (Opponent)</span>
+                        <span>{p2Tests}/12 passed</span>
                       </div>
-                      <div className="h-3.5 bg-[#EAE8E4] border border-[#111111]">
+                      <div className="h-2.5 rounded-full bg-slate-100 overflow-hidden">
                         <div
-                          className="h-full bg-[#F94144] transition-all duration-200"
+                          className="h-full rounded-full bg-[#E64978] transition-all duration-200"
                           style={{ width: `${(p2Tests / 12) * 100}%` }}
                         />
                       </div>
                     </div>
                   </div>
 
-                  <div className="border-t-2 border-[#111111] pt-3.5 flex items-center justify-between gap-2 font-mono">
+                  <div className="flex items-center justify-between bg-white rounded-xl border border-slate-200 px-4 py-3">
                     <div>
-                      <span className="text-[10px] text-stone-500 block">FIDE ELO RATING</span>
-                      <span className="text-xl font-black tabular-nums">{elo}</span>
-                      <span className="ml-2 px-1.5 py-0.5 bg-[#FBBF04] border border-[#111111] text-[10px] font-black">
-                        {eloDelta} ELO
-                      </span>
+                      <div className="text-[10.5px] font-mono uppercase text-slate-400">
+                        Live FIDE Elo Rating
+                      </div>
+                      <div className="text-lg font-mono font-bold text-[#1E2438]">
+                        {elo}{' '}
+                        <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 ml-1">
+                          {eloDelta} Elo
+                        </span>
+                      </div>
                     </div>
                     <button
                       onClick={onOpenLeaderboard}
-                      className="px-3 py-1.5 bg-[#EAE8E4] hover:bg-[#111111] hover:text-white border border-[#111111] text-[11px] font-black uppercase cursor-pointer"
+                      className="px-3.5 py-1.5 rounded-full border border-slate-300 hover:border-[#232946] text-xs font-semibold text-[#1E2438] cursor-pointer"
                     >
-                      LEADERBOARD ↗
+                      Leaderboard ›
                     </button>
                   </div>
                 </div>
               )}
 
-              {activeLabProject.id === 'analytics' && (
-                <div className="border-2 border-[#111111] bg-white p-5 space-y-4">
-                  <div className="flex items-center justify-between gap-2">
-                    <div className="font-mono text-xs font-bold flex items-center gap-4">
-                      <span>
-                        ACTIVE: <strong className="text-[#00B86B] tabular-nums">{visitors}</strong>
+              {activeLab.id === 'analytics' && (
+                <div className="rounded-xl bg-[#F8F9FC] border border-slate-200 p-5 space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4 text-xs font-mono">
+                      <span className="inline-flex items-center gap-1.5">
+                        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                        Active: <strong className="text-[#1E2438]">{visitors}</strong>
                       </span>
                       <span>
-                        EVENTS: <strong className="tabular-nums">{events.toLocaleString()}</strong>
+                        Events: <strong className="text-[#1E2438]">{events.toLocaleString()}</strong>
                       </span>
                     </div>
                     <button
                       onClick={fireTelemetry}
-                      className="px-3 py-1 bg-[#FBBF04] hover:bg-[#111111] hover:text-white border border-[#111111] font-mono text-[11px] font-black uppercase inline-flex items-center gap-1 cursor-pointer"
+                      className="px-3.5 py-1.5 rounded-full bg-[#E64978] hover:bg-[#D43666] text-white text-xs font-semibold inline-flex items-center gap-1 cursor-pointer"
                     >
-                      <Zap className="w-3 h-3" /> FIRE EVENT
+                      <Zap className="w-3 h-3" /> Send Event
                     </button>
                   </div>
 
-                  <div className="h-28 flex items-end gap-1.5 border-b-2 border-[#111111] pt-2">
-                    {bars.map((val, idx) => (
-                      <div
-                        key={idx}
-                        className={`flex-1 border border-[#111111]/40 transition-all duration-200 ${
-                          idx === bars.length - 1
-                            ? 'bg-[#00B86B]'
-                            : idx === bars.length - 2
-                            ? 'bg-[#FBBF04]'
-                            : idx % 3 === 0
-                            ? 'bg-[#2B44B8]'
-                            : 'bg-[#111111]'
-                        }`}
-                        style={{ height: `${val}%` }}
-                      />
-                    ))}
-                  </div>
-
-                  <div className="flex items-center justify-between font-mono text-[11px] text-stone-600">
-                    <span>2.4KB SNIPPET · ZERO COOKIES</span>
-                    <button
-                      onClick={onOpenAnalytics}
-                      className="font-black text-[#111111] hover:text-[#2B44B8] underline cursor-pointer"
-                    >
-                      FULL DASHBOARD ↗
-                    </button>
+                  <div className="rounded-xl bg-white border border-slate-200 p-4">
+                    <div className="h-28 flex items-end gap-2 pt-2">
+                      {bars.map((val, idx) => (
+                        <div
+                          key={idx}
+                          className={`flex-1 rounded-t-md transition-all duration-200 ${
+                            idx === bars.length - 1 ? 'bg-[#E64978]' : 'bg-[#232946]/85'
+                          }`}
+                          style={{ height: `${val}%` }}
+                        />
+                      ))}
+                    </div>
+                    <div className="flex items-center justify-between text-[11px] font-mono text-slate-400 pt-3 mt-2 border-t border-slate-100">
+                      <span>2.4KB snippet · 0 tracking cookies</span>
+                      <span className="text-emerald-600 font-semibold">WebSocket Stream</span>
+                    </div>
                   </div>
                 </div>
               )}
@@ -776,31 +863,36 @@ export default function Portfolio({
         </div>
       </section>
 
-      {/* ============================================================== */}
-      {/* 4. INTERACTIVE SKILLS & SHIPPED PROOF                          */}
-      {/* ============================================================== */}
-      <section id="skills-section" className="bg-white py-14 sm:py-20 px-5 sm:px-8 border-b-2 border-[#111111]">
-        <div className="max-w-[1360px] mx-auto space-y-6">
+      {/* 6. INTERACTIVE SKILLS & VERIFIED PROOF */}
+      <section id="skills-section" className="py-16 sm:py-20 px-5 sm:px-8 bg-white">
+        <div className="max-w-[1200px] mx-auto space-y-7">
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4">
             <div>
-              <div className="text-[11px] font-mono font-bold uppercase tracking-[0.16em] text-[#F94144]">
-                VERIFIED TECH STACK
-              </div>
-              <h2 className="text-3xl sm:text-5xl font-black tracking-[-0.045em] uppercase text-[#111111] mt-1 leading-none">
-                SKILLS &amp; PROOF.
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-[-0.025em] text-[#1E2438]">
+                Technical{' '}
+                <span className="relative inline-block">
+                  <span className="relative z-10">Skills &amp; Stack</span>
+                  <span
+                    className="absolute left-0 right-0 bottom-1 h-2.5 bg-[#E64978]/25 -z-0"
+                    aria-hidden="true"
+                  />
+                </span>
               </h2>
+              <p className="text-sm text-slate-500 mt-2">
+                Click any technology pill to see which deployed project uses it in production.
+              </p>
             </div>
 
             <div className="flex flex-wrap gap-1.5">
-              {[{ id: 'all', label: 'ALL' }, ...SKILL_GROUPS.map((g) => ({ id: g.id, label: g.label }))].map(
+              {[{ id: 'all', label: 'All' }, ...SKILL_GROUPS.map((g) => ({ id: g.id, label: g.label }))].map(
                 (t) => (
                   <button
                     key={t.id}
                     onClick={() => setSkillFilter(t.id)}
-                    className={`px-3 py-1.5 text-[11px] font-mono font-black uppercase border-2 border-[#111111] transition-colors cursor-pointer ${
+                    className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-colors cursor-pointer ${
                       skillFilter === t.id
-                        ? 'bg-[#111111] text-[#FBBF04]'
-                        : 'bg-[#F6F5F2] text-[#111111] hover:bg-[#EAE8E4]'
+                        ? 'bg-[#232946] text-white'
+                        : 'bg-slate-100 text-slate-600 hover:text-[#1E2438]'
                     }`}
                   >
                     {t.label}
@@ -810,16 +902,14 @@ export default function Portfolio({
             </div>
           </div>
 
-          {/* Live Proof Strip */}
           {selectedSkill && (
-            <div className="border-2 border-[#111111] bg-[#EAE8E4] px-4 py-3 flex flex-wrap items-center justify-between gap-3 font-mono text-xs">
+            <div className="rounded-xl bg-[#F8F9FC] border border-slate-200 px-5 py-3.5 flex flex-wrap items-center justify-between gap-3 text-xs">
               <div className="flex flex-wrap items-center gap-2.5">
-                <span className="px-2 py-0.5 bg-[#FBBF04] border border-[#111111] font-black text-[10px]">
-                  SELECTED
+                <span className="px-2.5 py-0.5 rounded-full bg-rose-50 text-[#E64978] font-semibold">
+                  {selectedSkill.name}
                 </span>
-                <strong className="text-[#111111]">{selectedSkill.name}</strong>
-                <span>→</span>
-                <span className="text-stone-600 text-[11px]">SHIPPED IN:</span>
+                <span className="text-slate-400">→</span>
+                <span className="text-slate-600">Shipped live in:</span>
                 {selectedSkill.projects.map((pid) => {
                   const proj = PROJECTS.find((p) => p.id === pid);
                   if (!proj) return null;
@@ -827,42 +917,40 @@ export default function Portfolio({
                     <button
                       key={pid}
                       onClick={() => launchProject(pid)}
-                      className="px-2.5 py-1 bg-[#111111] hover:bg-[#2B44B8] text-white text-[10.5px] font-black uppercase inline-flex items-center gap-1 cursor-pointer transition-colors"
+                      className="px-3 py-1 rounded-full bg-white hover:bg-[#E64978] hover:text-white border border-slate-200 font-semibold text-[#1E2438] inline-flex items-center gap-1 transition-colors cursor-pointer"
                     >
-                      {proj.displayTitle} <ArrowUpRight className="w-3 h-3" />
+                      {proj.shortTitle} <ArrowUpRight className="w-3 h-3" />
                     </button>
                   );
                 })}
               </div>
-              <span className="text-[10.5px] text-stone-600 uppercase">
-                CLICK ANY SKILL TO VERIFY LIVE USAGE
-              </span>
+              <span className="text-[11px] font-mono text-slate-400">Verified project links</span>
             </div>
           )}
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {visibleSkillGroups.map((group) => (
-              <div key={group.id} className="border-2 border-[#111111] bg-[#F6F5F2] p-5">
-                <div className="flex items-center justify-between border-b-2 border-[#111111] pb-2.5 mb-3.5 font-mono">
-                  <span className="text-xs font-black tracking-wide flex items-center gap-2">
-                    <span className={`w-2.5 h-2.5 border border-[#111111] ${group.dot}`} />
-                    {group.label}
-                  </span>
-                  <span className="text-[10px] font-bold text-stone-500">
-                    0{group.items.length}
+              <div
+                key={group.id}
+                className="rounded-xl bg-white border border-slate-200/85 p-6 space-y-3.5"
+              >
+                <div className="flex items-center justify-between">
+                  <h3 className="text-sm font-bold text-[#1E2438]">{group.label}</h3>
+                  <span className="text-[11px] font-mono text-slate-400">
+                    {group.items.length} skills
                   </span>
                 </div>
-                <div className="flex flex-wrap gap-1.5">
+                <div className="flex flex-wrap gap-2">
                   {group.items.map((item) => {
                     const isPicked = selectedSkill?.name === item.name;
                     return (
                       <button
                         key={item.name}
                         onClick={() => setSelectedSkill(item)}
-                        className={`px-2.5 py-1.5 text-xs font-mono font-bold border transition-colors cursor-pointer ${
+                        className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-all cursor-pointer ${
                           isPicked
-                            ? 'bg-[#111111] text-[#FBBF04] border-[#111111]'
-                            : 'bg-white text-[#111111] border-[#111111]/30 hover:border-[#111111]'
+                            ? 'bg-[#232946] text-white border-[#232946]'
+                            : 'bg-slate-50 text-slate-700 border-slate-200 hover:border-[#E64978] hover:text-[#1E2438]'
                         }`}
                       >
                         {item.name}
@@ -876,114 +964,126 @@ export default function Portfolio({
         </div>
       </section>
 
-      {/* ============================================================== */}
-      {/* 5. ABOUT NISCHAY & DIRECT CONTACT                              */}
-      {/* ============================================================== */}
-      <section id="about-section" className="bg-[#EAE8E4] py-14 sm:py-20 px-5 sm:px-8">
-        <div className="max-w-[1360px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-7 items-stretch">
-          <div className="lg:col-span-7 border-2 border-[#111111] bg-white p-7 sm:p-10 shadow-[6px_6px_0px_#111111] flex flex-col justify-between gap-6">
+      {/* 7. ABOUT NISCHAY & DEEP-NAVY CONTACT CTA */}
+      <section
+        id="about-section"
+        className="py-16 sm:py-20 px-5 sm:px-8 bg-[#F7F8FC] border-t border-slate-200/70"
+      >
+        <div className="max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-7 items-stretch">
+          <div className="lg:col-span-7 rounded-2xl bg-white border border-slate-200/85 p-7 sm:p-10 flex flex-col justify-between gap-6">
             <div className="space-y-4">
-              <div className="flex items-center gap-3.5">
-                <span className="w-12 h-12 bg-[#111111] text-[#FBBF04] font-black text-xl flex items-center justify-center shrink-0">
-                  NS
-                </span>
-                <div>
-                  <div className="text-[10.5px] font-mono font-bold uppercase tracking-[0.16em] text-[#2B44B8]">
-                    ABOUT THE ENGINEER
-                  </div>
-                  <h2 className="text-2xl sm:text-3xl font-black tracking-[-0.04em] uppercase text-[#111111]">
-                    NISCHAY SRIVASTAVA
-                  </h2>
-                </div>
+              <div className="inline-flex items-center gap-2 text-xs font-semibold text-[#E64978]">
+                <Layers className="w-4 h-4" /> About The Engineer
               </div>
-
-              <p className="text-sm sm:text-[15px] text-stone-700 leading-relaxed">
-                Computer Science undergraduate at{' '}
-                <strong className="text-[#111111]">
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-[-0.025em] text-[#1E2438]">
+                Nischay Srivastava
+              </h2>
+              <p className="text-sm sm:text-[15px] text-slate-600 leading-relaxed">
+                I&apos;m a Computer Science undergraduate at{' '}
+                <strong className="text-[#1E2438]">
                   Feroze Gandhi Institute of Engineering and Technology (AKTU)
                 </strong>
-                , Raebareli, UP, India. Passionate about building deterministic AI software engineering platforms, distributed Spring Boot + Kafka architectures, and fast real-time WebSocket web apps.
+                . I enjoy turning complex distributed systems and algorithmic problems into fast,
+                clean, interactive products — from multi-tenant Spring Boot + Kafka AI platforms to
+                1v1 real-time WebSocket coding arenas.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 border-2 border-[#111111] divide-y-2 sm:divide-y-0 sm:divide-x-2 divide-[#111111] font-mono text-xs">
-              <div className="p-3.5 bg-[#F6F5F2]">
-                <div className="text-[10px] text-stone-500">DEGREE</div>
-                <div className="font-black text-[#111111] mt-0.5">B.TECH CSE (2023–27)</div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 border-t border-slate-100">
+              <div className="p-3.5 rounded-xl bg-[#F8F9FC] border border-slate-200/70">
+                <div className="flex items-center gap-1.5 text-[11px] text-slate-400">
+                  <GraduationCap className="w-3.5 h-3.5 text-[#E64978]" /> Education
+                </div>
+                <div className="text-xs font-bold text-[#1E2438] mt-1">B.Tech CSE (AKTU)</div>
+                <div className="text-[11px] text-slate-500">2023 – Present</div>
               </div>
-              <div className="p-3.5 bg-[#F6F5F2]">
-                <div className="text-[10px] text-stone-500">LOCATION</div>
-                <div className="font-black text-[#111111] mt-0.5">RAEBARELI, UP, IN</div>
+              <div className="p-3.5 rounded-xl bg-[#F8F9FC] border border-slate-200/70">
+                <div className="flex items-center gap-1.5 text-[11px] text-slate-400">
+                  <MapPin className="w-3.5 h-3.5 text-[#E64978]" /> Location
+                </div>
+                <div className="text-xs font-bold text-[#1E2438] mt-1">Raebareli, UP</div>
+                <div className="text-[11px] text-slate-500">India · Remote Ready</div>
               </div>
-              <div className="p-3.5 bg-[#F6F5F2]">
-                <div className="text-[10px] text-stone-500">STATUS</div>
-                <div className="font-black text-[#00B86B] mt-0.5">OPEN TO SWE ROLES</div>
+              <div className="p-3.5 rounded-xl bg-[#F8F9FC] border border-slate-200/70">
+                <div className="flex items-center gap-1.5 text-[11px] text-slate-400">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" /> Focus
+                </div>
+                <div className="text-xs font-bold text-[#1E2438] mt-1">Backend &amp; Full-Stack</div>
+                <div className="text-[11px] text-slate-500">Java · Spring · React</div>
               </div>
             </div>
           </div>
 
-          <div className="lg:col-span-5 border-2 border-[#111111] bg-white p-7 sm:p-8 shadow-[6px_6px_0px_#111111] flex flex-col justify-between gap-5">
+          <div className="lg:col-span-5 rounded-2xl bg-[#232946] text-white p-7 sm:p-9 flex flex-col justify-between gap-6 shadow-xl shadow-slate-900/15">
             <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <h3 className="text-xl font-black tracking-[-0.03em] uppercase text-[#111111]">
-                  GET IN TOUCH.
-                </h3>
-                <span className="px-2 py-0.5 bg-[#FBBF04] border border-[#111111] text-[10px] font-mono font-black">
-                  DIRECT
-                </span>
-              </div>
+              <span className="inline-block px-3 py-1 rounded-full bg-white/10 text-rose-300 text-[11px] font-semibold">
+                Let&apos;s Connect
+              </span>
+              <h3 className="text-2xl font-bold tracking-[-0.02em]">
+                Ready to ship together?
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                Available for SWE, Backend, and Full-Stack engineering roles &amp; internships.
+              </p>
 
-              <div className="border-2 border-[#111111] bg-[#F6F5F2] px-3 py-2.5 flex items-center justify-between gap-2 font-mono text-xs">
-                <span className="truncate font-bold">nischaysrivastava2@gmail.com</span>
+              <div className="p-3 rounded-xl bg-white/8 border border-white/15 flex items-center justify-between gap-2">
+                <span className="font-mono text-xs text-white/90 truncate">
+                  nischaysrivastava2@gmail.com
+                </span>
                 <button
                   onClick={handleCopyEmail}
-                  className="px-2.5 py-1 bg-[#111111] hover:bg-[#2B44B8] text-white text-[10px] font-black uppercase shrink-0 cursor-pointer"
+                  className="px-2.5 py-1 rounded-md bg-white/15 hover:bg-white/25 text-[11px] font-semibold text-white inline-flex items-center gap-1 shrink-0 cursor-pointer"
                 >
-                  {copiedEmail ? 'COPIED ✓' : 'COPY'}
+                  {copiedEmail ? (
+                    <>
+                      <Check className="w-3 h-3 text-emerald-300" /> Copied
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-3 h-3" /> Copy
+                    </>
+                  )}
                 </button>
               </div>
 
-              <div className="grid grid-cols-2 gap-2.5 font-mono text-xs">
+              <div className="flex flex-wrap gap-2.5 pt-1">
                 <a
                   href="mailto:nischaysrivastava2@gmail.com"
-                  className="py-2.5 px-3 bg-[#111111] hover:bg-[#2B44B8] text-white font-black uppercase flex items-center justify-center gap-1.5 transition-colors"
+                  className="flex-1 h-10 px-4 rounded-full bg-[#E64978] hover:bg-[#D43666] text-white text-xs font-semibold inline-flex items-center justify-center gap-1.5 transition-colors"
                 >
-                  <Mail className="w-3.5 h-3.5" /> SEND EMAIL
+                  <Mail className="w-3.5 h-3.5" /> Send Email
                 </a>
                 <a
                   href="/resume.pdf"
                   target="_blank"
                   rel="noreferrer"
-                  className="py-2.5 px-3 bg-[#FBBF04] hover:bg-[#111111] hover:text-white border-2 border-[#111111] text-[#111111] font-black uppercase flex items-center justify-center gap-1.5 transition-colors"
+                  className="flex-1 h-10 px-4 rounded-full bg-white/12 hover:bg-white/20 border border-white/20 text-white text-xs font-semibold inline-flex items-center justify-center gap-1.5 transition-colors"
                 >
-                  <FileText className="w-3.5 h-3.5" /> RESUME.PDF
+                  <FileText className="w-3.5 h-3.5" /> Resume PDF
+                </a>
+                <a
+                  href="https://github.com/nischay237"
+                  target="_blank"
+                  rel="noreferrer"
+                  title="GitHub @nischay237"
+                  className="w-10 h-10 rounded-full bg-white/12 hover:bg-white/20 border border-white/20 text-white inline-flex items-center justify-center transition-colors"
+                >
+                  <GithubIcon className="w-4 h-4" />
                 </a>
               </div>
-
-              <a
-                href="https://github.com/nischay237"
-                target="_blank"
-                rel="noreferrer"
-                className="w-full py-2.5 px-3 bg-white hover:bg-[#111111] hover:text-white border-2 border-[#111111] text-[#111111] font-mono text-xs font-black uppercase flex items-center justify-between transition-colors"
-              >
-                <span className="inline-flex items-center gap-2">
-                  <GithubIcon className="w-3.5 h-3.5" /> GITHUB.COM/NISCHAY237
-                </span>
-                <ArrowUpRight className="w-3.5 h-3.5" />
-              </a>
             </div>
 
-            <div className="pt-4 border-t-2 border-[#111111] grid grid-cols-2 gap-2 font-mono text-[11px]">
+            <div className="pt-4 border-t border-white/10 grid grid-cols-2 gap-2 text-xs">
               {[
                 { label: 'FORGE AI', fn: onOpenForge },
-                { label: 'CODECLASH', fn: onOpenArena },
-                { label: 'LEADERBOARD', fn: onOpenLeaderboard },
-                { label: 'ANALYTICS', fn: onOpenAnalytics },
+                { label: 'CodeClash 1v1', fn: onOpenArena },
+                { label: 'Leaderboard', fn: onOpenLeaderboard },
+                { label: 'Analytics', fn: onOpenAnalytics },
               ].map((b) => (
                 <button
                   key={b.label}
                   onClick={b.fn}
-                  className="px-3 py-2 bg-[#F6F5F2] hover:bg-[#111111] hover:text-[#FBBF04] border border-[#111111] font-black uppercase flex items-center justify-between transition-colors cursor-pointer"
+                  className="px-3 py-2 rounded-lg bg-white/8 hover:bg-[#E64978] text-white/90 hover:text-white font-medium flex items-center justify-between transition-colors cursor-pointer"
                 >
                   <span>{b.label}</span>
                   <ArrowUpRight className="w-3.5 h-3.5" />
@@ -994,35 +1094,33 @@ export default function Portfolio({
         </div>
       </section>
 
-      {/* ============================================================== */}
-      {/* 6. ⌘K COMMAND PALETTE                                          */}
-      {/* ============================================================== */}
+      {/* 8. CLEAN ⌘K QUICK JUMP MODAL */}
       {cmdOpen && (
         <div
-          className="fixed inset-0 z-50 bg-black/45 flex items-start justify-center pt-[14vh] px-4"
+          className="fixed inset-0 z-50 bg-[#1E2438]/45 backdrop-blur-xs flex items-start justify-center pt-[14vh] px-4"
           onClick={() => setCmdOpen(false)}
         >
           <div
-            className="w-full max-w-lg bg-white border-2 border-[#111111] shadow-[8px_8px_0px_#111111]"
+            className="w-full max-w-lg rounded-2xl bg-white border border-slate-200 shadow-2xl overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="px-4 py-3 border-b-2 border-[#111111] flex items-center gap-2.5 bg-[#EAE8E4]">
-              <Search className="w-4 h-4 text-[#111111] shrink-0" />
+            <div className="px-4 py-3 border-b border-slate-100 flex items-center gap-2.5">
+              <Search className="w-4 h-4 text-slate-400 shrink-0" />
               <input
                 autoFocus
                 value={cmdQuery}
                 onChange={(e) => setCmdQuery(e.target.value)}
-                placeholder="SEARCH PROJECTS, RESUME, EMAIL..."
-                className="flex-1 bg-transparent font-mono text-xs font-bold text-[#111111] placeholder:text-stone-500 focus:outline-none uppercase"
+                placeholder="Jump to FORGE AI, CodeClash, Resume, GitHub..."
+                className="flex-1 bg-transparent text-sm text-[#1E2438] placeholder:text-slate-400 focus:outline-none"
               />
               <button
                 onClick={() => setCmdOpen(false)}
-                className="text-[#111111] hover:text-[#F94144] cursor-pointer"
+                className="text-slate-400 hover:text-[#1E2438] cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
-            <div className="divide-y divide-stone-200 max-h-80 overflow-y-auto">
+            <div className="p-2 max-h-80 overflow-y-auto divide-y divide-slate-100">
               {filteredCmds.map((c) => {
                 const Icon = c.icon;
                 return (
@@ -1033,24 +1131,22 @@ export default function Portfolio({
                       setCmdQuery('');
                       c.run();
                     }}
-                    className="w-full text-left px-4 py-3 hover:bg-[#111111] hover:text-white flex items-center justify-between gap-3 font-mono text-xs transition-colors cursor-pointer group"
+                    className="w-full text-left px-3 py-2.5 rounded-lg hover:bg-slate-50 flex items-center justify-between gap-3 transition-colors cursor-pointer"
                   >
-                    <span className="flex items-center gap-2.5 font-black">
-                      <Icon className="w-3.5 h-3.5 text-[#2B44B8] group-hover:text-[#FBBF04]" />
+                    <span className="flex items-center gap-2.5 text-xs font-semibold text-[#1E2438]">
+                      <Icon className="w-4 h-4 text-[#E64978]" />
                       {c.label}
                     </span>
-                    <span className="text-[10px] text-stone-500 group-hover:text-[#FBBF04]">
-                      {c.meta}
-                    </span>
+                    <span className="font-mono text-[10.5px] text-slate-400">{c.meta}</span>
                   </button>
                 );
               })}
             </div>
-            <div className="px-4 py-2 bg-[#111111] text-[#FBBF04] flex items-center justify-between text-[10px] font-mono font-bold uppercase">
+            <div className="px-4 py-2 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-[10.5px] font-mono text-slate-400">
               <span className="inline-flex items-center gap-1">
-                <Command className="w-3 h-3" /> QUICK INDEX
+                <Command className="w-3 h-3" /> Quick Jump
               </span>
-              <span>ESC TO CLOSE</span>
+              <span>ESC to close</span>
             </div>
           </div>
         </div>
