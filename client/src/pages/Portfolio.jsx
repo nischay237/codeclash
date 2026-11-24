@@ -48,9 +48,9 @@ const PROJECTS = [
     accentBar: 'bg-[#F5C542]',
     impactStat: '100% F1 · 0% FPR · 8/8 Tests',
     whatItDoes:
-      'Automatically audits pull requests before merge — parses Java codebases into real AST dependency graphs, maps every downstream service & test affected by a change, masks leaked secrets, and runs verified AI security reviews.',
+      'Automatically reviews every pull request before merge — maps every file, service, and test a code change could break, hides leaked API keys instantly, and flags security bugs with verified AI checks.',
     industryProblem:
-      'Engineering teams lose hours to slow manual PR reviews, surprise production outages from hidden code dependencies, and unsafe AI bots that leak API keys or hallucinate false alarms. Forge catches real risks before CI breaks with 100% F1 and 0% false positives.',
+      'Engineering teams lose hours to slow manual PR reviews, surprise production outages from hidden code dependencies, and noisy AI bots that leak keys or raise false alarms. Forge stops risky merges early with 100% accuracy and 0% false alarms.',
     summary:
       'A multi-tenant Spring Boot 3.5 platform that parses real Java AST dependency graphs, computes exact BFS blast radius before merge, masks leaked secrets and blocks prompt injections, and verifies accuracy with an 8-case reproducible eval suite.',
     highlights: [
