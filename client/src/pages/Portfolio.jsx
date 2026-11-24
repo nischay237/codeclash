@@ -522,7 +522,7 @@ export default function Portfolio({
                     </div>
 
                     {/* Right Interactive AST Specimen Board + Vertical Signal Yellow Stripe */}
-                    <div className="md:col-span-7 p-5 sm:p-6 pr-12 bg-[#FAFAF8] relative flex flex-col justify-between gap-4">
+                    <div className="md:col-span-7 p-5 sm:p-6 pr-11 sm:pr-12 bg-[#FAFAF8] relative flex flex-col justify-between gap-4">
                       {/* Iconic Rotated Signal Yellow Vertical Tag (like "perfection" in reference!) */}
                       <div
                         className="absolute top-0 right-0 bottom-0 w-7 bg-[#FFE600] border-l border-[#111111]/15 flex items-center justify-center select-none"
