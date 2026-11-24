@@ -355,45 +355,22 @@ export default function Portfolio({
       {/* 2. FULL-BLEED BLURRED ARTWORK HERO + MASSIVE BOLD PROJECTS     */}
       {/* ============================================================== */}
       <section className="relative min-h-[calc(100vh-64px)] overflow-hidden bg-[#EAE8E4] border-b-2 border-[#111111]">
-        {/* BACKGROUND LAYER: Softly Blurred Girl Looking Up + Bauhaus Shapes */}
+        {/* BACKGROUND LAYER: Full-Bleed Edge-to-Edge Softly Blurred Artwork */}
         <div className="absolute inset-0 pointer-events-none select-none overflow-hidden">
-          {/* Subtle wide ambient fill so ultrawide monitors match seamlessly */}
           <img
             src="/hero-creative-bg.jpg"
-            alt=""
-            aria-hidden="true"
-            className="w-full h-full object-cover object-center scale-110 blur-[26px] opacity-35"
+            alt="Creative blurred background illustration"
+            className={`w-full h-full object-cover object-[50%_84%] transition-all duration-500 ${
+              hoveredId ? 'blur-[6px] scale-[1.05] opacity-80' : 'blur-[3.5px] scale-[1.03] opacity-90'
+            }`}
           />
-
-          {/* Primary Dreamy Blurred Artwork: Girl Looking Upward at Bold Project Titles */}
-          <div
-            className="absolute inset-0 flex items-end justify-center pb-14 sm:pb-16"
-            style={{
-              WebkitMaskImage:
-                'linear-gradient(to right, transparent 0%, black 14%, black 86%, transparent 100%)',
-              maskImage:
-                'linear-gradient(to right, transparent 0%, black 14%, black 86%, transparent 100%)',
-            }}
-          >
-            <img
-              src="/hero-creative-bg.jpg"
-              alt="Creative blurred background illustration"
-              style={{
-                WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 84%, transparent 100%)',
-                maskImage: 'linear-gradient(to bottom, black 0%, black 84%, transparent 100%)',
-              }}
-              className={`h-[94%] w-auto max-w-[1040px] object-cover object-bottom transition-all duration-500 ${
-                hoveredId ? 'blur-[6px] scale-[1.03] opacity-75' : 'blur-[3.5px] scale-[1.01] opacity-88'
-              }`}
-            />
-          </div>
 
           {/* Gentle Editorial Ivory Wash so Giant Black Letters Have Razor-Sharp Contrast */}
           <div
             className="absolute inset-0"
             style={{
               background:
-                'linear-gradient(180deg, rgba(234,232,228,0.46) 0%, rgba(234,232,228,0.28) 52%, rgba(234,232,228,0.52) 100%)',
+                'linear-gradient(180deg, rgba(234,232,228,0.44) 0%, rgba(234,232,228,0.26) 50%, rgba(234,232,228,0.48) 100%)',
             }}
           />
         </div>
