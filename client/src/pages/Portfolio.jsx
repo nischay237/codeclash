@@ -640,7 +640,7 @@ export default function Portfolio({
                             }`}
                           >
                             <div className="flex items-center justify-between text-[11px] mb-1">
-                              <span className={isSel ? 'text-stone-800' : 'text-[#1E1D1B]'}>
+                              <span className={isSel ? 'text-stone-300' : 'text-[#1E1D1B]'}>
                                 {meta.layer}
                               </span>
                               {isImp && (
