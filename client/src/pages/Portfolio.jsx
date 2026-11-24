@@ -5,6 +5,7 @@ import {
   Award,
   BarChart3,
   Check,
+  CheckCircle2,
   Command,
   Copy,
   ExternalLink,
@@ -13,6 +14,7 @@ import {
   Network,
   Play,
   Search,
+  Sparkles,
   Swords,
   X,
   Zap,
@@ -43,6 +45,8 @@ const PROJECTS = [
     subtitle: 'Java 21 · Spring Boot 3.5 · Kafka Outbox · AST Blast Radius',
     badge: '100% F1 Eval',
     badgeClass: 'bg-[#F5C542] text-[#141413]',
+    accentBar: 'bg-[#F5C542]',
+    impactStat: '100% F1 · 0% FPR · 8/8 Tests',
     summary:
       'A multi-tenant Spring Boot 3.5 platform that parses real Java AST dependency graphs, computes exact BFS blast radius before merge, masks leaked secrets and blocks prompt injections, and verifies accuracy with an 8-case reproducible eval suite.',
     highlights: [
@@ -53,6 +57,7 @@ const PROJECTS = [
     ],
     techStack: ['Java 21', 'Spring Boot 3.5', 'Apache Kafka', 'Redis', 'PostgreSQL', 'JavaParser AST', 'Spring AI', 'React + TypeScript'],
     githubUrl: 'https://github.com/nischay237/forge-ai-platform',
+    repoSlug: 'nischay237/forge-ai-platform',
     cta: 'Open Control Plane',
   },
   {
@@ -64,6 +69,8 @@ const PROJECTS = [
     subtitle: 'WebSockets · Node.js · Sandbox Judge · FIDE Elo',
     badge: 'Playable Live',
     badgeClass: 'bg-[#DC4A3D] text-white',
+    accentBar: 'bg-[#DC4A3D]',
+    impactStat: 'Zero-Lag Sockets · FIDE Elo',
     summary:
       'Head-to-head DSA battle arena where two developers race on the same algorithmic problem over low-latency Socket.io channels, with isolated sandbox judging and live FIDE Elo ratings.',
     highlights: [
@@ -74,6 +81,7 @@ const PROJECTS = [
     ],
     techStack: ['React', 'Node.js', 'Express', 'Socket.io', 'Tailwind CSS', 'MongoDB Atlas'],
     githubUrl: 'https://github.com/nischay237/codeclash',
+    repoSlug: 'nischay237/codeclash',
     cta: 'Launch 1v1 Arena',
   },
   {
@@ -85,6 +93,8 @@ const PROJECTS = [
     subtitle: '<3KB Script · Cookieless · Live Heartbeats · Funnels',
     badge: '<3KB Live',
     badgeClass: 'bg-[#1D8F5A] text-white',
+    accentBar: 'bg-[#1D8F5A]',
+    impactStat: '2.4KB Snippet · 0 Cookies',
     summary:
       'A privacy-first, self-hosted alternative to heavy third-party analytics. Embeds under 3KB with zero cookies and streams live visitor heartbeats, pageview velocity, and conversion funnels.',
     highlights: [
@@ -95,6 +105,7 @@ const PROJECTS = [
     ],
     techStack: ['React', 'Node.js', 'Express', 'MongoDB', 'REST APIs', 'Tailwind CSS'],
     githubUrl: 'https://github.com/nischay237/analytics-tracker',
+    repoSlug: 'nischay237/analytics-tracker',
     driveUrl: 'https://drive.google.com/drive/folders/1yDR9xbt8fTiyh9TyWV9C4lS6Y4Th3-61?usp=sharing',
     cta: 'Open Live Dashboard',
   },
@@ -199,11 +210,6 @@ export default function Portfolio({
     return () => window.removeEventListener('keydown', onKey);
   }, []);
 
-  const focusedHeroProject = useMemo(
-    () => PROJECTS.find((p) => p.id === (hoveredId || activeProjectId)) || PROJECTS[0],
-    [hoveredId, activeProjectId]
-  );
-
   const activeLabProject = useMemo(
     () => PROJECTS.find((p) => p.id === activeProjectId) || PROJECTS[0],
     [activeProjectId]
@@ -283,59 +289,68 @@ export default function Portfolio({
       style={FONT_SANS}
     >
       {/* ============================================================== */}
-      {/* 1. CLEAN FROSTED TOP NAVBAR (KEEPING TOP HERO VIBE INTACT)     */}
+      {/* 1. CLEAN FROSTED TOP NAVBAR (With Direct GitHub & Resume)      */}
       {/* ============================================================== */}
-      <header className="sticky top-0 z-40 bg-[#EAE8E4]/85 backdrop-blur-md border-b border-[#141413]/10">
+      <header className="sticky top-0 z-40 bg-[#EAE8E4]/90 backdrop-blur-md border-b border-[#141413]/10">
         <div className="max-w-[1320px] mx-auto px-5 sm:px-8 h-16 flex items-center justify-between gap-4">
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             className="flex items-center gap-2.5 cursor-pointer"
           >
             <span
-              className="w-7 h-7 rounded-md bg-[#141413] text-[#F5C542] font-bold text-xs flex items-center justify-center"
+              className="w-7 h-7 rounded-md bg-[#141413] text-[#F5C542] font-extrabold text-xs flex items-center justify-center"
               style={FONT_DISPLAY}
             >
               NS
             </span>
             <span
-              className="font-bold text-[15px] tracking-[-0.02em] text-[#141413]"
+              className="font-extrabold text-[15px] tracking-[-0.02em] text-[#141413]"
               style={FONT_DISPLAY}
             >
               Nischay Srivastava
             </span>
           </button>
 
-          <nav className="hidden md:flex items-center gap-7 text-[13.5px] font-bold text-[#141413]/75">
-            <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="hover:text-[#141413] transition-colors cursor-pointer">
+          <nav className="hidden lg:flex items-center gap-7 text-[13.5px] font-bold text-[#141413]/80">
+            <button onClick={() => scrollTo('projects-gallery')} className="hover:text-[#141413] transition-colors cursor-pointer">
               Projects
             </button>
             <button onClick={() => scrollTo('interactive-lab')} className="hover:text-[#141413] transition-colors cursor-pointer">
               Interactive Lab
             </button>
             <button onClick={() => scrollTo('skills-section')} className="hover:text-[#141413] transition-colors cursor-pointer">
-              Tools
+              Tech Stack
             </button>
             <button onClick={() => scrollTo('about-section')} className="hover:text-[#141413] transition-colors cursor-pointer">
-              About
+              About &amp; Hire
             </button>
           </nav>
 
           <div className="flex items-center gap-2">
             <button
               onClick={() => setCmdOpen(true)}
-              className="hidden sm:inline-flex items-center gap-2 h-9 px-3 rounded-lg bg-white/75 hover:bg-white border border-[#141413]/15 text-xs font-bold text-[#141413] transition-colors cursor-pointer"
+              className="hidden sm:inline-flex items-center gap-2 h-9 px-3 rounded-lg bg-white/80 hover:bg-white border border-[#141413]/15 text-xs font-bold text-[#141413] transition-colors cursor-pointer"
             >
-              <Search className="w-3.5 h-3.5 text-[#1E1D1B]" />
-              <span>Quick jump</span>
-              <span className="text-[10.5px] text-[#1E1D1B]" style={FONT_MONO}>
+              <Search className="w-3.5 h-3.5 text-[#141413]" />
+              <span>Search</span>
+              <span className="text-[10.5px] text-stone-600" style={FONT_MONO}>
                 ⌘K
               </span>
             </button>
             <a
+              href="https://github.com/nischay237"
+              target="_blank"
+              rel="noreferrer"
+              className="h-9 px-3 rounded-lg bg-white/85 hover:bg-white border border-[#141413]/20 text-xs font-bold text-[#141413] inline-flex items-center gap-1.5 transition-colors"
+            >
+              <GithubIcon className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">GitHub</span>
+            </a>
+            <a
               href="/resume.pdf"
               target="_blank"
               rel="noreferrer"
-              className="h-9 px-3.5 rounded-lg bg-white/80 hover:bg-white border border-[#141413]/20 text-xs font-bold text-[#141413] inline-flex items-center gap-1 transition-colors"
+              className="h-9 px-3.5 rounded-lg bg-[#F5C542] hover:bg-[#e5b532] text-xs font-extrabold text-[#141413] inline-flex items-center gap-1 transition-colors"
             >
               Resume <ArrowUpRight className="w-3.5 h-3.5" />
             </a>
@@ -350,11 +365,12 @@ export default function Portfolio({
       </header>
 
       {/* ============================================================== */}
-      {/* 2. TOP HERO: FULL-BLEED BLURRED TEAM PHOTO + BOLD PROJECTS     */}
-      {/*    (Kept intact as loved, upgraded to Bricolage Grotesque!)    */}
+      {/* 2. HERO: FULL-BLEED BLURRED TEAM PHOTO + PUSH-DOWN ACCORDION   */}
+      {/*    Hovering a project smoothly expands its full info below &   */}
+      {/*    pushes the next project smoothly down; leaving glides it up */}
       {/* ============================================================== */}
-      <section className="relative min-h-[calc(100vh-64px)] overflow-hidden bg-[#EAE8E4] border-b border-stone-300/80">
-        {/* Background Photo */}
+      <section className="relative min-h-[calc(100vh-64px)] overflow-hidden bg-[#EAE8E4]">
+        {/* Full-Bleed Blurred Team Photo */}
         <div className="absolute inset-0 pointer-events-none select-none overflow-hidden">
           <img
             src="/hero-team-bg.jpg"
@@ -367,30 +383,35 @@ export default function Portfolio({
             className="absolute inset-0"
             style={{
               background:
-                'linear-gradient(96deg, rgba(244,242,238,0.80) 0%, rgba(244,242,238,0.58) 44%, rgba(244,242,238,0.28) 78%, rgba(244,242,238,0.20) 100%)',
+                'linear-gradient(96deg, rgba(244,242,238,0.82) 0%, rgba(244,242,238,0.60) 44%, rgba(244,242,238,0.28) 78%, rgba(244,242,238,0.20) 100%)',
             }}
           />
         </div>
 
-        {/* Foreground Giant Bold Interactive Project List */}
-        <div className="relative z-10 max-w-[1320px] mx-auto px-5 sm:px-10 py-8 sm:py-10 min-h-[calc(100vh-64px)] flex flex-col justify-between gap-8">
+        {/* Foreground Content */}
+        <div className="relative z-10 max-w-[1320px] mx-auto px-5 sm:px-10 py-8 sm:py-10 min-h-[calc(100vh-64px)] flex flex-col justify-between gap-6">
+          {/* Top Identity Strip */}
           <div className="flex flex-wrap items-center justify-between gap-3 text-xs font-bold text-[#141413]">
-            <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm px-3.5 py-1.5 rounded-full border border-[#141413]/12">
-              <span className="w-2 h-2 rounded-full bg-[#1D8F5A]" />
-              <span>Full-Stack &amp; Distributed Systems Engineer</span>
+            <div className="inline-flex items-center gap-2 bg-white/85 backdrop-blur-sm px-3.5 py-1.5 rounded-full border border-[#141413]/12">
+              <span className="w-2 h-2 rounded-full bg-[#1D8F5A] animate-pulse" />
+              <span>Full-Stack &amp; Distributed Systems Engineer · Open to SWE Roles</span>
             </div>
-            <div className="inline-flex items-center gap-2.5 bg-white/80 backdrop-blur-sm px-3.5 py-1.5 rounded-full border border-[#141413]/12 text-[#1E1D1B]">
-              <span>B.Tech CSE (AKTU)</span>
+            <div className="inline-flex items-center gap-2.5 bg-white/85 backdrop-blur-sm px-3.5 py-1.5 rounded-full border border-[#141413]/12 text-[#141413]">
+              <span>Hover any project to expand details</span>
               <span className="opacity-35">·</span>
-              <span>Click any project to launch live</span>
+              <span>Click to launch live</span>
             </div>
           </div>
 
-          <div className="my-auto py-3">
+          {/* SMOOTH PUSH-DOWN HOVER ACCORDION PROJECT LIST */}
+          <div
+            className="my-auto py-2"
+            onMouseLeave={() => setHoveredId(null)}
+          >
             <div className="border-t border-[#141413]/75 divide-y divide-[#141413]/30">
               {PROJECTS.map((project) => {
-                const isDimmed = hoveredId && hoveredId !== project.id;
-                const isFocused = hoveredId === project.id;
+                const isExpanded = hoveredId === project.id;
+                const isDimmed = hoveredId !== null && !isExpanded;
                 return (
                   <div
                     key={project.id}
@@ -398,63 +419,137 @@ export default function Portfolio({
                       setHoveredId(project.id);
                       setActiveProjectId(project.id);
                     }}
-                    onMouseLeave={() => setHoveredId(null)}
-                    onClick={() => launchProject(project.id)}
-                    role="button"
-                    tabIndex={0}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        launchProject(project.id);
-                      }
-                    }}
-                    className={`group py-4 sm:py-6 flex flex-col lg:flex-row lg:items-center justify-between gap-3 cursor-pointer transition-all duration-300 ${
-                      isDimmed ? 'opacity-45' : 'opacity-100'
+                    className={`transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                      isDimmed ? 'opacity-50' : 'opacity-100'
                     }`}
                   >
+                    {/* Main Bold Project Header Row */}
                     <div
-                      className={`flex items-baseline gap-4 sm:gap-7 transition-transform duration-300 ${
-                        isFocused ? 'translate-x-2 sm:translate-x-4' : ''
-                      }`}
+                      onClick={() => launchProject(project.id)}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          launchProject(project.id);
+                        }
+                      }}
+                      className="py-4 sm:py-5 flex flex-col lg:flex-row lg:items-center justify-between gap-3 cursor-pointer"
                     >
-                      <span
-                        className="text-sm font-bold text-[#141413]/80 bg-white/80 px-2 py-0.5 rounded border border-[#141413]/20"
-                        style={FONT_MONO}
-                      >
-                        {project.index}
-                      </span>
-                      <h2
-                        className="text-5xl sm:text-7xl lg:text-[90px] font-extrabold tracking-[-0.04em] uppercase leading-[0.92] text-[#141413]"
-                        style={{
-                          ...FONT_DISPLAY,
-                          textShadow: '0 2px 26px rgba(244, 242, 238, 0.85)',
-                        }}
-                      >
-                        {project.displayTitle}
-                      </h2>
-                    </div>
-
-                    <div className="flex flex-wrap items-center gap-3 pl-12 sm:pl-16 lg:pl-0">
-                      <div className="text-left lg:text-right">
-                        <span
-                          className={`inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold tracking-tight ${project.badgeClass}`}
-                        >
-                          {project.badge}
-                        </span>
-                        <div className="text-xs font-bold text-[#141413] bg-[#F4F2EE]/85 backdrop-blur-xs px-2.5 py-0.5 rounded mt-1">
-                          {project.subtitle}
-                        </div>
-                      </div>
-
-                      <span
-                        className={`w-12 h-12 sm:w-13 sm:h-13 rounded-full border border-[#141413]/40 flex items-center justify-center shrink-0 transition-all duration-300 ${
-                          isFocused
-                            ? 'bg-[#141413] text-white border-[#141413] scale-105'
-                            : 'bg-white/85 text-[#141413]'
+                      <div
+                        className={`flex items-baseline gap-4 sm:gap-7 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                          isExpanded ? 'translate-x-2 sm:translate-x-4' : ''
                         }`}
                       >
-                        <ArrowUpRight className="w-5 h-5" />
-                      </span>
+                        <span
+                          className="text-sm font-bold text-[#141413] bg-white/90 px-2 py-0.5 rounded border border-[#141413]/25"
+                          style={FONT_MONO}
+                        >
+                          {project.index}
+                        </span>
+                        <h2
+                          className="text-5xl sm:text-7xl lg:text-[86px] font-extrabold tracking-[-0.04em] uppercase leading-[0.92] text-[#141413]"
+                          style={{
+                            ...FONT_DISPLAY,
+                            textShadow: '0 2px 24px rgba(244, 242, 238, 0.9)',
+                          }}
+                        >
+                          {project.displayTitle}
+                        </h2>
+                      </div>
+
+                      <div className="flex flex-wrap items-center gap-3 pl-12 sm:pl-16 lg:pl-0">
+                        <div className="text-left lg:text-right">
+                          <span
+                            className={`inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold tracking-tight ${project.badgeClass}`}
+                          >
+                            {project.badge}
+                          </span>
+                          <div className="text-xs font-bold text-[#141413] bg-[#F4F2EE]/90 backdrop-blur-xs px-2.5 py-0.5 rounded mt-1">
+                            {project.subtitle}
+                          </div>
+                        </div>
+
+                        <span
+                          className={`w-12 h-12 rounded-full border border-[#141413]/45 flex items-center justify-center shrink-0 transition-all duration-300 ${
+                            isExpanded
+                              ? 'bg-[#141413] text-[#F5C542] border-[#141413] rotate-12 scale-105'
+                              : 'bg-white/90 text-[#141413]'
+                          }`}
+                        >
+                          <ArrowUpRight className="w-5 h-5" />
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* SILKY PUSH-DOWN EXPANDING PROJECT DETAIL DRAWER */}
+                    <div
+                      className={`grid transition-[grid-template-rows,opacity] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                        isExpanded ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
+                      }`}
+                    >
+                      <div className="overflow-hidden">
+                        <div className="pb-6 pl-0 sm:pl-14 lg:pl-16">
+                          <div className="rounded-2xl bg-white/92 backdrop-blur-md border border-[#141413]/15 p-5 sm:p-6 shadow-[0_14px_36px_rgba(20,20,19,0.10)] grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
+                            <div className="lg:col-span-7 space-y-3">
+                              <div className="flex flex-wrap items-center gap-2">
+                                <span
+                                  className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold ${project.badgeClass}`}
+                                >
+                                  {project.impactStat}
+                                </span>
+                                <span className="text-xs font-bold text-stone-700" style={FONT_MONO}>
+                                  {project.repoSlug}
+                                </span>
+                              </div>
+                              <p className="text-sm sm:text-[15px] font-bold text-[#141413] leading-relaxed">
+                                {project.summary}
+                              </p>
+                              <div className="flex flex-wrap gap-1.5 pt-0.5">
+                                {project.techStack.slice(0, 6).map((tech) => (
+                                  <span
+                                    key={tech}
+                                    className="px-2.5 py-1 rounded-full bg-[#F4F2EC] border border-stone-300/80 text-[11.5px] font-bold text-[#141413]"
+                                  >
+                                    {tech}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+
+                            <div className="lg:col-span-5 flex flex-col sm:flex-row lg:flex-col gap-2.5 lg:items-end justify-center">
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  launchProject(project.id);
+                                }}
+                                className="h-10 px-5 rounded-full bg-[#141413] hover:bg-[#2E2D2A] text-white text-xs font-bold inline-flex items-center justify-center gap-1.5 transition-colors cursor-pointer w-full sm:w-auto lg:w-56"
+                              >
+                                {project.cta} <ArrowUpRight className="w-3.5 h-3.5" />
+                              </button>
+                              <a
+                                href={project.githubUrl}
+                                target="_blank"
+                                rel="noreferrer"
+                                onClick={(e) => e.stopPropagation()}
+                                className="h-10 px-5 rounded-full bg-white hover:bg-[#F5C542] border border-[#141413] text-[#141413] text-xs font-bold inline-flex items-center justify-center gap-1.5 transition-colors w-full sm:w-auto lg:w-56"
+                              >
+                                <GithubIcon className="w-3.5 h-3.5" /> View GitHub Repo ↗
+                              </a>
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setActiveProjectId(project.id);
+                                  scrollTo('interactive-lab');
+                                }}
+                                className="text-xs font-bold text-[#141413] underline underline-offset-4 hover:opacity-70 inline-flex items-center justify-center gap-1 pt-1 cursor-pointer lg:w-56"
+                              >
+                                Try interactive sandbox <ArrowDown className="w-3 h-3" />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 );
@@ -462,44 +557,202 @@ export default function Portfolio({
             </div>
           </div>
 
-          {/* Calm Frosted Glass Bottom Spotlight Bar (No Cartoon Shadow!) */}
-          <div className="rounded-2xl bg-white/88 backdrop-blur-md border border-[#141413]/12 p-4 sm:px-6 flex flex-col lg:flex-row lg:items-center justify-between gap-4 shadow-[0_8px_30px_rgba(20,20,19,0.08)]">
-            <div className="min-w-0 flex items-start sm:items-center gap-3.5">
-              <span
-                className={`px-2.5 py-1 rounded-full text-xs font-bold shrink-0 ${focusedHeroProject.badgeClass}`}
+          {/* Bottom Quick Hint Strip */}
+          <div className="flex flex-wrap items-center justify-between gap-3 text-xs font-bold text-[#141413]">
+            <button
+              onClick={() => scrollTo('projects-gallery')}
+              className="inline-flex items-center gap-2 bg-white/88 hover:bg-white backdrop-blur-sm px-4 py-2 rounded-full border border-[#141413]/15 transition-colors cursor-pointer"
+            >
+              <span>Scroll for full projects, GitHub links &amp; live sandboxes</span>
+              <ArrowDown className="w-3.5 h-3.5" />
+            </button>
+            <div className="flex items-center gap-2">
+              <a
+                href="https://github.com/nischay237"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-1.5 bg-[#141413] hover:bg-[#2E2D2A] text-white px-4 py-2 rounded-full transition-colors"
               >
-                {focusedHeroProject.shortName}
-              </span>
-              <p className="text-[13.5px] text-[#1E1D1B] leading-relaxed line-clamp-2">
-                {focusedHeroProject.summary}
-              </p>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-2 shrink-0">
-              <button
-                onClick={() => launchProject(focusedHeroProject.id)}
-                className="h-10 px-5 rounded-full bg-[#141413] hover:bg-[#2E2D2A] text-white text-xs font-bold inline-flex items-center gap-1.5 transition-colors cursor-pointer"
-              >
-                {focusedHeroProject.cta} <ArrowUpRight className="w-3.5 h-3.5" />
-              </button>
-              <button
-                onClick={() => scrollTo('interactive-lab')}
-                className="h-10 px-4 rounded-full bg-[#F4F2EE] hover:bg-stone-200/80 text-[#141413] text-xs font-bold inline-flex items-center gap-1.5 transition-colors cursor-pointer"
-              >
-                Explore below <ArrowDown className="w-3.5 h-3.5" />
-              </button>
+                <GithubIcon className="w-3.5 h-3.5" /> github.com/nischay237 ↗
+              </a>
             </div>
           </div>
         </div>
       </section>
 
       {/* ============================================================== */}
-      {/* 3. HUMAN EDITORIAL SECTION: INTERACTIVE PLAYGROUNDS            */}
-      {/*    (Newsreader Serif + DM Sans Prose + Calm Hairline Surfaces) */}
+      {/* 3. EYE-CATCHING HR / RECRUITER PROOF & METRICS BANNER          */}
       {/* ============================================================== */}
-      <section id="interactive-lab" className="bg-[#F9F8F5] py-20 sm:py-28 px-5 sm:px-8 border-b border-stone-200/80">
+      <section className="bg-[#141413] text-white py-10 px-5 sm:px-8 border-y border-white/10">
+        <div className="max-w-[1240px] mx-auto grid grid-cols-2 lg:grid-cols-5 gap-6 items-center">
+          <div>
+            <div className="text-3xl sm:text-4xl font-extrabold text-[#F5C542]" style={FONT_DISPLAY}>
+              03
+            </div>
+            <div className="text-xs font-bold text-stone-300 mt-1">Live Production Systems</div>
+          </div>
+          <div>
+            <div className="text-3xl sm:text-4xl font-extrabold text-white" style={FONT_DISPLAY}>
+              100%
+            </div>
+            <div className="text-xs font-bold text-stone-300 mt-1">AI Eval F1 · 0.0% FPR</div>
+          </div>
+          <div>
+            <div className="text-3xl sm:text-4xl font-extrabold text-emerald-400" style={FONT_DISPLAY}>
+              8 / 8
+            </div>
+            <div className="text-xs font-bold text-stone-300 mt-1">ArchUnit &amp; Backend Suites</div>
+          </div>
+          <div>
+            <div className="text-2xl sm:text-3xl font-extrabold text-white" style={FONT_DISPLAY}>
+              Java 21 + TS
+            </div>
+            <div className="text-xs font-bold text-stone-300 mt-1">Spring Boot · Kafka · React</div>
+          </div>
+          <div className="col-span-2 lg:col-span-1 flex flex-wrap lg:flex-col gap-2">
+            <a
+              href="/resume.pdf"
+              target="_blank"
+              rel="noreferrer"
+              className="h-9 px-4 rounded-full bg-[#F5C542] hover:bg-white text-[#141413] text-xs font-extrabold inline-flex items-center justify-center gap-1.5 transition-colors"
+            >
+              <FileText className="w-3.5 h-3.5" /> Resume PDF ↗
+            </a>
+            <a
+              href="https://github.com/nischay237"
+              target="_blank"
+              rel="noreferrer"
+              className="h-9 px-4 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs font-bold inline-flex items-center justify-center gap-1.5 transition-colors"
+            >
+              <GithubIcon className="w-3.5 h-3.5" /> GitHub Profile ↗
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================================== */}
+      {/* 4. EYE-CATCHING FEATURED PROJECTS SHOWCASE WITH GITHUB LINKS   */}
+      {/* ============================================================== */}
+      <section id="projects-gallery" className="bg-white py-20 sm:py-24 px-5 sm:px-8 border-b border-stone-200/90">
         <div className="max-w-[1240px] mx-auto space-y-12">
-          {/* Natural Editorial Header + Minimal Underline Tabs */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-5">
+            <div>
+              <p className="text-xs font-bold text-stone-700 mb-2">Featured Engineering Work</p>
+              <h2
+                className="text-3xl sm:text-[44px] font-bold tracking-[-0.02em] leading-[1.1] text-[#141413]"
+                style={FONT_SERIF}
+              >
+                Built, tested &amp; <em className="italic">deployed live.</em>
+              </h2>
+            </div>
+            <a
+              href="https://github.com/nischay237"
+              target="_blank"
+              rel="noreferrer"
+              className="h-10 px-5 rounded-full bg-[#141413] hover:bg-[#2E2D2A] text-white text-xs font-bold inline-flex items-center gap-2 self-start md:self-auto transition-colors"
+            >
+              <GithubIcon className="w-4 h-4" /> Explore All Repositories on GitHub ↗
+            </a>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {PROJECTS.map((project) => (
+              <div
+                key={project.id}
+                className="rounded-2xl bg-[#FAF9F6] border border-stone-200 hover:border-[#141413] hover:shadow-[0_16px_40px_rgba(20,20,19,0.08)] hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col justify-between"
+              >
+                {/* Bold Top Accent Stripe */}
+                <div className={`h-2 w-full ${project.accentBar}`} />
+
+                <div className="p-6 sm:p-7 flex-1 flex flex-col justify-between gap-6">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="text-xs font-bold text-stone-700" style={FONT_MONO}>
+                        {project.index} · {project.shortName}
+                      </span>
+                      <span
+                        className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold ${project.badgeClass}`}
+                      >
+                        {project.badge}
+                      </span>
+                    </div>
+
+                    <div>
+                      <h3
+                        className="text-2xl font-bold tracking-[-0.015em] text-[#141413] leading-snug"
+                        style={FONT_SERIF}
+                      >
+                        {project.editorialTitle}
+                      </h3>
+                      <p className="text-[14px] font-bold text-[#1E1D1B] mt-2.5 leading-relaxed">
+                        {project.summary}
+                      </p>
+                    </div>
+
+                    <ul className="space-y-2 pt-1">
+                      {project.highlights.slice(0, 2).map((h, i) => (
+                        <li
+                          key={i}
+                          className="flex items-start gap-2 text-xs font-bold text-[#1E1D1B] leading-relaxed"
+                        >
+                          <CheckCircle2 className="w-4 h-4 text-[#1D8F5A] shrink-0 mt-0.5" />
+                          <span>{h}</span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    <div className="flex flex-wrap gap-1.5 pt-1">
+                      {project.techStack.slice(0, 5).map((t) => (
+                        <span
+                          key={t}
+                          className="px-2.5 py-1 rounded-full bg-white border border-stone-200 text-[11px] font-bold text-[#141413]"
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Prominent Live Demo + GitHub Links */}
+                  <div className="pt-4 border-t border-stone-200/90 space-y-2.5">
+                    <div className="grid grid-cols-2 gap-2">
+                      <button
+                        onClick={() => launchProject(project.id)}
+                        className="h-10 px-3 rounded-full bg-[#141413] hover:bg-[#2E2D2A] text-white text-xs font-bold inline-flex items-center justify-center gap-1 transition-colors cursor-pointer"
+                      >
+                        Live Demo <ArrowUpRight className="w-3.5 h-3.5" />
+                      </button>
+                      <a
+                        href={project.githubUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="h-10 px-3 rounded-full bg-white hover:bg-[#F5C542] border border-[#141413] text-[#141413] text-xs font-bold inline-flex items-center justify-center gap-1.5 transition-colors"
+                      >
+                        <GithubIcon className="w-3.5 h-3.5" /> GitHub ↗
+                      </a>
+                    </div>
+                    <button
+                      onClick={() => {
+                        setActiveProjectId(project.id);
+                        scrollTo('interactive-lab');
+                      }}
+                      className="w-full py-1.5 text-xs font-bold text-[#141413] hover:underline underline-offset-4 cursor-pointer"
+                    >
+                      Try interactive sandbox below ↓
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================================== */}
+      {/* 5. INTERACTIVE LAB (Playable Architecture Sandboxes)           */}
+      {/* ============================================================== */}
+      <section id="interactive-lab" className="bg-[#F9F8F5] py-20 sm:py-24 px-5 sm:px-8 border-b border-stone-200/80">
+        <div className="max-w-[1240px] mx-auto space-y-12">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-stone-200/90 pb-6">
             <div>
               <p className="text-xs font-bold text-[#1E1D1B] mb-2">Interactive walkthrough</p>
@@ -518,8 +771,8 @@ export default function Portfolio({
                   <button
                     key={p.id}
                     onClick={() => setActiveProjectId(p.id)}
-                    className={`relative pb-2 text-sm transition-colors cursor-pointer whitespace-nowrap flex items-baseline gap-2 ${
-                      active ? 'text-[#141413] font-bold' : 'text-stone-800 hover:text-[#1E1D1B]'
+                    className={`relative pb-2 text-sm font-bold transition-colors cursor-pointer whitespace-nowrap flex items-baseline gap-2 ${
+                      active ? 'text-[#141413]' : 'text-stone-600 hover:text-[#141413]'
                     }`}
                   >
                     <span className="text-[11px]" style={FONT_MONO}>
@@ -527,7 +780,7 @@ export default function Portfolio({
                     </span>
                     <span>{p.shortName}</span>
                     {active && (
-                      <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#141413]" />
+                      <span className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-[#141413]" />
                     )}
                   </button>
                 );
@@ -535,12 +788,10 @@ export default function Portfolio({
             </div>
           </div>
 
-          {/* Open Asymmetric 2-Column Editorial Spread (No Heavy Outer Box!) */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
-            {/* Left: Narrative Story & Decisions */}
             <div className="lg:col-span-5 space-y-6">
               <div className="space-y-3">
-                <div className="text-xs text-[#1E1D1B]" style={FONT_MONO}>
+                <div className="text-xs font-bold text-[#1E1D1B]" style={FONT_MONO}>
                   {activeLabProject.subtitle}
                 </div>
                 <h3
@@ -549,7 +800,7 @@ export default function Portfolio({
                 >
                   {activeLabProject.editorialTitle}
                 </h3>
-                <p className="text-[15.5px] text-stone-800 leading-[1.72]">
+                <p className="text-[15.5px] font-bold text-[#1E1D1B] leading-[1.72]">
                   {activeLabProject.summary}
                 </p>
               </div>
@@ -558,17 +809,13 @@ export default function Portfolio({
                 {activeLabProject.highlights.map((item, i) => (
                   <li
                     key={i}
-                    className="flex items-start gap-3 text-[14px] text-[#1E1D1B] leading-[1.65]"
+                    className="flex items-start gap-3 text-[14px] font-bold text-[#1E1D1B] leading-[1.65]"
                   >
-                    <span className="text-stone-800 select-none mt-0.5">—</span>
+                    <span className="text-[#141413] select-none mt-0.5">—</span>
                     <span>{item}</span>
                   </li>
                 ))}
               </ul>
-
-              <div className="text-xs text-[#1E1D1B] leading-relaxed pt-1">
-                {activeLabProject.techStack.join(' · ')}
-              </div>
 
               <div className="flex flex-wrap items-center gap-3 pt-2">
                 <button
@@ -581,16 +828,16 @@ export default function Portfolio({
                   href={activeLabProject.githubUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="h-10 px-4 rounded-full border border-stone-300 hover:border-[#141413] text-xs font-bold text-[#141413] inline-flex items-center gap-1.5 transition-colors"
+                  className="h-10 px-4 rounded-full bg-white hover:bg-[#F5C542] border border-[#141413] text-xs font-bold text-[#141413] inline-flex items-center gap-1.5 transition-colors"
                 >
-                  <GithubIcon className="w-3.5 h-3.5" /> Source on GitHub
+                  <GithubIcon className="w-3.5 h-3.5" /> GitHub Repo ↗
                 </a>
                 {activeLabProject.driveUrl && (
                   <a
                     href={activeLabProject.driveUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="text-xs font-bold text-stone-800 hover:text-[#141413] underline underline-offset-4 inline-flex items-center gap-1 ml-1"
+                    className="text-xs font-bold text-[#141413] underline underline-offset-4 inline-flex items-center gap-1 ml-1"
                   >
                     Artifacts <ExternalLink className="w-3 h-3" />
                   </a>
@@ -598,7 +845,6 @@ export default function Portfolio({
               </div>
             </div>
 
-            {/* Right: Refined Tactile Interactive Surface */}
             <div className="lg:col-span-7">
               <div className="rounded-2xl bg-white border border-stone-200/90 p-6 sm:p-8 shadow-[0_4px_28px_rgba(20,20,19,0.04)]">
                 {activeLabProject.id === 'forge' && (
@@ -608,7 +854,7 @@ export default function Portfolio({
                         <h4 className="text-[15px] font-bold text-[#141413]" style={FONT_DISPLAY}>
                           AST Blast-Radius Tracer
                         </h4>
-                        <p className="text-xs text-[#1E1D1B] mt-0.5">
+                        <p className="text-xs font-bold text-[#1E1D1B] mt-0.5">
                           Select any service class to inspect downstream callers and test impact
                         </p>
                       </div>
@@ -657,7 +903,7 @@ export default function Portfolio({
                       })}
                     </div>
 
-                    <div className="pt-4 border-t border-stone-100 flex flex-wrap items-center justify-between gap-3 text-xs text-stone-800">
+                    <div className="pt-4 border-t border-stone-100 flex flex-wrap items-center justify-between gap-3 text-xs font-bold text-[#1E1D1B]">
                       <span>
                         Editing <strong className="text-[#141413]">{selectedAstNode}</strong> touches{' '}
                         <strong className="text-[#141413]">{astInfo.callers.length}</strong>{' '}
@@ -680,7 +926,7 @@ export default function Portfolio({
                         <h4 className="text-[15px] font-bold text-[#141413]" style={FONT_DISPLAY}>
                           1v1 Duel &amp; FIDE Elo Simulator
                         </h4>
-                        <p className="text-xs text-[#1E1D1B] mt-0.5">
+                        <p className="text-xs font-bold text-[#1E1D1B] mt-0.5">
                           Watch live test-case progress race and calculate updated rating
                         </p>
                       </div>
@@ -696,15 +942,15 @@ export default function Portfolio({
 
                     <div className="space-y-4 py-2">
                       <div className="space-y-2">
-                        <div className="flex justify-between text-xs">
-                          <span className="font-bold text-[#141413]" style={FONT_MONO}>
+                        <div className="flex justify-between text-xs font-bold">
+                          <span className="text-[#141413]" style={FONT_MONO}>
                             nischay_dev
                           </span>
-                          <span className="text-stone-800" style={FONT_MONO}>
+                          <span className="text-[#1E1D1B]" style={FONT_MONO}>
                             {p1Tests} / 12 passed
                           </span>
                         </div>
-                        <div className="h-2 rounded-full bg-stone-100 overflow-hidden">
+                        <div className="h-2.5 rounded-full bg-stone-100 overflow-hidden">
                           <div
                             className="h-full rounded-full bg-[#141413] transition-all duration-200"
                             style={{ width: `${(p1Tests / 12) * 100}%` }}
@@ -713,11 +959,11 @@ export default function Portfolio({
                       </div>
 
                       <div className="space-y-2">
-                        <div className="flex justify-between text-xs text-[#1E1D1B]">
+                        <div className="flex justify-between text-xs font-bold text-[#1E1D1B]">
                           <span style={FONT_MONO}>algo_rival</span>
                           <span style={FONT_MONO}>{p2Tests} / 12 passed</span>
                         </div>
-                        <div className="h-2 rounded-full bg-stone-100 overflow-hidden">
+                        <div className="h-2.5 rounded-full bg-stone-100 overflow-hidden">
                           <div
                             className="h-full rounded-full bg-[#DC4A3D] transition-all duration-200"
                             style={{ width: `${(p2Tests / 12) * 100}%` }}
@@ -728,11 +974,11 @@ export default function Portfolio({
 
                     <div className="pt-4 border-t border-stone-100 flex flex-wrap items-center justify-between gap-3">
                       <div className="flex items-baseline gap-2.5">
-                        <span className="text-xs text-[#1E1D1B]">FIDE Elo</span>
-                        <span className="text-2xl font-bold text-[#141413]" style={FONT_DISPLAY}>
+                        <span className="text-xs font-bold text-[#1E1D1B]">FIDE Elo</span>
+                        <span className="text-2xl font-extrabold text-[#141413]" style={FONT_DISPLAY}>
                           {elo}
                         </span>
-                        <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700">
+                        <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800">
                           {eloDelta}
                         </span>
                       </div>
@@ -753,7 +999,7 @@ export default function Portfolio({
                         <h4 className="text-[15px] font-bold text-[#141413]" style={FONT_DISPLAY}>
                           Live Web Telemetry Stream
                         </h4>
-                        <p className="text-xs text-[#1E1D1B] mt-0.5">
+                        <p className="text-xs font-bold text-[#1E1D1B] mt-0.5">
                           Fire simulated visitor events to watch real-time ingestion velocity
                         </p>
                       </div>
@@ -765,23 +1011,23 @@ export default function Portfolio({
                       </button>
                     </div>
 
-                    <div className="flex items-center gap-8 text-xs">
+                    <div className="flex items-center gap-8 text-xs font-bold">
                       <div>
-                        <div className="text-stone-800">Active visitors</div>
-                        <div className="text-2xl font-bold text-[#141413] mt-0.5 flex items-center gap-2" style={FONT_DISPLAY}>
+                        <div className="text-stone-700">Active visitors</div>
+                        <div className="text-2xl font-extrabold text-[#141413] mt-0.5 flex items-center gap-2" style={FONT_DISPLAY}>
                           <span className="w-2 h-2 rounded-full bg-[#1D8F5A] animate-pulse" />
                           {visitors}
                         </div>
                       </div>
                       <div>
-                        <div className="text-stone-800">Events ingested</div>
-                        <div className="text-2xl font-bold text-[#141413] mt-0.5" style={FONT_DISPLAY}>
+                        <div className="text-stone-700">Events ingested</div>
+                        <div className="text-2xl font-extrabold text-[#141413] mt-0.5" style={FONT_DISPLAY}>
                           {events.toLocaleString()}
                         </div>
                       </div>
                       <div>
-                        <div className="text-stone-800">Script weight</div>
-                        <div className="text-2xl font-bold text-[#141413] mt-0.5" style={FONT_DISPLAY}>
+                        <div className="text-stone-700">Script weight</div>
+                        <div className="text-2xl font-extrabold text-[#141413] mt-0.5" style={FONT_DISPLAY}>
                           2.4 KB
                         </div>
                       </div>
@@ -799,7 +1045,7 @@ export default function Portfolio({
                       ))}
                     </div>
 
-                    <div className="flex items-center justify-between text-xs text-[#1E1D1B]">
+                    <div className="flex items-center justify-between text-xs font-bold text-[#1E1D1B]">
                       <span>Zero cookies · Self-hosted Node + MongoDB</span>
                       <button
                         onClick={onOpenAnalytics}
@@ -817,10 +1063,9 @@ export default function Portfolio({
       </section>
 
       {/* ============================================================== */}
-      {/* 4. HUMAN EDITORIAL SKILLS LEDGER (Horizontal Rows, Zero Grid   */}
-      {/*    Gaps, Quiet Inline Live Project Proof!)                     */}
+      {/* 6. SKILLS & VERIFIED PROOF LEDGER                              */}
       {/* ============================================================== */}
-      <section id="skills-section" className="bg-white py-20 sm:py-28 px-5 sm:px-8 border-b border-stone-200/80">
+      <section id="skills-section" className="bg-white py-20 sm:py-24 px-5 sm:px-8 border-b border-stone-200/80">
         <div className="max-w-[1240px] mx-auto space-y-10">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
@@ -833,22 +1078,33 @@ export default function Portfolio({
               </h2>
             </div>
 
-            {/* Quiet Inline Proof Readout */}
             {selectedSkill && (
-              <div className="flex flex-wrap items-center gap-2 text-xs text-stone-800">
-                <span className="font-bold text-[#141413]">{selectedSkill.name}</span>
-                <span className="text-stone-800">used in</span>
+              <div className="flex flex-wrap items-center gap-2 text-xs font-bold text-[#1E1D1B]">
+                <span className="px-2.5 py-1 rounded-full bg-[#F5C542] text-[#141413]">
+                  {selectedSkill.name}
+                </span>
+                <span>shipped in</span>
                 {selectedSkill.projects.map((pid) => {
                   const proj = PROJECTS.find((p) => p.id === pid);
                   if (!proj) return null;
                   return (
-                    <button
-                      key={pid}
-                      onClick={() => launchProject(pid)}
-                      className="px-3 py-1 rounded-full bg-[#F4F2EC] hover:bg-[#141413] hover:text-white text-[#141413] font-bold inline-flex items-center gap-1 transition-colors cursor-pointer"
-                    >
-                      {proj.shortName} <ArrowUpRight className="w-3 h-3" />
-                    </button>
+                    <span key={pid} className="inline-flex items-center gap-1.5">
+                      <button
+                        onClick={() => launchProject(pid)}
+                        className="px-3 py-1 rounded-full bg-[#141413] hover:bg-[#2E2D2A] text-white inline-flex items-center gap-1 transition-colors cursor-pointer"
+                      >
+                        {proj.shortName} <ArrowUpRight className="w-3 h-3" />
+                      </button>
+                      <a
+                        href={proj.githubUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        title={`${proj.shortName} GitHub`}
+                        className="w-7 h-7 rounded-full border border-stone-300 hover:border-[#141413] inline-flex items-center justify-center text-[#141413]"
+                      >
+                        <GithubIcon className="w-3.5 h-3.5" />
+                      </a>
+                    </span>
                   );
                 })}
               </div>
@@ -862,10 +1118,12 @@ export default function Portfolio({
                 className="py-7 grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-start"
               >
                 <div className="lg:col-span-4">
-                  <h3 className="text-[16px] font-bold text-[#141413]" style={FONT_DISPLAY}>
+                  <h3 className="text-[17px] font-extrabold text-[#141413]" style={FONT_DISPLAY}>
                     {row.title}
                   </h3>
-                  <p className="text-[13.5px] text-[#1E1D1B] mt-1 leading-relaxed">{row.note}</p>
+                  <p className="text-[13.5px] font-bold text-stone-700 mt-1 leading-relaxed">
+                    {row.note}
+                  </p>
                 </div>
 
                 <div className="lg:col-span-8 flex flex-wrap gap-2">
@@ -877,8 +1135,8 @@ export default function Portfolio({
                         onClick={() => setSelectedSkill(item)}
                         className={`px-3.5 py-2 rounded-full text-[13px] font-bold transition-all cursor-pointer ${
                           isPicked
-                            ? 'bg-[#141413] text-white'
-                            : 'bg-[#F6F5F0] text-[#1E1D1B] hover:bg-stone-200/80 hover:text-[#141413]'
+                            ? 'bg-[#141413] text-[#F5C542]'
+                            : 'bg-[#F6F5F0] text-[#141413] hover:bg-stone-200/80'
                         }`}
                       >
                         {item.name}
@@ -893,86 +1151,99 @@ export default function Portfolio({
       </section>
 
       {/* ============================================================== */}
-      {/* 5. PERSONAL ABOUT & QUIET CONTACT SHEET                        */}
+      {/* 7. EYE-CATCHING HR ABOUT & DARK-INK HIRE / GITHUB CARD         */}
       {/* ============================================================== */}
-      <section id="about-section" className="bg-[#F4F2EC] py-20 sm:py-28 px-5 sm:px-8">
-        <div className="max-w-[1240px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-          {/* Left: Personal Narrative */}
-          <div className="lg:col-span-7 space-y-6">
-            <p className="text-xs font-bold text-[#1E1D1B]">About me</p>
-            <h2
-              className="text-3xl sm:text-[46px] font-bold tracking-[-0.02em] leading-[1.1] text-[#141413]"
-              style={FONT_SERIF}
-            >
-              Hi, I&apos;m <em className="italic">Nischay.</em>
-            </h2>
+      <section id="about-section" className="bg-[#F4F2EC] py-20 sm:py-24 px-5 sm:px-8">
+        <div className="max-w-[1240px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-stretch">
+          {/* Left: Bold Bio & HR Highlights */}
+          <div className="lg:col-span-7 flex flex-col justify-between gap-6">
+            <div className="space-y-5">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-stone-300 text-xs font-bold text-[#141413]">
+                <Sparkles className="w-3.5 h-3.5 text-[#DC4A3D]" />
+                <span>Candidate Profile · Open for 2026–27 SWE &amp; Internships</span>
+              </div>
 
-            <div className="space-y-4 text-[16px] text-[#1E1D1B] leading-[1.78] max-w-xl">
-              <p>
-                I&apos;m a Computer Science undergraduate at{' '}
-                <strong className="font-bold text-[#141413]">
-                  Feroze Gandhi Institute of Engineering and Technology (AKTU)
-                </strong>{' '}
-                in Raebareli, India. I like building software where architecture and user feel both
-                matter — not just toy demos, but systems you can stress-test, measure, and interact
-                with.
-              </p>
-              <p>
-                Lately I&apos;ve been deep into Java 21, Spring Boot, Kafka outbox reliability, AST
-                static analysis, and real-time WebSocket applications. Currently looking for
-                Software Engineering, Backend, or Full-Stack opportunities.
-              </p>
+              <h2
+                className="text-3xl sm:text-[48px] font-bold tracking-[-0.02em] leading-[1.08] text-[#141413]"
+                style={FONT_SERIF}
+              >
+                Hi, I&apos;m <em className="italic">Nischay Srivastava.</em>
+              </h2>
+
+              <div className="space-y-4 text-[16px] font-bold text-[#1E1D1B] leading-[1.75] max-w-xl">
+                <p>
+                  Computer Science undergraduate at{' '}
+                  <strong className="text-[#141413] underline decoration-[#F5C542] decoration-4 underline-offset-2">
+                    Feroze Gandhi Institute of Engineering and Technology (AKTU)
+                  </strong>
+                  . I build end-to-end systems where backend architecture and user experience both
+                  hold up under scrutiny — tested with ArchUnit, Flyway, Kafka Outbox, and
+                  reproducible evaluation benchmarks.
+                </p>
+                <p>
+                  Every project on this website is live, interactive, and backed by public source
+                  code on GitHub so engineering managers and recruiters can inspect both the code
+                  and the running product in seconds.
+                </p>
+              </div>
             </div>
 
-            <div className="pt-6 border-t border-stone-300/70 grid grid-cols-1 sm:grid-cols-3 gap-6 text-sm">
-              <div>
-                <div className="text-xs text-[#1E1D1B] mb-1">Education</div>
-                <div className="font-bold text-[#141413]">B.Tech CSE, AKTU</div>
-                <div className="text-xs text-[#1E1D1B] mt-0.5">2023 – 2027</div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 border-t border-stone-300/80 text-sm font-bold">
+              <div className="p-4 rounded-xl bg-white border border-stone-200">
+                <div className="text-xs text-stone-600">Education</div>
+                <div className="text-[#141413] mt-1">B.Tech CSE, AKTU</div>
+                <div className="text-xs text-stone-600 mt-0.5">2023 – 2027</div>
               </div>
-              <div>
-                <div className="text-xs text-[#1E1D1B] mb-1">Based in</div>
-                <div className="font-bold text-[#141413]">Raebareli, India</div>
-                <div className="text-xs text-[#1E1D1B] mt-0.5">Open to relocate / remote</div>
+              <div className="p-4 rounded-xl bg-white border border-stone-200">
+                <div className="text-xs text-stone-600">Location</div>
+                <div className="text-[#141413] mt-1">Raebareli, India</div>
+                <div className="text-xs text-stone-600 mt-0.5">Open to relocate / remote</div>
               </div>
-              <div>
-                <div className="text-xs text-[#1E1D1B] mb-1">Focus</div>
-                <div className="font-bold text-[#141413]">Backend &amp; Full-Stack</div>
-                <div className="text-xs text-[#1E1D1B] mt-0.5">Java, Spring, React</div>
+              <div className="p-4 rounded-xl bg-white border border-stone-200">
+                <div className="text-xs text-stone-600">Target Roles</div>
+                <div className="text-[#1D8F5A] mt-1">SWE · Backend · Full-Stack</div>
+                <div className="text-xs text-stone-600 mt-0.5">Java · Spring · React</div>
               </div>
             </div>
           </div>
 
-          {/* Right: Clean Quiet Contact Sheet */}
-          <div className="lg:col-span-5 rounded-2xl bg-white border border-stone-200/90 p-7 sm:p-9 shadow-[0_4px_24px_rgba(20,20,19,0.04)] space-y-6">
-            <div>
+          {/* Right: Eye-Catching Dark-Ink HR Action & GitHub Card */}
+          <div className="lg:col-span-5 rounded-2xl bg-[#141413] text-white p-7 sm:p-9 shadow-[0_18px_45px_rgba(20,20,19,0.18)] flex flex-col justify-between gap-6">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between gap-2">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#F5C542] text-[#141413] text-[11px] font-extrabold uppercase tracking-wider">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#141413]" />
+                  Open To Work
+                </span>
+                <span className="text-xs text-stone-400" style={FONT_MONO}>
+                  Fast reply
+                </span>
+              </div>
+
               <h3
-                className="text-2xl font-bold tracking-[-0.015em] text-[#141413]"
+                className="text-3xl font-bold tracking-[-0.015em] text-white"
                 style={FONT_SERIF}
               >
-                Say hello.
+                Let&apos;s work <em className="italic text-[#F5C542]">together.</em>
               </h3>
-              <p className="text-sm text-[#1E1D1B] mt-1.5 leading-relaxed">
-                Always happy to chat about engineering roles, backend architecture, or side
-                projects.
-              </p>
-            </div>
 
-            <div className="divide-y divide-stone-100 border-y border-stone-100 text-sm">
-              <div className="py-3.5 flex items-center justify-between gap-3">
-                <div className="min-w-0">
-                  <div className="text-[11px] text-stone-800">Email</div>
-                  <a
-                    href="mailto:nischaysrivastava2@gmail.com"
-                    className="font-bold text-[#141413] hover:underline truncate block"
-                    style={FONT_MONO}
-                  >
-                    nischaysrivastava2@gmail.com
-                  </a>
-                </div>
+              <p className="text-sm font-bold text-stone-300 leading-relaxed">
+                Hiring for Backend, Java/Spring Boot, or Full-Stack roles? Grab my resume, inspect my
+                GitHub repos, or drop a direct email below.
+              </p>
+
+              {/* Email Copy Box */}
+              <div className="p-3 rounded-xl bg-white/10 border border-white/15 flex items-center justify-between gap-2">
+                <a
+                  href="mailto:nischaysrivastava2@gmail.com"
+                  className="text-xs font-bold text-white hover:text-[#F5C542] truncate"
+                  style={FONT_MONO}
+                >
+                  nischaysrivastava2@gmail.com
+                </a>
                 <button
                   onClick={handleCopyEmail}
-                  className="px-3 py-1.5 rounded-full bg-[#F4F2EC] hover:bg-[#141413] hover:text-white text-xs font-bold text-[#141413] inline-flex items-center gap-1 shrink-0 transition-colors cursor-pointer"
+                  className="px-3 py-1.5 rounded-full bg-white/15 hover:bg-[#F5C542] hover:text-[#141413] text-[11px] font-extrabold text-white inline-flex items-center gap-1 shrink-0 transition-colors cursor-pointer"
                 >
                   {copiedEmail ? (
                     <>
@@ -986,47 +1257,54 @@ export default function Portfolio({
                 </button>
               </div>
 
-              <a
-                href="/resume.pdf"
-                target="_blank"
-                rel="noreferrer"
-                className="py-3.5 flex items-center justify-between text-[#141413] hover:opacity-70 transition-opacity"
-              >
-                <span className="inline-flex items-center gap-2.5 font-bold">
-                  <FileText className="w-4 h-4 text-stone-800" /> Resume (PDF)
-                </span>
-                <ArrowUpRight className="w-4 h-4 text-stone-800" />
-              </a>
+              {/* Primary HR CTAs */}
+              <div className="grid grid-cols-2 gap-2.5 pt-1">
+                <a
+                  href="/resume.pdf"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="h-11 px-4 rounded-full bg-[#F5C542] hover:bg-white text-[#141413] text-xs font-extrabold inline-flex items-center justify-center gap-1.5 transition-colors"
+                >
+                  <FileText className="w-4 h-4" /> Resume PDF ↗
+                </a>
+                <a
+                  href="mailto:nischaysrivastava2@gmail.com"
+                  className="h-11 px-4 rounded-full bg-white hover:bg-stone-200 text-[#141413] text-xs font-extrabold inline-flex items-center justify-center gap-1.5 transition-colors"
+                >
+                  <Mail className="w-4 h-4" /> Send Email
+                </a>
+              </div>
 
+              {/* Prominent GitHub Profile & Repo Links */}
               <a
                 href="https://github.com/nischay237"
                 target="_blank"
                 rel="noreferrer"
-                className="py-3.5 flex items-center justify-between text-[#141413] hover:opacity-70 transition-opacity"
+                className="w-full h-11 px-4 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs font-bold flex items-center justify-between transition-colors"
               >
-                <span className="inline-flex items-center gap-2.5 font-bold">
-                  <GithubIcon className="w-4 h-4 text-stone-800" /> GitHub (@nischay237)
+                <span className="inline-flex items-center gap-2">
+                  <GithubIcon className="w-4 h-4 text-[#F5C542]" />
+                  github.com/nischay237
                 </span>
-                <ArrowUpRight className="w-4 h-4 text-stone-800" />
+                <ArrowUpRight className="w-4 h-4 text-[#F5C542]" />
               </a>
             </div>
 
-            <div className="space-y-2.5">
-              <div className="text-xs text-stone-800">Jump straight to live projects</div>
+            <div className="pt-4 border-t border-white/15 space-y-2.5">
+              <div className="text-[11px] uppercase tracking-wider text-stone-400">
+                Direct GitHub Repositories
+              </div>
               <div className="flex flex-wrap gap-2">
-                {[
-                  { label: 'Forge AI', fn: onOpenForge },
-                  { label: 'CodeClash 1v1', fn: onOpenArena },
-                  { label: 'Leaderboard', fn: onOpenLeaderboard },
-                  { label: 'Analytics', fn: onOpenAnalytics },
-                ].map((item) => (
-                  <button
-                    key={item.label}
-                    onClick={item.fn}
-                    className="px-3.5 py-1.5 rounded-full bg-[#F6F5F0] hover:bg-[#141413] hover:text-white text-xs font-bold text-[#141413] inline-flex items-center gap-1 transition-colors cursor-pointer"
+                {PROJECTS.map((p) => (
+                  <a
+                    key={p.id}
+                    href={p.githubUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="px-3 py-1.5 rounded-full bg-white/10 hover:bg-[#F5C542] hover:text-[#141413] text-xs font-bold text-white inline-flex items-center gap-1 transition-colors"
                   >
-                    {item.label} <ArrowUpRight className="w-3 h-3" />
-                  </button>
+                    <GithubIcon className="w-3 h-3" /> {p.shortName} ↗
+                  </a>
                 ))}
               </div>
             </div>
@@ -1035,11 +1313,11 @@ export default function Portfolio({
       </section>
 
       {/* ============================================================== */}
-      {/* 6. CLEAN ⌘K QUICK JUMP PALETTE                                 */}
+      {/* 8. CLEAN ⌘K QUICK JUMP PALETTE                                 */}
       {/* ============================================================== */}
       {cmdOpen && (
         <div
-          className="fixed inset-0 z-50 bg-[#141413]/40 backdrop-blur-xs flex items-start justify-center pt-[14vh] px-4"
+          className="fixed inset-0 z-50 bg-[#141413]/45 backdrop-blur-xs flex items-start justify-center pt-[14vh] px-4"
           onClick={() => setCmdOpen(false)}
         >
           <div
@@ -1047,17 +1325,17 @@ export default function Portfolio({
             onClick={(e) => e.stopPropagation()}
           >
             <div className="px-4 py-3.5 border-b border-stone-100 flex items-center gap-2.5">
-              <Search className="w-4 h-4 text-stone-800 shrink-0" />
+              <Search className="w-4 h-4 text-[#141413] shrink-0" />
               <input
                 autoFocus
                 value={cmdQuery}
                 onChange={(e) => setCmdQuery(e.target.value)}
-                placeholder="Jump to Forge AI, CodeClash, Resume, Email..."
-                className="flex-1 bg-transparent text-sm text-[#141413] placeholder:text-stone-800 focus:outline-none"
+                placeholder="Jump to Forge AI, CodeClash, Resume, GitHub..."
+                className="flex-1 bg-transparent text-sm font-bold text-[#141413] placeholder:text-stone-500 focus:outline-none"
               />
               <button
                 onClick={() => setCmdOpen(false)}
-                className="text-stone-800 hover:text-[#141413] cursor-pointer"
+                className="text-stone-600 hover:text-[#141413] cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -1076,10 +1354,10 @@ export default function Portfolio({
                     className="w-full text-left px-3 py-2.5 rounded-xl hover:bg-[#F6F5F0] flex items-center justify-between gap-3 text-sm transition-colors cursor-pointer"
                   >
                     <span className="flex items-center gap-2.5 font-bold text-[#141413]">
-                      <Icon className="w-4 h-4 text-[#1E1D1B]" />
+                      <Icon className="w-4 h-4 text-[#141413]" />
                       {c.label}
                     </span>
-                    <span className="text-[11px] text-stone-800" style={FONT_MONO}>
+                    <span className="text-[11px] font-bold text-stone-600" style={FONT_MONO}>
                       {c.meta}
                     </span>
                   </button>
@@ -1087,7 +1365,7 @@ export default function Portfolio({
               })}
             </div>
             <div
-              className="px-4 py-2.5 bg-[#FAF9F6] border-t border-stone-100 flex items-center justify-between text-[11px] text-stone-800"
+              className="px-4 py-2.5 bg-[#FAF9F6] border-t border-stone-100 flex items-center justify-between text-[11px] font-bold text-stone-600"
               style={FONT_MONO}
             >
               <span className="inline-flex items-center gap-1">
