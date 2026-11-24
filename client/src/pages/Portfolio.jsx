@@ -1,9 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import {
+  ArrowDown,
   ArrowUpRight,
   Award,
   BarChart3,
   Check,
+  CheckCircle2,
   Command,
   Copy,
   ExternalLink,
@@ -17,7 +19,7 @@ import {
   Zap,
 } from 'lucide-react';
 
-const GithubIcon = ({ className = 'w-3.5 h-3.5' }) => (
+const GithubIcon = ({ className = 'w-4 h-4' }) => (
   <svg className={className} fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
     <path
       fillRule="evenodd"
@@ -27,38 +29,88 @@ const GithubIcon = ({ className = 'w-3.5 h-3.5' }) => (
   </svg>
 );
 
+const PROJECTS = [
+  {
+    id: 'forge',
+    index: '01',
+    displayTitle: 'FORGE AI',
+    fullTitle: 'FORGE — AI Software Engineering Intelligence Platform',
+    subtitle: 'JAVA 21 · SPRING BOOT 3.5 · KAFKA OUTBOX · AST BLAST RADIUS',
+    badge: '100% F1 EVAL',
+    accentBg: 'bg-[#FBBF04]',
+    accentText: 'text-[#111111]',
+    accentHex: '#FBBF04',
+    summary:
+      'Multi-tenant Spring Boot 3.5 control plane that parses JavaParser AST dependency graphs, computes BFS blast radius, masks leaked secrets & blocks prompt injections, and proves accuracy with an 8-case reproducible evaluation benchmark.',
+    highlights: [
+      'Java 21 + Spring Boot 3.5 modular monolith with Transactional Outbox, Kafka DLT, Redis & Resilience4j',
+      'JavaParser AST Dependency Graph & BFS Change Impact Analysis computing affected classes & tests',
+      'Gitleaks secret masking, Semgrep SAST, prompt-injection defense & 8-case Eval Suite (100% F1 / 0% FPR)',
+      'Multi-tenant JWT + RBAC isolation, Flyway migrations, OpenTelemetry & 4 ArchUnit boundary rules',
+    ],
+    techStack: ['Java 21', 'Spring Boot 3.5', 'Apache Kafka', 'Redis', 'PostgreSQL', 'JavaParser AST', 'Spring AI', 'React + TS'],
+    githubUrl: 'https://github.com/nischay237/forge-ai-platform',
+    cta: 'OPEN CONTROL PLANE',
+  },
+  {
+    id: 'codeclash',
+    index: '02',
+    displayTitle: 'CODECLASH',
+    fullTitle: 'CodeClash — 1v1 Real-Time Coding Battle Arena',
+    subtitle: 'WEBSOCKETS · NODE.JS · SANDBOX JUDGE · FIDE ELO RATINGS',
+    badge: 'PLAYABLE LIVE',
+    accentBg: 'bg-[#F94144]',
+    accentText: 'text-white',
+    accentHex: '#F94144',
+    summary:
+      'Head-to-head competitive DSA battle arena syncing live keystrokes & test-case progress over low-latency Socket.io channels, evaluating submissions inside an isolated sandbox, and computing real FIDE Elo ratings.',
+    highlights: [
+      'Bidirectional Socket.io WebSocket engine for zero-lag keystroke and match progress sync',
+      'Isolated code execution sandbox with strict security and timeout guards',
+      'FIDE-grade Elo rating system updating global player standings after every match',
+      'Dual persistence on MongoDB Atlas with resilient in-memory fallback',
+    ],
+    techStack: ['React.js', 'Node.js', 'Express.js', 'Socket.io', 'Tailwind CSS', 'MongoDB'],
+    githubUrl: 'https://github.com/nischay237/codeclash',
+    cta: 'LAUNCH 1V1 ARENA',
+  },
+  {
+    id: 'analytics',
+    index: '03',
+    displayTitle: 'ANALYTICS',
+    fullTitle: 'Real-Time Analytics Tracker & Telemetry Dashboard',
+    subtitle: '<3KB SCRIPT · ZERO COOKIES · LIVE HEARTBEATS · FUNNELS',
+    badge: '<3KB LIVE',
+    accentBg: 'bg-[#00B86B]',
+    accentText: 'text-white',
+    accentHex: '#00B86B',
+    summary:
+      'Self-hosted, privacy-first web telemetry platform under 3KB with zero third-party cookie bloat. Streams active visitor heartbeats, pageview velocity, and clean conversion funnels in real time.',
+    highlights: [
+      'Ultra-lightweight embeddable tracking snippet under 3KB with zero tracking cookies',
+      'Real-time active visitor count synchronized over WebSocket session heartbeats',
+      'High-throughput ingestion pipeline built with Node.js, Express, and MongoDB',
+      'Interactive analytics dashboard with live session graphs and conversion funnels',
+    ],
+    techStack: ['React.js', 'Node.js', 'Express.js', 'MongoDB', 'Tailwind CSS', 'REST APIs'],
+    githubUrl: 'https://github.com/nischay237/analytics-tracker',
+    driveUrl: 'https://drive.google.com/drive/folders/1yDR9xbt8fTiyh9TyWV9C4lS6Y4Th3-61?usp=sharing',
+    cta: 'OPEN DASHBOARD',
+  },
+];
+
 const FORGE_NODES = {
-  TransferController: {
-    layer: '01 API',
-    callers: [],
-    risk: 'LOW',
-    deps: ['SettlementService', 'IdempotencyGuard'],
-  },
-  SettlementService: {
-    layer: '02 SERVICE',
-    callers: ['TransferController', 'SettlementServiceTest'],
-    risk: 'HIGH',
-    deps: ['FraudRiskEngine', 'LedgerRepository', 'OutboxEventPublisher'],
-  },
-  FraudRiskEngine: {
-    layer: '02 SERVICE',
-    callers: ['SettlementService', 'TransferController', 'SettlementServiceTest'],
-    risk: 'HIGH',
-    deps: ['VelocityCacheClient'],
-  },
-  LedgerRepository: {
-    layer: '03 DATA',
-    callers: ['SettlementService', 'TransferController', 'SettlementServiceTest'],
-    risk: 'HIGH',
-    deps: ['PostgreSQL 16'],
-  },
+  TransferController: { layer: '01 API', callers: [], risk: 'LOW' },
+  SettlementService: { layer: '02 SERVICE', callers: ['TransferController', 'SettlementServiceTest'], risk: 'HIGH' },
+  FraudRiskEngine: { layer: '02 SERVICE', callers: ['SettlementService', 'TransferController', 'SettlementServiceTest'], risk: 'HIGH' },
+  LedgerRepository: { layer: '03 DATA', callers: ['SettlementService', 'TransferController', 'SettlementServiceTest'], risk: 'HIGH' },
 };
 
 const SKILL_GROUPS = [
   {
     id: 'backend',
-    code: 'A',
     label: 'BACKEND & DISTRIBUTED',
+    dot: 'bg-[#2B44B8]',
     items: [
       { name: 'Java 21 LTS', projects: ['forge'] },
       { name: 'Spring Boot 3.5', projects: ['forge'] },
@@ -71,8 +123,8 @@ const SKILL_GROUPS = [
   },
   {
     id: 'frontend',
-    code: 'B',
-    label: 'FRONTEND SYSTEMS',
+    label: 'FRONTEND UI',
+    dot: 'bg-[#FBBF04]',
     items: [
       { name: 'React 18 & TypeScript', projects: ['forge', 'codeclash', 'analytics'] },
       { name: 'Tailwind CSS', projects: ['forge', 'codeclash', 'analytics'] },
@@ -83,8 +135,8 @@ const SKILL_GROUPS = [
   },
   {
     id: 'data',
-    code: 'C',
-    label: 'DATABASES & CACHING',
+    label: 'DATABASES & CACHE',
+    dot: 'bg-[#00B86B]',
     items: [
       { name: 'PostgreSQL + pgvector', projects: ['forge'] },
       { name: 'Redis Rate Limiting', projects: ['forge'] },
@@ -95,8 +147,8 @@ const SKILL_GROUPS = [
   },
   {
     id: 'ai',
-    code: 'D',
-    label: 'AI & ENGINEERING OPS',
+    label: 'AI & DEVOPS',
+    dot: 'bg-[#F94144]',
     items: [
       { name: 'JavaParser AST & BFS', projects: ['forge'] },
       { name: 'Spring AI / Gemini API', projects: ['forge'] },
@@ -107,39 +159,17 @@ const SKILL_GROUPS = [
   },
   {
     id: 'cs',
-    code: 'E',
-    label: 'CS FUNDAMENTALS',
+    label: 'CS CORE',
+    dot: 'bg-[#F26CA7]',
     items: [
       { name: 'Data Structures & Graphs', projects: ['forge', 'codeclash'] },
       { name: 'FIDE Elo Algorithms', projects: ['codeclash'] },
       { name: 'Transactional Outbox', projects: ['forge'] },
-      { name: 'DBMS & Indexing', projects: ['forge', 'analytics'] },
+      { name: 'DBMS & Query Tuning', projects: ['forge', 'analytics'] },
       { name: 'Concurrency & OS', projects: ['forge', 'codeclash'] },
     ],
   },
 ];
-
-const PROJECT_META = {
-  forge: {
-    code: '01',
-    name: 'FORGE AI Platform',
-    cat: 'distributed',
-    github: 'https://github.com/nischay237/forge-ai-platform',
-  },
-  codeclash: {
-    code: '02',
-    name: 'CodeClash 1v1 Arena',
-    cat: 'realtime',
-    github: 'https://github.com/nischay237/codeclash',
-  },
-  analytics: {
-    code: '03',
-    name: 'Analytics Tracker',
-    cat: 'telemetry',
-    github: 'https://github.com/nischay237/analytics-tracker',
-    drive: 'https://drive.google.com/drive/folders/1yDR9xbt8fTiyh9TyWV9C4lS6Y4Th3-61?usp=sharing',
-  },
-};
 
 export default function Portfolio({
   onOpenArena,
@@ -147,7 +177,8 @@ export default function Portfolio({
   onOpenAnalytics,
   onOpenForge,
 }) {
-  const [workFilter, setWorkFilter] = useState('all');
+  const [hoveredId, setHoveredId] = useState(null);
+  const [activeProjectId, setActiveProjectId] = useState('forge');
   const [selectedAstNode, setSelectedAstNode] = useState('FraudRiskEngine');
   const [duelRunning, setDuelRunning] = useState(false);
   const [p1Tests, setP1Tests] = useState(12);
@@ -156,12 +187,9 @@ export default function Portfolio({
   const [eloDelta, setEloDelta] = useState('+18');
   const [visitors, setVisitors] = useState(42);
   const [events, setEvents] = useState(1284);
-  const [bars, setBars] = useState([42, 68, 52, 86, 60, 94, 72, 84, 58, 90]);
+  const [bars, setBars] = useState([46, 68, 52, 86, 62, 95, 74, 88, 60, 92]);
   const [skillFilter, setSkillFilter] = useState('all');
-  const [selectedSkill, setSelectedSkill] = useState({
-    name: 'Java 21 LTS',
-    projects: ['forge'],
-  });
+  const [selectedSkill, setSelectedSkill] = useState({ name: 'Java 21 LTS', projects: ['forge'] });
   const [copiedEmail, setCopiedEmail] = useState(false);
   const [cmdOpen, setCmdOpen] = useState(false);
   const [cmdQuery, setCmdQuery] = useState('');
@@ -179,14 +207,24 @@ export default function Portfolio({
     return () => window.removeEventListener('keydown', onKey);
   }, []);
 
-  const scrollTo = (id) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
+  const focusedHeroProject = useMemo(
+    () => PROJECTS.find((p) => p.id === (hoveredId || activeProjectId)) || PROJECTS[0],
+    [hoveredId, activeProjectId]
+  );
+
+  const activeLabProject = useMemo(
+    () => PROJECTS.find((p) => p.id === activeProjectId) || PROJECTS[0],
+    [activeProjectId]
+  );
 
   const launchProject = (id) => {
     if (id === 'forge') onOpenForge?.();
     else if (id === 'codeclash') onOpenArena?.();
     else if (id === 'analytics') onOpenAnalytics?.();
+  };
+
+  const scrollTo = (id) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   const handleCopyEmail = () => {
@@ -207,16 +245,16 @@ export default function Portfolio({
       [11, 9],
       [12, 10],
     ];
-    seq.forEach(([a, b], i) => {
+    seq.forEach(([a, b], idx) => {
       setTimeout(() => {
         setP1Tests(a);
         setP2Tests(b);
-        if (i === seq.length - 1) {
+        if (idx === seq.length - 1) {
           setDuelRunning(false);
           setElo((v) => v + 14);
           setEloDelta('+14');
         }
-      }, (i + 1) * 240);
+      }, (idx + 1) * 240);
     });
   };
 
@@ -230,19 +268,15 @@ export default function Portfolio({
   const visibleSkillGroups =
     skillFilter === 'all' ? SKILL_GROUPS : SKILL_GROUPS.filter((g) => g.id === skillFilter);
 
-  const showForge = workFilter === 'all' || workFilter === 'distributed';
-  const showCodeClash = workFilter === 'all' || workFilter === 'realtime';
-  const showAnalytics = workFilter === 'all' || workFilter === 'telemetry';
-
   const commands = useMemo(
     () => [
       { label: '01 / OPEN FORGE AI CONTROL PLANE', meta: '/forge', icon: Network, run: () => onOpenForge?.() },
       { label: '02 / LAUNCH CODECLASH 1V1 ARENA', meta: '/arena', icon: Swords, run: () => onOpenArena?.() },
-      { label: '03 / VIEW CODECLASH LEADERBOARD', meta: '/leaderboard', icon: Award, run: () => onOpenLeaderboard?.() },
+      { label: '03 / CODECLASH GLOBAL LEADERBOARD', meta: '/leaderboard', icon: Award, run: () => onOpenLeaderboard?.() },
       { label: '04 / LAUNCH ANALYTICS DASHBOARD', meta: '/analytics', icon: BarChart3, run: () => onOpenAnalytics?.() },
-      { label: '05 / OPEN RESUME.PDF', meta: 'PDF', icon: FileText, run: () => window.open('/resume.pdf', '_blank', 'noopener,noreferrer') },
+      { label: '05 / VIEW RESUME.PDF', meta: 'PDF', icon: FileText, run: () => window.open('/resume.pdf', '_blank', 'noopener,noreferrer') },
       { label: '06 / COPY EMAIL ADDRESS', meta: 'CLIPBOARD', icon: Copy, run: handleCopyEmail },
-      { label: '07 / GITHUB @NISCHAY237', meta: 'EXTERNAL', icon: GithubIcon, run: () => window.open('https://github.com/nischay237', '_blank', 'noopener,noreferrer') },
+      { label: '07 / GITHUB @NISCHAY237', meta: 'GITHUB', icon: GithubIcon, run: () => window.open('https://github.com/nischay237', '_blank', 'noopener,noreferrer') },
     ],
     [onOpenForge, onOpenArena, onOpenLeaderboard, onOpenAnalytics]
   );
@@ -255,753 +289,601 @@ export default function Portfolio({
 
   return (
     <div
-      className="min-h-screen text-[#111111] selection:bg-[#FFE600] selection:text-[#111111]"
-      style={{
-        fontFamily: "'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif",
-        backgroundColor: '#F5F5F3',
-        backgroundImage: `
-          linear-gradient(to right, rgba(17,17,17,0.055) 1px, transparent 1px),
-          linear-gradient(to bottom, rgba(17,17,17,0.055) 1px, transparent 1px)
-        `,
-        backgroundSize: '18px 18px',
-      }}
+      className="min-h-screen bg-[#EAE8E4] text-[#111111] selection:bg-[#FBBF04] selection:text-[#111111]"
+      style={{ fontFamily: "'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif" }}
     >
-      {/* OUTER ARCHITECTURAL SWISS SHEET */}
-      <div className="max-w-[1360px] mx-auto bg-white/95 border-x border-[#111111]/20 shadow-[0_0_40px_rgba(0,0,0,0.04)]">
-        {/* ============================================================== */}
-        {/* 1. CLASSIC SWISS MASTHEAD ("MINIMAL // DESIGN" ARCHITECTURE)   */}
-        {/* ============================================================== */}
-        <header className="px-5 sm:px-8 pt-6 pb-4 border-b border-[#111111]/15">
-          {/* Top Metadata + Giant Typographic Lockup */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-end pb-5">
-            <div className="lg:col-span-6">
-              <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-stone-500 mb-1 flex items-center gap-2">
-                <span className="inline-block w-2 h-2 bg-[#E11D24]" />
-                PORTFOLIO MONOGRAPH · EDITION 2026
-              </div>
-              <h1 className="text-3xl sm:text-[42px] leading-none tracking-[-0.05em] uppercase select-none">
-                <span className="font-black text-[#111111]">NISCHAY</span>{' '}
-                <span className="font-black text-[#E11D24]">//</span>{' '}
-                <span className="font-light tracking-[0.02em] text-[#111111]">ENGINEER</span>
-              </h1>
-            </div>
+      {/* ============================================================== */}
+      {/* 1. CLEAN FROSTED EDITORIAL TOP NAVBAR                          */}
+      {/* ============================================================== */}
+      <header className="sticky top-0 z-40 bg-[#EAE8E4]/85 backdrop-blur-md border-b border-[#111111]/12">
+        <div className="max-w-[1360px] mx-auto px-5 sm:px-8 h-16 flex items-center justify-between gap-4">
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="flex items-center gap-2.5 cursor-pointer"
+          >
+            <span className="w-7 h-7 bg-[#111111] text-[#FBBF04] font-mono font-black text-xs flex items-center justify-center">
+              NS
+            </span>
+            <span className="font-black text-sm sm:text-[15px] tracking-[-0.03em] uppercase text-[#111111]">
+              NISCHAY SRIVASTAVA
+            </span>
+          </button>
 
-            <div className="lg:col-span-3 lg:border-l border-[#111111]/20 lg:pl-4 text-[11px] font-mono leading-relaxed text-stone-700">
-              <div className="font-bold text-[#111111]">FULL-STACK &amp; DISTRIBUTED SYSTEMS</div>
-              <div>JAVA 21 · SPRING BOOT 3.5 · KAFKA</div>
-              <div>REACT · TYPESCRIPT · WEBSOCKETS</div>
-            </div>
+          <nav className="hidden md:flex items-center gap-7 text-xs font-bold uppercase tracking-[0.08em] text-[#111111]/70">
+            <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="hover:text-[#111111] cursor-pointer">
+              Projects
+            </button>
+            <button onClick={() => scrollTo('interactive-lab')} className="hover:text-[#111111] cursor-pointer">
+              Interactive Lab
+            </button>
+            <button onClick={() => scrollTo('skills-section')} className="hover:text-[#111111] cursor-pointer">
+              Skills
+            </button>
+            <button onClick={() => scrollTo('about-section')} className="hover:text-[#111111] cursor-pointer">
+              About
+            </button>
+          </nav>
 
-            <div className="lg:col-span-3 lg:border-l border-[#111111]/20 lg:pl-4 text-[11px] font-mono leading-relaxed text-stone-700 flex flex-col justify-between gap-1.5">
-              <div className="flex items-center justify-between gap-2">
-                <span className="font-bold text-[#111111]">RAEBARELI, IN</span>
-                <span className="px-1.5 py-0.5 bg-[#FFE600] text-[#111111] font-bold text-[10px]">
-                  OPEN TO ROLES
-                </span>
-              </div>
-              <div>B.TECH CSE — FGIET (AKTU)</div>
-              <button
-                onClick={() => setCmdOpen(true)}
-                className="inline-flex items-center justify-between px-2 py-1 border border-[#111111] bg-white hover:bg-[#111111] hover:text-white text-[10.5px] font-bold transition-colors cursor-pointer"
-              >
-                <span className="inline-flex items-center gap-1.5">
-                  <Search className="w-3 h-3" /> QUICK INDEX
-                </span>
-                <span>⌘K</span>
-              </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setCmdOpen(true)}
+              className="hidden sm:inline-flex items-center gap-2 h-9 px-3 bg-white/75 hover:bg-white border border-[#111111]/20 text-[11px] font-mono font-bold text-[#111111] transition-colors cursor-pointer"
+            >
+              <Search className="w-3.5 h-3.5" />
+              <span>INDEX</span>
+              <span className="px-1 bg-[#111111]/10 text-[10px]">⌘K</span>
+            </button>
+            <a
+              href="/resume.pdf"
+              target="_blank"
+              rel="noreferrer"
+              className="h-9 px-3.5 bg-white/80 hover:bg-white border border-[#111111] text-[11px] font-mono font-bold uppercase inline-flex items-center gap-1 transition-colors"
+            >
+              RESUME <ArrowUpRight className="w-3.5 h-3.5" />
+            </a>
+            <a
+              href="mailto:nischaysrivastava2@gmail.com"
+              className="h-9 px-4 bg-[#111111] hover:bg-[#2B44B8] text-white text-[11px] font-mono font-bold uppercase inline-flex items-center transition-colors"
+            >
+              CONTACT
+            </a>
+          </div>
+        </div>
+      </header>
+
+      {/* ============================================================== */}
+      {/* 2. FULL-BLEED BLURRED ARTWORK HERO + MASSIVE BOLD PROJECTS     */}
+      {/* ============================================================== */}
+      <section className="relative min-h-[calc(100vh-64px)] overflow-hidden bg-[#EAE8E4] border-b-2 border-[#111111]">
+        {/* BACKGROUND LAYER: Softly Blurred Girl Looking Up + Bauhaus Shapes */}
+        <div className="absolute inset-0 pointer-events-none select-none overflow-hidden">
+          {/* Subtle wide ambient fill so ultrawide monitors match seamlessly */}
+          <img
+            src="/hero-creative-bg.jpg"
+            alt=""
+            aria-hidden="true"
+            className="w-full h-full object-cover object-center scale-110 blur-[26px] opacity-35"
+          />
+
+          {/* Primary Dreamy Blurred Artwork: Girl Looking Upward at Bold Project Titles */}
+          <div
+            className="absolute inset-0 flex items-end justify-center"
+            style={{
+              WebkitMaskImage:
+                'linear-gradient(to right, transparent 0%, black 14%, black 86%, transparent 100%)',
+              maskImage:
+                'linear-gradient(to right, transparent 0%, black 14%, black 86%, transparent 100%)',
+            }}
+          >
+            <img
+              src="/hero-creative-bg.jpg"
+              alt="Creative blurred background illustration"
+              className={`h-full w-auto max-w-[1060px] object-cover object-bottom transition-all duration-500 ${
+                hoveredId ? 'blur-[6px] scale-[1.03] opacity-75' : 'blur-[4px] scale-[1.01] opacity-85'
+              }`}
+            />
+          </div>
+
+          {/* Gentle Editorial Ivory Wash so Giant Black Letters Have Razor-Sharp Contrast */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                'linear-gradient(180deg, rgba(234,232,228,0.46) 0%, rgba(234,232,228,0.28) 52%, rgba(234,232,228,0.52) 100%)',
+            }}
+          />
+        </div>
+
+        {/* FOREGROUND LAYER: MASSIVE BOLD INTERACTIVE PROJECT TITLES */}
+        <div className="relative z-10 max-w-[1360px] mx-auto px-5 sm:px-10 py-8 sm:py-10 min-h-[calc(100vh-64px)] flex flex-col justify-between gap-8">
+          {/* Top Minimal Identity Strip */}
+          <div className="flex flex-wrap items-center justify-between gap-3 text-[11px] font-mono font-bold uppercase tracking-[0.14em] text-[#111111]">
+            <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm px-3 py-1.5 border border-[#111111]/15">
+              <span className="w-2 h-2 bg-[#00B86B]" />
+              <span>FULL-STACK &amp; DISTRIBUTED SYSTEMS ENGINEER</span>
+            </div>
+            <div className="inline-flex items-center gap-3 bg-white/80 backdrop-blur-sm px-3 py-1.5 border border-[#111111]/15">
+              <span>B.TECH CSE (AKTU)</span>
+              <span className="opacity-35">/</span>
+              <span>SELECT A PROJECT TO LAUNCH LIVE</span>
             </div>
           </div>
 
-          {/* SIGNATURE SOLID BLACK HORIZONTAL BAR NAVIGATION */}
-          <nav className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-[3px] pt-1">
-            {[
-              { label: '01 / PORTFOLIO', action: () => scrollTo('swiss-gallery'), active: true },
-              { label: '02 / FORGE AI ↗', action: onOpenForge, accent: 'red' },
-              { label: '03 / CODECLASH ↗', action: onOpenArena },
-              { label: '04 / ANALYTICS ↗', action: onOpenAnalytics },
-              { label: '05 / SKILLS', action: () => scrollTo('skills-section') },
-              { label: '06 / CONTACT', action: () => scrollTo('about-section') },
-            ].map((item) => (
-              <button
-                key={item.label}
-                onClick={item.action}
-                className={`h-8 px-3 text-left text-[10.5px] font-mono font-bold tracking-[0.08em] uppercase transition-colors cursor-pointer flex items-center justify-between ${
-                  item.active
-                    ? 'bg-[#111111] text-[#FFE600]'
-                    : item.accent === 'red'
-                    ? 'bg-[#111111] text-white hover:bg-[#E11D24]'
-                    : 'bg-[#111111] text-white hover:bg-[#FFE600] hover:text-[#111111]'
-                }`}
-              >
-                <span>{item.label}</span>
-                <span className="text-[9px] opacity-60">■</span>
-              </button>
-            ))}
-          </nav>
-        </header>
-
-        {/* ============================================================== */}
-        {/* 2. ASYMMETRIC SWISS 3-COLUMN EDITORIAL GALLERY                 */}
-        {/*    (Left Index Rail + Center Poster Spreads + Right Specimens) */}
-        {/* ============================================================== */}
-        <div
-          id="swiss-gallery"
-          className="px-5 sm:px-8 py-8 grid grid-cols-1 lg:grid-cols-12 gap-7 items-start"
-        >
-          {/* COLUMN A: NARROW SWISS LEFT INDEX RAIL (2 cols) */}
-          <aside className="lg:col-span-2 space-y-6 lg:sticky lg:top-6">
-            {/* Block 1: Index Filter */}
-            <div className="border-t-2 border-[#111111] pt-2.5">
-              <div className="text-[10px] font-mono font-bold uppercase tracking-[0.14em] text-[#111111] mb-2.5">
-                WORK INDEX
-              </div>
-              <div className="space-y-1 text-xs">
-                {[
-                  { id: 'all', label: 'All Projects', count: '03' },
-                  { id: 'distributed', label: 'Distributed & AI', count: '01' },
-                  { id: 'realtime', label: 'Real-Time Arena', count: '01' },
-                  { id: 'telemetry', label: 'Web Telemetry', count: '01' },
-                ].map((f) => {
-                  const isAct = workFilter === f.id;
-                  return (
-                    <button
-                      key={f.id}
-                      onClick={() => setWorkFilter(f.id)}
-                      className={`w-full text-left py-1 px-1.5 flex items-center justify-between transition-colors cursor-pointer ${
-                        isAct
-                          ? 'bg-[#111111] text-white font-semibold'
-                          : 'text-stone-700 hover:bg-stone-100 hover:text-[#111111]'
+          {/* GIANT ULTRA-BOLD INTERACTIVE PROJECT LIST (Hover & Click!) */}
+          <div className="my-auto py-4">
+            <div className="border-t-2 border-[#111111] divide-y-2 divide-[#111111]/85">
+              {PROJECTS.map((project) => {
+                const isDimmed = hoveredId && hoveredId !== project.id;
+                const isFocused = hoveredId === project.id;
+                return (
+                  <div
+                    key={project.id}
+                    onMouseEnter={() => {
+                      setHoveredId(project.id);
+                      setActiveProjectId(project.id);
+                    }}
+                    onMouseLeave={() => setHoveredId(null)}
+                    onClick={() => launchProject(project.id)}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        launchProject(project.id);
+                      }
+                    }}
+                    className={`group py-4 sm:py-6 flex flex-col lg:flex-row lg:items-center justify-between gap-3 cursor-pointer transition-all duration-300 ${
+                      isDimmed ? 'opacity-45' : 'opacity-100'
+                    }`}
+                  >
+                    {/* Left: Massive Bold Project Index + Giant Bold Letters */}
+                    <div
+                      className={`flex items-baseline gap-4 sm:gap-7 transition-transform duration-300 ${
+                        isFocused ? 'translate-x-2 sm:translate-x-4' : ''
                       }`}
                     >
-                      <span className="flex items-center gap-1.5">
-                        {isAct && <span className="w-1.5 h-1.5 bg-[#FFE600]" />}
-                        {f.label}
+                      <span className="font-mono text-sm sm:text-base font-black tracking-widest text-[#111111] bg-white/85 px-2 py-0.5 border border-[#111111]">
+                        {project.index}
                       </span>
-                      <span className="font-mono text-[10px] opacity-75">{f.count}</span>
+                      <h2
+                        className="text-5xl sm:text-7xl lg:text-[92px] font-black tracking-[-0.055em] uppercase leading-[0.9] text-[#111111]"
+                        style={{
+                          textShadow: '0 2px 24px rgba(234, 232, 228, 0.9)',
+                        }}
+                      >
+                        {project.displayTitle}
+                      </h2>
+                    </div>
+
+                    {/* Right: Bold Category Subtitle + Bauhaus Accent Pill + Launch Arrow */}
+                    <div className="flex flex-wrap items-center gap-3 pl-12 sm:pl-16 lg:pl-0">
+                      <div className="text-left lg:text-right">
+                        <span
+                          className={`inline-block px-2.5 py-0.5 text-[10.5px] font-mono font-black uppercase tracking-wider border border-[#111111] ${project.accentBg} ${project.accentText}`}
+                        >
+                          {project.badge}
+                        </span>
+                        <div className="text-[11px] font-mono font-bold text-[#111111] bg-[#EAE8E4]/85 px-2 py-0.5 mt-1">
+                          {project.subtitle}
+                        </div>
+                      </div>
+
+                      <span
+                        className={`w-12 h-12 sm:w-14 sm:h-14 border-2 border-[#111111] flex items-center justify-center shrink-0 transition-all duration-300 ${
+                          isFocused
+                            ? 'bg-[#111111] text-[#FBBF04] rotate-12 scale-105'
+                            : 'bg-white/90 text-[#111111]'
+                        }`}
+                      >
+                        <ArrowUpRight className="w-6 h-6 stroke-[2.5]" />
+                      </span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Bottom Frosted Interactive Spotlight Strip (Updates Live on Hover!) */}
+          <div className="bg-white/90 backdrop-blur-md border-2 border-[#111111] p-4 sm:px-6 flex flex-col lg:flex-row lg:items-center justify-between gap-4 shadow-[6px_6px_0px_#111111]">
+            <div className="min-w-0 flex items-start sm:items-center gap-3.5">
+              <span
+                className={`px-2 py-1 text-[11px] font-mono font-black uppercase border border-[#111111] shrink-0 ${focusedHeroProject.accentBg} ${focusedHeroProject.accentText}`}
+              >
+                {focusedHeroProject.index} · {focusedHeroProject.displayTitle}
+              </span>
+              <p className="text-xs sm:text-[13px] font-semibold text-[#111111] leading-snug line-clamp-2">
+                {focusedHeroProject.summary}
+              </p>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-2 shrink-0">
+              <button
+                onClick={() => launchProject(focusedHeroProject.id)}
+                className="h-10 px-4 bg-[#111111] hover:bg-[#2B44B8] text-white text-xs font-mono font-bold uppercase inline-flex items-center gap-1.5 transition-colors cursor-pointer"
+              >
+                {focusedHeroProject.cta} <ArrowUpRight className="w-3.5 h-3.5" />
+              </button>
+              <button
+                onClick={() => scrollTo('interactive-lab')}
+                className="h-10 px-4 bg-[#EAE8E4] hover:bg-[#FBBF04] border border-[#111111] text-[#111111] text-xs font-mono font-bold uppercase inline-flex items-center gap-1.5 transition-colors cursor-pointer"
+              >
+                INTERACTIVE LAB <ArrowDown className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================================== */}
+      {/* 3. INTERACTIVE PROJECT SANDBOX STUDIO                          */}
+      {/* ============================================================== */}
+      <section id="interactive-lab" className="bg-[#F6F5F2] py-14 sm:py-20 px-5 sm:px-8 border-b-2 border-[#111111]">
+        <div className="max-w-[1360px] mx-auto space-y-6">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div>
+              <div className="text-[11px] font-mono font-bold uppercase tracking-[0.16em] text-[#2B44B8]">
+                PLAYABLE PREVIEWS // TEST BEFORE LAUNCHING
+              </div>
+              <h2 className="text-3xl sm:text-5xl font-black tracking-[-0.045em] uppercase text-[#111111] mt-1 leading-none">
+                INTERACTIVE LAB.
+              </h2>
+            </div>
+
+            {/* Bold Project Switcher Tabs */}
+            <div className="flex flex-wrap gap-1.5">
+              {PROJECTS.map((p) => {
+                const active = p.id === activeProjectId;
+                return (
+                  <button
+                    key={p.id}
+                    onClick={() => setActiveProjectId(p.id)}
+                    className={`px-4 py-2 text-xs font-mono font-black uppercase border-2 border-[#111111] transition-all cursor-pointer ${
+                      active
+                        ? 'bg-[#111111] text-[#FBBF04] shadow-[3px_3px_0px_#2B44B8]'
+                        : 'bg-white text-[#111111] hover:bg-[#EAE8E4]'
+                    }`}
+                  >
+                    {p.index} // {p.displayTitle}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Crisp Elevated Interactive Stage */}
+          <div className="border-2 border-[#111111] bg-white shadow-[8px_8px_0px_#111111] grid grid-cols-1 lg:grid-cols-12">
+            {/* Left: Bold Project Details */}
+            <div className="lg:col-span-6 p-6 sm:p-8 border-b-2 lg:border-b-0 lg:border-r-2 border-[#111111] flex flex-col justify-between gap-6">
+              <div className="space-y-4">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span
+                    className={`px-2.5 py-0.5 text-[10.5px] font-mono font-black uppercase border border-[#111111] ${activeLabProject.accentBg} ${activeLabProject.accentText}`}
+                  >
+                    {activeLabProject.badge}
+                  </span>
+                  <span className="text-[11px] font-mono font-bold text-stone-500">
+                    {activeLabProject.subtitle}
+                  </span>
+                </div>
+
+                <h3 className="text-2xl sm:text-3xl font-black tracking-[-0.035em] uppercase text-[#111111] leading-tight">
+                  {activeLabProject.fullTitle}
+                </h3>
+
+                <p className="text-sm text-stone-700 leading-relaxed">
+                  {activeLabProject.summary}
+                </p>
+
+                <div className="space-y-2 pt-1">
+                  {activeLabProject.highlights.map((h, i) => (
+                    <div key={i} className="flex items-start gap-2.5 text-xs sm:text-[13px] font-medium text-[#111111]">
+                      <CheckCircle2 className="w-4 h-4 text-[#00B86B] shrink-0 mt-0.5" />
+                      <span>{h}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="flex flex-wrap gap-1.5 pt-2">
+                  {activeLabProject.techStack.map((tech) => (
+                    <span
+                      key={tech}
+                      className="px-2.5 py-1 bg-[#EAE8E4] border border-[#111111]/25 text-[11px] font-mono font-bold text-[#111111]"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-2.5 pt-4 border-t border-stone-200">
+                <button
+                  onClick={() => launchProject(activeLabProject.id)}
+                  className="h-10 px-5 bg-[#111111] hover:bg-[#2B44B8] text-white text-xs font-mono font-black uppercase inline-flex items-center gap-1.5 transition-colors cursor-pointer"
+                >
+                  {activeLabProject.cta} <ArrowUpRight className="w-4 h-4" />
+                </button>
+                <a
+                  href={activeLabProject.githubUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="h-10 px-4 bg-white hover:bg-[#FBBF04] border-2 border-[#111111] text-[#111111] text-xs font-mono font-black uppercase inline-flex items-center gap-1.5 transition-colors"
+                >
+                  <GithubIcon className="w-3.5 h-3.5" /> GITHUB
+                </a>
+                {activeLabProject.driveUrl && (
+                  <a
+                    href={activeLabProject.driveUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="h-10 px-4 bg-white hover:bg-[#EAE8E4] border-2 border-[#111111] text-[#111111] text-xs font-mono font-black uppercase inline-flex items-center gap-1.5 transition-colors"
+                  >
+                    <ExternalLink className="w-3.5 h-3.5" /> ARTIFACTS
+                  </a>
+                )}
+              </div>
+            </div>
+
+            {/* Right: Playable Sandbox for Active Project */}
+            <div className="lg:col-span-6 p-6 sm:p-8 bg-[#EAE8E4]/55 flex flex-col justify-center">
+              {activeLabProject.id === 'forge' && (
+                <div className="border-2 border-[#111111] bg-white p-5 space-y-4">
+                  <div className="flex items-center justify-between text-xs font-mono">
+                    <span className="font-black uppercase text-[#111111]">
+                      AST BLAST-RADIUS TRACER
+                    </span>
+                    <span className="px-2 py-0.5 bg-[#FBBF04] border border-[#111111] font-bold text-[10px]">
+                      CLICK ANY NODE
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2.5">
+                    {Object.entries(FORGE_NODES).map(([nodeName, meta]) => {
+                      const isSel = nodeName === selectedAstNode;
+                      const isImp = astInfo.callers.includes(nodeName);
+                      return (
+                        <button
+                          key={nodeName}
+                          onClick={() => setSelectedAstNode(nodeName)}
+                          className={`text-left p-3 border-2 transition-all cursor-pointer ${
+                            isSel
+                              ? 'bg-[#111111] text-white border-[#111111]'
+                              : isImp
+                              ? 'bg-[#FFF1F2] text-[#F94144] border-[#F94144]'
+                              : 'bg-[#F6F5F2] text-[#111111] border-[#111111]/25 hover:border-[#111111]'
+                          }`}
+                        >
+                          <div className="flex justify-between text-[10px] font-mono font-bold">
+                            <span className={isSel ? 'text-[#FBBF04]' : ''}>{meta.layer}</span>
+                            {isImp && <span>↑ HIT</span>}
+                          </div>
+                          <div className="text-xs font-mono font-black truncate mt-1">{nodeName}</div>
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  <div className="border-t-2 border-[#111111] pt-3.5 flex flex-wrap items-center justify-between gap-2 font-mono text-xs">
+                    <span>
+                      IMPACTED: <strong>{astInfo.callers.length}</strong> CALLER(S)
+                    </span>
+                    <span
+                      className={`px-2 py-0.5 font-black text-[10.5px] border border-[#111111] ${
+                        astInfo.risk === 'HIGH'
+                          ? 'bg-[#F94144] text-white'
+                          : 'bg-[#00B86B] text-white'
+                      }`}
+                    >
+                      {astInfo.risk} RISK
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              {activeLabProject.id === 'codeclash' && (
+                <div className="border-2 border-[#111111] bg-white p-5 space-y-4">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="font-mono text-xs font-black uppercase">
+                      LIVE 1V1 DUEL SIMULATOR
+                    </span>
+                    <button
+                      onClick={simulateDuel}
+                      disabled={duelRunning}
+                      className="px-3 py-1 bg-[#F94144] hover:bg-[#111111] text-white border border-[#111111] font-mono text-[11px] font-black uppercase inline-flex items-center gap-1 cursor-pointer disabled:opacity-50"
+                    >
+                      <Play className="w-3 h-3 fill-current" />
+                      {duelRunning ? 'RUNNING...' : 'SIMULATE DUEL'}
+                    </button>
+                  </div>
+
+                  <div className="space-y-3">
+                    <div className="space-y-1">
+                      <div className="flex justify-between font-mono text-xs font-bold">
+                        <span>NISCHAY_DEV</span>
+                        <span>{p1Tests}/12 CASES</span>
+                      </div>
+                      <div className="h-3.5 bg-[#EAE8E4] border border-[#111111]">
+                        <div
+                          className="h-full bg-[#111111] transition-all duration-200"
+                          style={{ width: `${(p1Tests / 12) * 100}%` }}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-1">
+                      <div className="flex justify-between font-mono text-xs font-bold text-stone-600">
+                        <span>ALGO_RIVAL</span>
+                        <span>{p2Tests}/12 CASES</span>
+                      </div>
+                      <div className="h-3.5 bg-[#EAE8E4] border border-[#111111]">
+                        <div
+                          className="h-full bg-[#F94144] transition-all duration-200"
+                          style={{ width: `${(p2Tests / 12) * 100}%` }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="border-t-2 border-[#111111] pt-3.5 flex items-center justify-between gap-2 font-mono">
+                    <div>
+                      <span className="text-[10px] text-stone-500 block">FIDE ELO RATING</span>
+                      <span className="text-xl font-black tabular-nums">{elo}</span>
+                      <span className="ml-2 px-1.5 py-0.5 bg-[#FBBF04] border border-[#111111] text-[10px] font-black">
+                        {eloDelta} ELO
+                      </span>
+                    </div>
+                    <button
+                      onClick={onOpenLeaderboard}
+                      className="px-3 py-1.5 bg-[#EAE8E4] hover:bg-[#111111] hover:text-white border border-[#111111] text-[11px] font-black uppercase cursor-pointer"
+                    >
+                      LEADERBOARD ↗
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {activeLabProject.id === 'analytics' && (
+                <div className="border-2 border-[#111111] bg-white p-5 space-y-4">
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="font-mono text-xs font-bold flex items-center gap-4">
+                      <span>
+                        ACTIVE: <strong className="text-[#00B86B] tabular-nums">{visitors}</strong>
+                      </span>
+                      <span>
+                        EVENTS: <strong className="tabular-nums">{events.toLocaleString()}</strong>
+                      </span>
+                    </div>
+                    <button
+                      onClick={fireTelemetry}
+                      className="px-3 py-1 bg-[#FBBF04] hover:bg-[#111111] hover:text-white border border-[#111111] font-mono text-[11px] font-black uppercase inline-flex items-center gap-1 cursor-pointer"
+                    >
+                      <Zap className="w-3 h-3" /> FIRE EVENT
+                    </button>
+                  </div>
+
+                  <div className="h-28 flex items-end gap-1.5 border-b-2 border-[#111111] pt-2">
+                    {bars.map((val, idx) => (
+                      <div
+                        key={idx}
+                        className={`flex-1 border border-[#111111]/40 transition-all duration-200 ${
+                          idx === bars.length - 1
+                            ? 'bg-[#00B86B]'
+                            : idx === bars.length - 2
+                            ? 'bg-[#FBBF04]'
+                            : idx % 3 === 0
+                            ? 'bg-[#2B44B8]'
+                            : 'bg-[#111111]'
+                        }`}
+                        style={{ height: `${val}%` }}
+                      />
+                    ))}
+                  </div>
+
+                  <div className="flex items-center justify-between font-mono text-[11px] text-stone-600">
+                    <span>2.4KB SNIPPET · ZERO COOKIES</span>
+                    <button
+                      onClick={onOpenAnalytics}
+                      className="font-black text-[#111111] hover:text-[#2B44B8] underline cursor-pointer"
+                    >
+                      FULL DASHBOARD ↗
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================================== */}
+      {/* 4. INTERACTIVE SKILLS & SHIPPED PROOF                          */}
+      {/* ============================================================== */}
+      <section id="skills-section" className="bg-white py-14 sm:py-20 px-5 sm:px-8 border-b-2 border-[#111111]">
+        <div className="max-w-[1360px] mx-auto space-y-6">
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4">
+            <div>
+              <div className="text-[11px] font-mono font-bold uppercase tracking-[0.16em] text-[#F94144]">
+                VERIFIED TECH STACK
+              </div>
+              <h2 className="text-3xl sm:text-5xl font-black tracking-[-0.045em] uppercase text-[#111111] mt-1 leading-none">
+                SKILLS &amp; PROOF.
+              </h2>
+            </div>
+
+            <div className="flex flex-wrap gap-1.5">
+              {[{ id: 'all', label: 'ALL' }, ...SKILL_GROUPS.map((g) => ({ id: g.id, label: g.label }))].map(
+                (t) => (
+                  <button
+                    key={t.id}
+                    onClick={() => setSkillFilter(t.id)}
+                    className={`px-3 py-1.5 text-[11px] font-mono font-black uppercase border-2 border-[#111111] transition-colors cursor-pointer ${
+                      skillFilter === t.id
+                        ? 'bg-[#111111] text-[#FBBF04]'
+                        : 'bg-[#F6F5F2] text-[#111111] hover:bg-[#EAE8E4]'
+                    }`}
+                  >
+                    {t.label}
+                  </button>
+                )
+              )}
+            </div>
+          </div>
+
+          {/* Live Proof Strip */}
+          {selectedSkill && (
+            <div className="border-2 border-[#111111] bg-[#EAE8E4] px-4 py-3 flex flex-wrap items-center justify-between gap-3 font-mono text-xs">
+              <div className="flex flex-wrap items-center gap-2.5">
+                <span className="px-2 py-0.5 bg-[#FBBF04] border border-[#111111] font-black text-[10px]">
+                  SELECTED
+                </span>
+                <strong className="text-[#111111]">{selectedSkill.name}</strong>
+                <span>→</span>
+                <span className="text-stone-600 text-[11px]">SHIPPED IN:</span>
+                {selectedSkill.projects.map((pid) => {
+                  const proj = PROJECTS.find((p) => p.id === pid);
+                  if (!proj) return null;
+                  return (
+                    <button
+                      key={pid}
+                      onClick={() => launchProject(pid)}
+                      className="px-2.5 py-1 bg-[#111111] hover:bg-[#2B44B8] text-white text-[10.5px] font-black uppercase inline-flex items-center gap-1 cursor-pointer transition-colors"
+                    >
+                      {proj.displayTitle} <ArrowUpRight className="w-3 h-3" />
                     </button>
                   );
                 })}
               </div>
-            </div>
-
-            {/* Block 2: Brief Profile */}
-            <div className="border-t-2 border-[#111111] pt-2.5">
-              <div className="text-[10px] font-mono font-bold uppercase tracking-[0.14em] text-[#111111] mb-2">
-                PROFILE
-              </div>
-              <p className="text-[11.5px] text-stone-700 leading-relaxed">
-                <strong className="text-[#111111]">Nischay Srivastava</strong> — CS undergraduate at FGIET (AKTU) building verified AI systems, Spring Boot + Kafka backends, and low-latency WebSocket engines.
-              </p>
-            </div>
-
-            {/* Block 3: Direct Live Links */}
-            <div className="border-t-2 border-[#111111] pt-2.5">
-              <div className="text-[10px] font-mono font-bold uppercase tracking-[0.14em] text-[#111111] mb-2">
-                LIVE LAUNCHERS
-              </div>
-              <div className="divide-y divide-stone-200 text-[11.5px] font-medium">
-                <button
-                  onClick={onOpenForge}
-                  className="w-full py-1.5 text-left flex items-center justify-between hover:text-[#E11D24] cursor-pointer"
-                >
-                  <span>FORGE Control Plane</span>
-                  <ArrowUpRight className="w-3 h-3" />
-                </button>
-                <button
-                  onClick={onOpenArena}
-                  className="w-full py-1.5 text-left flex items-center justify-between hover:text-[#E11D24] cursor-pointer"
-                >
-                  <span>CodeClash 1v1 Arena</span>
-                  <ArrowUpRight className="w-3 h-3" />
-                </button>
-                <button
-                  onClick={onOpenLeaderboard}
-                  className="w-full py-1.5 text-left flex items-center justify-between hover:text-[#E11D24] cursor-pointer"
-                >
-                  <span>Global Leaderboard</span>
-                  <ArrowUpRight className="w-3 h-3" />
-                </button>
-                <button
-                  onClick={onOpenAnalytics}
-                  className="w-full py-1.5 text-left flex items-center justify-between hover:text-[#E11D24] cursor-pointer"
-                >
-                  <span>Analytics Tracker</span>
-                  <ArrowUpRight className="w-3 h-3" />
-                </button>
-              </div>
-            </div>
-
-            {/* Block 4: Contact & Documents */}
-            <div className="border-t-2 border-[#111111] pt-2.5 space-y-1.5">
-              <div className="text-[10px] font-mono font-bold uppercase tracking-[0.14em] text-[#111111] mb-2">
-                DOCUMENTS
-              </div>
-              <a
-                href="/resume.pdf"
-                target="_blank"
-                rel="noreferrer"
-                className="w-full py-1.5 px-2 bg-[#111111] hover:bg-[#E11D24] text-white text-[11px] font-mono font-bold flex items-center justify-between transition-colors"
-              >
-                <span>RESUME.PDF</span>
-                <ArrowUpRight className="w-3 h-3" />
-              </a>
-              <a
-                href="https://github.com/nischay237"
-                target="_blank"
-                rel="noreferrer"
-                className="w-full py-1.5 px-2 border border-[#111111] hover:bg-[#111111] hover:text-white text-[11px] font-mono font-bold flex items-center justify-between transition-colors"
-              >
-                <span>GITHUB @237</span>
-                <GithubIcon className="w-3 h-3" />
-              </a>
-              <button
-                onClick={handleCopyEmail}
-                className="w-full py-1.5 px-2 border border-stone-300 hover:border-[#111111] bg-[#FAFAF8] text-[11px] font-mono font-semibold flex items-center justify-between transition-colors cursor-pointer"
-              >
-                <span>{copiedEmail ? 'EMAIL COPIED' : 'COPY EMAIL'}</span>
-                {copiedEmail ? (
-                  <Check className="w-3 h-3 text-[#E11D24]" />
-                ) : (
-                  <Copy className="w-3 h-3" />
-                )}
-              </button>
-            </div>
-          </aside>
-
-          {/* COLUMN B: CENTER FEATURED SWISS INTERACTIVE POSTER PLATES (7 cols) */}
-          <div className="lg:col-span-7 space-y-9">
-            {/* ---------------------------------------------------------- */}
-            {/* POSTER PLATE 01: FORGE AI (Type + Signal Yellow Vertical)  */}
-            {/* ---------------------------------------------------------- */}
-            {showForge && (
-              <article className="border-t-2 border-[#111111] pt-3 space-y-3.5">
-                <div className="flex flex-wrap items-center justify-between gap-2 text-[11px] font-mono">
-                  <span className="font-bold text-[#111111]">
-                    PLATE 01 // FORGE AI SOFTWARE ENGINEERING PLATFORM
-                  </span>
-                  <span className="text-stone-500">JAVA 21 · SPRING BOOT 3.5 · KAFKA · AST</span>
-                </div>
-
-                {/* SWISS GRAPHIC DESIGN POSTER SPREAD (LIVE INTERACTIVE) */}
-                <div className="border border-[#111111] bg-[#F4F4F1] p-4 sm:p-5 relative overflow-hidden">
-                  <div className="bg-white border border-stone-300 grid grid-cols-1 md:grid-cols-12 relative">
-                    {/* Left Typographic Composition */}
-                    <div className="md:col-span-5 p-5 sm:p-6 border-b md:border-b-0 md:border-r border-stone-200 flex flex-col justify-between relative">
-                      <div>
-                        <div className="inline-block px-1.5 py-0.5 bg-[#FFE600] text-[#111111] text-[10px] font-mono font-bold uppercase tracking-wider mb-3">
-                          EVAL F1: 100.0% · 0% FPR
-                        </div>
-                        <div className="text-4xl sm:text-5xl font-black tracking-[-0.06em] leading-[0.88] text-[#111111] uppercase">
-                          FORGE
-                          <br />
-                          <span className="font-light text-stone-400">AST.01</span>
-                        </div>
-                      </div>
-
-                      <div className="mt-6 space-y-2">
-                        <p className="text-[11.5px] font-mono text-stone-600 leading-relaxed">
-                          JavaParser AST dependency graph + BFS blast radius + Kafka Outbox + Gitleaks secret masking.
-                        </p>
-                        <div className="flex flex-wrap gap-1.5 pt-1">
-                          <button
-                            onClick={onOpenForge}
-                            className="px-3 py-1.5 bg-[#111111] hover:bg-[#E11D24] text-white text-[11px] font-mono font-bold uppercase inline-flex items-center gap-1 transition-colors cursor-pointer"
-                          >
-                            OPEN CONTROL PLANE <ArrowUpRight className="w-3.5 h-3.5" />
-                          </button>
-                          <a
-                            href={PROJECT_META.forge.github}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="px-2.5 py-1.5 border border-[#111111] hover:bg-[#111111] hover:text-white text-[11px] font-mono font-bold uppercase inline-flex items-center gap-1 transition-colors"
-                          >
-                            <GithubIcon className="w-3 h-3" /> CODE
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Right Interactive AST Specimen Board + Vertical Signal Yellow Stripe */}
-                    <div className="md:col-span-7 p-5 sm:p-6 pr-11 sm:pr-12 bg-[#FAFAF8] relative flex flex-col justify-between gap-4">
-                      {/* Iconic Rotated Signal Yellow Vertical Tag (like "perfection" in reference!) */}
-                      <div
-                        className="absolute top-0 right-0 bottom-0 w-7 bg-[#FFE600] border-l border-[#111111]/15 flex items-center justify-center select-none"
-                        aria-hidden="true"
-                      >
-                        <span
-                          className="text-[10px] font-mono font-black uppercase tracking-[0.22em] text-[#111111] whitespace-nowrap"
-                          style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
-                        >
-                          VERIFIED // BLAST RADIUS
-                        </span>
-                      </div>
-
-                      <div className="flex items-center justify-between text-[10px] font-mono uppercase text-stone-500">
-                        <span className="font-bold text-[#111111]">
-                          INTERACTIVE AST NODES (CLICK TO TRACE)
-                        </span>
-                        <span className="text-[#E11D24] font-bold">
-                          {astInfo.callers.length} IMPACTED
-                        </span>
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-2">
-                        {Object.entries(FORGE_NODES).map(([nodeName, meta]) => {
-                          const isSel = nodeName === selectedAstNode;
-                          const isImp = astInfo.callers.includes(nodeName);
-                          return (
-                            <button
-                              key={nodeName}
-                              onClick={() => setSelectedAstNode(nodeName)}
-                              className={`text-left p-2.5 border transition-all cursor-pointer ${
-                                isSel
-                                  ? 'bg-[#111111] text-white border-[#111111]'
-                                  : isImp
-                                  ? 'bg-white text-[#E11D24] border-2 border-[#E11D24]'
-                                  : 'bg-white text-[#111111] border-stone-300 hover:border-[#111111]'
-                              }`}
-                            >
-                              <div className="flex items-center justify-between text-[9.5px] font-mono">
-                                <span className={isSel ? 'text-[#FFE600]' : isImp ? 'text-[#E11D24] font-bold' : 'text-stone-400'}>
-                                  {meta.layer}
-                                </span>
-                                {isImp && <span className="font-bold">↑ HIT</span>}
-                              </div>
-                              <div className="text-[11.5px] font-mono font-bold truncate mt-0.5">
-                                {nodeName}
-                              </div>
-                            </button>
-                          );
-                        })}
-                      </div>
-
-                      <div className="border-t border-[#111111]/15 pt-3 flex flex-wrap items-center justify-between gap-2 text-[11px] font-mono">
-                        <span className="text-stone-700">
-                          TARGET: <strong className="text-[#111111]">{selectedAstNode}</strong>
-                        </span>
-                        <span
-                          className={`px-1.5 py-0.5 font-bold text-[10px] ${
-                            astInfo.risk === 'HIGH'
-                              ? 'bg-[#E11D24] text-white'
-                              : 'bg-[#111111] text-[#FFE600]'
-                          }`}
-                        >
-                          RISK: {astInfo.risk}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Editorial Monograph Caption Paragraph */}
-                <p className="text-xs sm:text-[13px] text-stone-700 leading-relaxed">
-                  Multi-tenant Java 21 + Spring Boot 3.5 modular monolith verifying HMAC-signed GitHub webhooks, computing exact JavaParser AST blast radius via BFS, streaming async PR reviews over Transactional Outbox &amp; Apache Kafka DLT, and enforcing human approval before comments touch GitHub. Verified with 4 ArchUnit rules &amp; 8-case AI Evaluation Suite.
-                </p>
-              </article>
-            )}
-
-            {/* ---------------------------------------------------------- */}
-            {/* POSTER PLATE 02: CODECLASH (Bold Swiss Red Diagonal Slash) */}
-            {/* ---------------------------------------------------------- */}
-            {showCodeClash && (
-              <article className="border-t-2 border-[#111111] pt-3 space-y-3.5">
-                <div className="flex flex-wrap items-center justify-between gap-2 text-[11px] font-mono">
-                  <span className="font-bold text-[#111111]">
-                    PLATE 02 // CODECLASH 1V1 REAL-TIME CODING ARENA
-                  </span>
-                  <span className="text-stone-500">WEBSOCKETS · NODE.JS · SANDBOX · FIDE ELO</span>
-                </div>
-
-                {/* SWISS RED-SLASH TYPOGRAPHIC POSTER + LIVE DUEL SIMULATOR */}
-                <div className="border border-[#111111] bg-[#111111] p-4 sm:p-5">
-                  <div className="bg-white grid grid-cols-1 md:grid-cols-12 relative overflow-hidden">
-                    {/* Left Iconic Swiss Red Slash Typographic Graphic */}
-                    <div className="md:col-span-5 p-5 sm:p-6 bg-[#111111] text-white relative overflow-hidden flex flex-col justify-between min-h-[220px]">
-                      {/* Authentic Swiss Red Diagonal Beam */}
-                      <div
-                        className="absolute -right-8 top-0 bottom-0 w-10 bg-[#E11D24] transform -skew-x-12 pointer-events-none"
-                        aria-hidden="true"
-                      />
-                      <div className="relative z-10">
-                        <div className="text-[10px] font-mono uppercase tracking-[0.16em] text-stone-400">
-                          REAL-TIME PVP ENGINE
-                        </div>
-                        <div className="text-5xl sm:text-6xl font-black tracking-[-0.06em] leading-none mt-2">
-                          1v1
-                        </div>
-                        <div className="text-sm font-mono font-bold tracking-[0.14em] uppercase mt-1 text-[#FFE600]">
-                          CODE // CLASH
-                        </div>
-                      </div>
-
-                      <div className="relative z-10 mt-6 flex flex-wrap gap-1.5">
-                        <button
-                          onClick={onOpenArena}
-                          className="px-3 py-1.5 bg-white hover:bg-[#FFE600] text-[#111111] text-[11px] font-mono font-bold uppercase inline-flex items-center gap-1 transition-colors cursor-pointer"
-                        >
-                          ENTER ARENA <ArrowUpRight className="w-3.5 h-3.5" />
-                        </button>
-                        <button
-                          onClick={onOpenLeaderboard}
-                          className="px-2.5 py-1.5 border border-white/40 hover:border-white text-white text-[11px] font-mono font-bold uppercase cursor-pointer"
-                        >
-                          ELO RANKS
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* Right Interactive Live Duel Simulator */}
-                    <div className="md:col-span-7 p-5 sm:p-6 flex flex-col justify-between gap-4">
-                      <div className="flex items-center justify-between gap-2">
-                        <span className="text-[10px] font-mono font-bold uppercase tracking-[0.12em] text-[#111111]">
-                          INTERACTIVE DUEL SIMULATOR
-                        </span>
-                        <button
-                          onClick={simulateDuel}
-                          disabled={duelRunning}
-                          className="px-2.5 py-1 bg-[#E11D24] hover:bg-[#111111] text-white text-[10.5px] font-mono font-bold uppercase inline-flex items-center gap-1 transition-colors cursor-pointer disabled:opacity-50"
-                        >
-                          <Play className="w-2.5 h-2.5 fill-current" />
-                          {duelRunning ? 'RUNNING...' : 'SIMULATE DUEL'}
-                        </button>
-                      </div>
-
-                      <div className="space-y-3">
-                        <div className="space-y-1">
-                          <div className="flex justify-between text-[11px] font-mono">
-                            <span className="font-bold text-[#111111]">NISCHAY_DEV</span>
-                            <span className="font-bold">{p1Tests}/12 CASES</span>
-                          </div>
-                          <div className="h-3 bg-stone-200 w-full">
-                            <div
-                              className="h-full bg-[#111111] transition-all duration-200"
-                              style={{ width: `${(p1Tests / 12) * 100}%` }}
-                            />
-                          </div>
-                        </div>
-
-                        <div className="space-y-1">
-                          <div className="flex justify-between text-[11px] font-mono text-stone-600">
-                            <span>ALGO_RIVAL</span>
-                            <span>{p2Tests}/12 CASES</span>
-                          </div>
-                          <div className="h-3 bg-stone-200 w-full">
-                            <div
-                              className="h-full bg-[#E11D24] transition-all duration-200"
-                              style={{ width: `${(p2Tests / 12) * 100}%` }}
-                            />
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="border-t border-[#111111]/15 pt-3 flex items-center justify-between font-mono text-xs">
-                        <div>
-                          <span className="text-[10px] text-stone-500 block">FIDE ELO RATING</span>
-                          <span className="text-lg font-black text-[#111111] tabular-nums">
-                            {elo}
-                          </span>
-                          <span className="ml-2 px-1.5 py-0.5 bg-[#FFE600] text-[#111111] text-[10px] font-bold">
-                            {eloDelta} ELO
-                          </span>
-                        </div>
-                        <a
-                          href={PROJECT_META.codeclash.github}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="px-2.5 py-1.5 border border-[#111111] hover:bg-[#111111] hover:text-white text-[10.5px] font-bold uppercase inline-flex items-center gap-1 transition-colors"
-                        >
-                          <GithubIcon className="w-3 h-3" /> SOURCE
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <p className="text-xs sm:text-[13px] text-stone-700 leading-relaxed">
-                  Competitive 1v1 coding arena synchronizing live keystrokes and opponent progress over Socket.io WebSockets. Evaluates submissions in a timeout-guarded sandbox and updates global player rankings via real FIDE Elo mathematics backed by MongoDB Atlas with in-memory fallback.
-                </p>
-              </article>
-            )}
-
-            {/* ---------------------------------------------------------- */}
-            {/* POSTER PLATE 03: ANALYTICS TRACKER (<3KB Signal Yellow)    */}
-            {/* ---------------------------------------------------------- */}
-            {showAnalytics && (
-              <article className="border-t-2 border-[#111111] pt-3 space-y-3.5">
-                <div className="flex flex-wrap items-center justify-between gap-2 text-[11px] font-mono">
-                  <span className="font-bold text-[#111111]">
-                    PLATE 03 // REAL-TIME WEB TELEMETRY &amp; ANALYTICS
-                  </span>
-                  <span className="text-stone-500">&lt;3KB SNIPPET · COOKIELESS · NODE + REACT</span>
-                </div>
-
-                <div className="border border-[#111111] bg-[#EAEAE6] p-4 sm:p-5">
-                  <div className="bg-white border border-stone-300 grid grid-cols-1 md:grid-cols-12">
-                    {/* Left Geometric Bold <3KB Poster */}
-                    <div className="md:col-span-5 p-5 sm:p-6 border-b md:border-b-0 md:border-r border-stone-200 flex flex-col justify-between">
-                      <div>
-                        <div className="w-10 h-2 bg-[#FFE600] mb-3 border border-[#111111]/20" />
-                        <div className="text-4xl sm:text-5xl font-black tracking-[-0.06em] leading-none text-[#111111]">
-                          &lt;3KB
-                        </div>
-                        <div className="text-xs font-mono font-bold uppercase tracking-[0.14em] text-stone-500 mt-1.5">
-                          ZERO-COOKIE TELEMETRY
-                        </div>
-                      </div>
-
-                      <div className="mt-6 flex flex-wrap gap-1.5">
-                        <button
-                          onClick={onOpenAnalytics}
-                          className="px-3 py-1.5 bg-[#111111] hover:bg-[#E11D24] text-white text-[11px] font-mono font-bold uppercase inline-flex items-center gap-1 transition-colors cursor-pointer"
-                        >
-                          LIVE DASHBOARD <ArrowUpRight className="w-3.5 h-3.5" />
-                        </button>
-                        <a
-                          href={PROJECT_META.analytics.drive}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="px-2.5 py-1.5 border border-[#111111] hover:bg-[#111111] hover:text-white text-[10.5px] font-mono font-bold uppercase inline-flex items-center gap-1 transition-colors"
-                        >
-                          <ExternalLink className="w-3 h-3" /> DOCS
-                        </a>
-                      </div>
-                    </div>
-
-                    {/* Right Interactive Live Telemetry Pulse */}
-                    <div className="md:col-span-7 p-5 sm:p-6 flex flex-col justify-between gap-4 bg-[#FAFAF8]">
-                      <div className="flex items-center justify-between gap-2">
-                        <div className="font-mono text-xs flex items-center gap-4">
-                          <span>
-                            ACTIVE:{' '}
-                            <strong className="text-[#111111] tabular-nums">{visitors}</strong>
-                          </span>
-                          <span>
-                            EVENTS:{' '}
-                            <strong className="text-[#111111] tabular-nums">
-                              {events.toLocaleString()}
-                            </strong>
-                          </span>
-                        </div>
-                        <button
-                          onClick={fireTelemetry}
-                          className="px-2.5 py-1 bg-[#FFE600] hover:bg-[#111111] hover:text-white text-[#111111] border border-[#111111] text-[10.5px] font-mono font-bold uppercase inline-flex items-center gap-1 transition-colors cursor-pointer"
-                        >
-                          <Zap className="w-3 h-3" /> FIRE EVENT
-                        </button>
-                      </div>
-
-                      {/* Sharp Swiss Bar Chart */}
-                      <div className="h-24 flex items-end gap-1.5 border-b-2 border-[#111111] pt-2">
-                        {bars.map((v, idx) => (
-                          <div
-                            key={idx}
-                            className={`flex-1 transition-all duration-200 ${
-                              idx === bars.length - 1
-                                ? 'bg-[#E11D24]'
-                                : idx === bars.length - 2
-                                ? 'bg-[#FFE600] border border-[#111111]/30'
-                                : 'bg-[#111111]'
-                            }`}
-                            style={{ height: `${v}%` }}
-                          />
-                        ))}
-                      </div>
-
-                      <div className="flex items-center justify-between text-[10.5px] font-mono text-stone-500">
-                        <span>PAYLOAD: 2.4KB GZIP · WEBSOCKET HEARTBEATS</span>
-                        <a
-                          href={PROJECT_META.analytics.github}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="text-[#111111] font-bold hover:text-[#E11D24] underline"
-                        >
-                          GITHUB ↗
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <p className="text-xs sm:text-[13px] text-stone-700 leading-relaxed">
-                  Self-hosted, privacy-first web telemetry platform replacing bloated trackers with a sub-3KB script. Streams live active visitors, session heartbeats, and conversion funnels over Node.js, Express, and MongoDB without third-party cookies.
-                </p>
-              </article>
-            )}
-          </div>
-
-          {/* COLUMN C: RIGHT SWISS SPECIMEN & POSTER INDEX COLUMN (3 cols) */}
-          <aside className="lg:col-span-3 space-y-6">
-            {/* Specimen 1: Iconic Swiss Manifesto Poster Block */}
-            <div className="border-2 border-[#111111] bg-white p-5 relative overflow-hidden">
-              <div className="flex items-center justify-between text-[10px] font-mono uppercase tracking-[0.14em] text-stone-500 mb-3">
-                <span>SPECIMEN 01</span>
-                <span className="text-[#E11D24] font-bold">● LIVE</span>
-              </div>
-              <div className="text-3xl font-black tracking-[-0.05em] leading-[0.95] uppercase text-[#111111]">
-                SYSTEMS
-                <br />
-                BUILT FOR
-                <br />
-                <span className="bg-[#FFE600] px-1 inline-block mt-0.5">PRECISION.</span>
-              </div>
-              <div className="mt-4 pt-3 border-t border-[#111111] grid grid-cols-2 gap-2 font-mono text-[11px]">
-                <div>
-                  <div className="text-stone-400 text-[9.5px]">LIVE APPS</div>
-                  <div className="font-black text-base text-[#111111]">03</div>
-                </div>
-                <div>
-                  <div className="text-stone-400 text-[9.5px]">AI EVAL F1</div>
-                  <div className="font-black text-base text-[#E11D24]">100%</div>
-                </div>
-                <div>
-                  <div className="text-stone-400 text-[9.5px]">ARCH TESTS</div>
-                  <div className="font-black text-base text-[#111111]">08/08</div>
-                </div>
-                <div>
-                  <div className="text-stone-400 text-[9.5px]">GRADUATION</div>
-                  <div className="font-black text-base text-[#111111]">2027</div>
-                </div>
-              </div>
-            </div>
-
-            {/* Specimen 2: Live System Telemetry Table */}
-            <div className="border-t-2 border-[#111111] pt-2.5">
-              <div className="text-[10px] font-mono font-bold uppercase tracking-[0.14em] text-[#111111] mb-2.5">
-                DEPLOYED ENDPOINTS
-              </div>
-              <div className="border border-[#111111] divide-y divide-[#111111]/20 font-mono text-[11px] bg-white">
-                {[
-                  { path: '/forge', label: 'FORGE Control Plane', tag: 'LIVE', fn: onOpenForge },
-                  { path: '/arena', label: 'CodeClash 1v1', tag: 'PLAY', fn: onOpenArena },
-                  { path: '/leaderboard', label: 'Elo Rankings', tag: 'SYNC', fn: onOpenLeaderboard },
-                  { path: '/analytics', label: 'Web Telemetry', tag: '<3KB', fn: onOpenAnalytics },
-                ].map((row) => (
-                  <button
-                    key={row.path}
-                    onClick={row.fn}
-                    className="w-full px-3 py-2.5 text-left hover:bg-[#111111] hover:text-white flex items-center justify-between gap-2 transition-colors cursor-pointer group"
-                  >
-                    <div>
-                      <div className="font-bold">{row.path}</div>
-                      <div className="text-[10px] text-stone-500 group-hover:text-stone-300">
-                        {row.label}
-                      </div>
-                    </div>
-                    <span className="px-1.5 py-0.5 text-[9.5px] font-bold bg-[#F2F2EE] text-[#111111] group-hover:bg-[#FFE600]">
-                      {row.tag} ↗
-                    </span>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Specimen 3: Red Accent Architecture Highlight Tile */}
-            <div className="bg-[#111111] text-white p-5 relative overflow-hidden">
-              <div className="w-full h-1.5 bg-[#E11D24] mb-4" />
-              <div className="text-[10px] font-mono uppercase tracking-[0.16em] text-stone-400">
-                ARCHITECTURAL PROOF
-              </div>
-              <div className="text-lg font-bold tracking-[-0.02em] mt-1 leading-snug">
-                Every skill below links straight to a live shipped system.
-              </div>
-              <button
-                onClick={() => scrollTo('skills-section')}
-                className="mt-4 w-full py-2 bg-[#FFE600] hover:bg-white text-[#111111] text-[11px] font-mono font-bold uppercase transition-colors cursor-pointer"
-              >
-                INSPECT SKILLS MATRIX ↓
-              </button>
-            </div>
-          </aside>
-        </div>
-
-        {/* ============================================================== */}
-        {/* 3. INTERACTIVE SWISS SKILLS & PROOF SPECIMEN GRID              */}
-        {/* ============================================================== */}
-        <section
-          id="skills-section"
-          className="px-5 sm:px-8 py-12 border-t-2 border-[#111111] bg-[#FAFAF8]"
-        >
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-6">
-            <div>
-              <div className="text-[10px] font-mono font-bold uppercase tracking-[0.18em] text-[#E11D24]">
-                SECTION 02 // INTERACTIVE TECHNICAL INDEX
-              </div>
-              <h2 className="text-2xl sm:text-3xl font-black tracking-[-0.04em] uppercase text-[#111111] mt-1">
-                SKILLS <span className="text-stone-400 font-light">&amp;</span> SHIPPED PROOF
-              </h2>
-            </div>
-
-            {/* Solid Black Bar Filter Tabs */}
-            <div className="flex flex-wrap gap-[2px]">
-              {[
-                { id: 'all', label: 'ALL' },
-                ...SKILL_GROUPS.map((g) => ({ id: g.id, label: `${g.code} / ${g.id.toUpperCase()}` })),
-              ].map((t) => (
-                <button
-                  key={t.id}
-                  onClick={() => setSkillFilter(t.id)}
-                  className={`px-3 py-1.5 text-[10.5px] font-mono font-bold uppercase transition-colors cursor-pointer ${
-                    skillFilter === t.id
-                      ? 'bg-[#E11D24] text-white'
-                      : 'bg-[#111111] text-white hover:bg-[#FFE600] hover:text-[#111111]'
-                  }`}
-                >
-                  {t.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Live Interactive Skill Proof Bar */}
-          {selectedSkill && (
-            <div className="mb-6 border-2 border-[#111111] bg-white px-4 py-3 flex flex-wrap items-center justify-between gap-3 font-mono text-xs">
-              <div className="flex flex-wrap items-center gap-2.5">
-                <span className="px-1.5 py-0.5 bg-[#FFE600] text-[#111111] font-bold text-[10px]">
-                  SELECTED
-                </span>
-                <strong className="text-[#111111]">{selectedSkill.name}</strong>
-                <span className="text-stone-400">→</span>
-                <span className="text-stone-600 text-[11px]">USED IN:</span>
-                {selectedSkill.projects.map((pid) => (
-                  <button
-                    key={pid}
-                    onClick={() => launchProject(pid)}
-                    className="px-2.5 py-1 bg-[#111111] hover:bg-[#E11D24] text-white text-[10.5px] font-bold uppercase inline-flex items-center gap-1 transition-colors cursor-pointer"
-                  >
-                    {PROJECT_META[pid].name} <ArrowUpRight className="w-3 h-3" />
-                  </button>
-                ))}
-              </div>
-              <span className="text-[10.5px] text-stone-400 uppercase">
-                CLICK ANY SKILL CELL TO VERIFY
+              <span className="text-[10.5px] text-stone-600 uppercase">
+                CLICK ANY SKILL TO VERIFY LIVE USAGE
               </span>
             </div>
           )}
 
-          {/* Crisp Hairline Swiss Grid Cells */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {visibleSkillGroups.map((group) => (
-              <div key={group.id} className="border border-[#111111] bg-white p-5">
-                <div className="flex items-center justify-between border-b border-[#111111] pb-2 mb-3.5 font-mono">
-                  <span className="text-xs font-black tracking-[0.06em] text-[#111111]">
-                    {group.code} // {group.label}
+              <div key={group.id} className="border-2 border-[#111111] bg-[#F6F5F2] p-5">
+                <div className="flex items-center justify-between border-b-2 border-[#111111] pb-2.5 mb-3.5 font-mono">
+                  <span className="text-xs font-black tracking-wide flex items-center gap-2">
+                    <span className={`w-2.5 h-2.5 border border-[#111111] ${group.dot}`} />
+                    {group.label}
                   </span>
-                  <span className="text-[10px] text-stone-400">{group.items.length} ITEMS</span>
+                  <span className="text-[10px] font-bold text-stone-500">
+                    0{group.items.length}
+                  </span>
                 </div>
                 <div className="flex flex-wrap gap-1.5">
                   {group.items.map((item) => {
-                    const active = selectedSkill?.name === item.name;
+                    const isPicked = selectedSkill?.name === item.name;
                     return (
                       <button
                         key={item.name}
                         onClick={() => setSelectedSkill(item)}
-                        className={`px-2.5 py-1.5 text-[11.5px] font-mono border transition-colors cursor-pointer flex items-center gap-1.5 ${
-                          active
-                            ? 'bg-[#111111] text-white border-[#111111] font-bold'
-                            : 'bg-[#FAFAF8] text-[#111111] border-stone-300 hover:border-[#111111]'
+                        className={`px-2.5 py-1.5 text-xs font-mono font-bold border transition-colors cursor-pointer ${
+                          isPicked
+                            ? 'bg-[#111111] text-[#FBBF04] border-[#111111]'
+                            : 'bg-white text-[#111111] border-[#111111]/30 hover:border-[#111111]'
                         }`}
                       >
-                        {active && <span className="w-1.5 h-1.5 bg-[#FFE600]" />}
                         {item.name}
                       </button>
                     );
@@ -1010,77 +892,80 @@ export default function Portfolio({
               </div>
             ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* ============================================================== */}
-        {/* 4. ABOUT, EDUCATION & CONTACT SWISS COLOPHON                   */}
-        {/* ============================================================== */}
-        <section id="about-section" className="px-5 sm:px-8 py-12 border-t-2 border-[#111111] bg-white">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            {/* Left: Biography & Academic Record */}
-            <div className="lg:col-span-7 space-y-5">
-              <div className="text-[10px] font-mono font-bold uppercase tracking-[0.18em] text-[#E11D24]">
-                SECTION 03 // BIOGRAPHY &amp; COLOPHON
-              </div>
-              <div className="flex items-center gap-4">
-                <div className="w-14 h-14 bg-[#111111] text-[#FFE600] font-black text-2xl flex items-center justify-center tracking-tighter shrink-0">
+      {/* ============================================================== */}
+      {/* 5. ABOUT NISCHAY & DIRECT CONTACT                              */}
+      {/* ============================================================== */}
+      <section id="about-section" className="bg-[#EAE8E4] py-14 sm:py-20 px-5 sm:px-8">
+        <div className="max-w-[1360px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-7 items-stretch">
+          <div className="lg:col-span-7 border-2 border-[#111111] bg-white p-7 sm:p-10 shadow-[6px_6px_0px_#111111] flex flex-col justify-between gap-6">
+            <div className="space-y-4">
+              <div className="flex items-center gap-3.5">
+                <span className="w-12 h-12 bg-[#111111] text-[#FBBF04] font-black text-xl flex items-center justify-center shrink-0">
                   NS
-                </div>
+                </span>
                 <div>
+                  <div className="text-[10.5px] font-mono font-bold uppercase tracking-[0.16em] text-[#2B44B8]">
+                    ABOUT THE ENGINEER
+                  </div>
                   <h2 className="text-2xl sm:text-3xl font-black tracking-[-0.04em] uppercase text-[#111111]">
                     NISCHAY SRIVASTAVA
                   </h2>
-                  <div className="text-xs font-mono text-stone-500">
-                    B.TECH COMPUTER SCIENCE &amp; ENGINEERING · 2023 – PRESENT
-                  </div>
                 </div>
               </div>
 
-              <p className="text-sm text-stone-700 leading-relaxed max-w-2xl">
+              <p className="text-sm sm:text-[15px] text-stone-700 leading-relaxed">
                 Computer Science undergraduate at{' '}
                 <strong className="text-[#111111]">
                   Feroze Gandhi Institute of Engineering and Technology (AKTU)
                 </strong>
-                , Raebareli, Uttar Pradesh. Focused on architecting deterministic AI engineering platforms, multi-tenant Spring Boot &amp; Kafka backends, and ultra-responsive real-time web systems.
+                , Raebareli, UP, India. Passionate about building deterministic AI software engineering platforms, distributed Spring Boot + Kafka architectures, and fast real-time WebSocket web apps.
               </p>
-
-              <div className="grid grid-cols-1 sm:grid-cols-3 border border-[#111111] divide-y sm:divide-y-0 sm:divide-x divide-[#111111] font-mono text-xs">
-                <div className="p-3.5">
-                  <div className="text-[10px] text-stone-400">INSTITUTION</div>
-                  <div className="font-bold text-[#111111] mt-0.5">FGIET (AKTU)</div>
-                </div>
-                <div className="p-3.5">
-                  <div className="text-[10px] text-stone-400">LOCATION</div>
-                  <div className="font-bold text-[#111111] mt-0.5">RAEBARELI, UP, IN</div>
-                </div>
-                <div className="p-3.5">
-                  <div className="text-[10px] text-stone-400">AVAILABILITY</div>
-                  <div className="font-bold text-[#E11D24] mt-0.5">SWE / BACKEND / FULL-STACK</div>
-                </div>
-              </div>
             </div>
 
-            {/* Right: Direct Contact Ledger */}
-            <div className="lg:col-span-5 border-2 border-[#111111] p-6 bg-[#FAFAF8] space-y-4">
-              <div className="flex items-center justify-between border-b border-[#111111] pb-2 font-mono text-xs font-bold">
-                <span>DIRECT CONTACT LEDGER</span>
-                <span className="bg-[#FFE600] px-1.5 py-0.5 text-[10px]">FAST REPLY</span>
+            <div className="grid grid-cols-1 sm:grid-cols-3 border-2 border-[#111111] divide-y-2 sm:divide-y-0 sm:divide-x-2 divide-[#111111] font-mono text-xs">
+              <div className="p-3.5 bg-[#F6F5F2]">
+                <div className="text-[10px] text-stone-500">DEGREE</div>
+                <div className="font-black text-[#111111] mt-0.5">B.TECH CSE (2023–27)</div>
+              </div>
+              <div className="p-3.5 bg-[#F6F5F2]">
+                <div className="text-[10px] text-stone-500">LOCATION</div>
+                <div className="font-black text-[#111111] mt-0.5">RAEBARELI, UP, IN</div>
+              </div>
+              <div className="p-3.5 bg-[#F6F5F2]">
+                <div className="text-[10px] text-stone-500">STATUS</div>
+                <div className="font-black text-[#00B86B] mt-0.5">OPEN TO SWE ROLES</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="lg:col-span-5 border-2 border-[#111111] bg-white p-7 sm:p-8 shadow-[6px_6px_0px_#111111] flex flex-col justify-between gap-5">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xl font-black tracking-[-0.03em] uppercase text-[#111111]">
+                  GET IN TOUCH.
+                </h3>
+                <span className="px-2 py-0.5 bg-[#FBBF04] border border-[#111111] text-[10px] font-mono font-black">
+                  DIRECT
+                </span>
               </div>
 
-              <div className="border border-[#111111] bg-white px-3 py-2.5 flex items-center justify-between gap-2 font-mono text-xs">
-                <span className="truncate font-semibold">nischaysrivastava2@gmail.com</span>
+              <div className="border-2 border-[#111111] bg-[#F6F5F2] px-3 py-2.5 flex items-center justify-between gap-2 font-mono text-xs">
+                <span className="truncate font-bold">nischaysrivastava2@gmail.com</span>
                 <button
                   onClick={handleCopyEmail}
-                  className="px-2 py-1 bg-[#111111] hover:bg-[#E11D24] text-white text-[10px] font-bold uppercase shrink-0 cursor-pointer transition-colors"
+                  className="px-2.5 py-1 bg-[#111111] hover:bg-[#2B44B8] text-white text-[10px] font-black uppercase shrink-0 cursor-pointer"
                 >
                   {copiedEmail ? 'COPIED ✓' : 'COPY'}
                 </button>
               </div>
 
-              <div className="grid grid-cols-2 gap-2 font-mono text-xs">
+              <div className="grid grid-cols-2 gap-2.5 font-mono text-xs">
                 <a
                   href="mailto:nischaysrivastava2@gmail.com"
-                  className="py-2.5 px-3 bg-[#111111] hover:bg-[#E11D24] text-white font-bold uppercase flex items-center justify-center gap-1.5 transition-colors"
+                  className="py-2.5 px-3 bg-[#111111] hover:bg-[#2B44B8] text-white font-black uppercase flex items-center justify-center gap-1.5 transition-colors"
                 >
                   <Mail className="w-3.5 h-3.5" /> SEND EMAIL
                 </a>
@@ -1088,7 +973,7 @@ export default function Portfolio({
                   href="/resume.pdf"
                   target="_blank"
                   rel="noreferrer"
-                  className="py-2.5 px-3 bg-white hover:bg-[#FFE600] border border-[#111111] text-[#111111] font-bold uppercase flex items-center justify-center gap-1.5 transition-colors"
+                  className="py-2.5 px-3 bg-[#FBBF04] hover:bg-[#111111] hover:text-white border-2 border-[#111111] text-[#111111] font-black uppercase flex items-center justify-center gap-1.5 transition-colors"
                 >
                   <FileText className="w-3.5 h-3.5" /> RESUME.PDF
                 </a>
@@ -1098,7 +983,7 @@ export default function Portfolio({
                 href="https://github.com/nischay237"
                 target="_blank"
                 rel="noreferrer"
-                className="w-full py-2.5 px-3 bg-white hover:bg-[#111111] hover:text-white border border-[#111111] text-[#111111] font-mono text-xs font-bold uppercase flex items-center justify-between transition-colors"
+                className="w-full py-2.5 px-3 bg-white hover:bg-[#111111] hover:text-white border-2 border-[#111111] text-[#111111] font-mono text-xs font-black uppercase flex items-center justify-between transition-colors"
               >
                 <span className="inline-flex items-center gap-2">
                   <GithubIcon className="w-3.5 h-3.5" /> GITHUB.COM/NISCHAY237
@@ -1106,12 +991,30 @@ export default function Portfolio({
                 <ArrowUpRight className="w-3.5 h-3.5" />
               </a>
             </div>
+
+            <div className="pt-4 border-t-2 border-[#111111] grid grid-cols-2 gap-2 font-mono text-[11px]">
+              {[
+                { label: 'FORGE AI', fn: onOpenForge },
+                { label: 'CODECLASH', fn: onOpenArena },
+                { label: 'LEADERBOARD', fn: onOpenLeaderboard },
+                { label: 'ANALYTICS', fn: onOpenAnalytics },
+              ].map((b) => (
+                <button
+                  key={b.label}
+                  onClick={b.fn}
+                  className="px-3 py-2 bg-[#F6F5F2] hover:bg-[#111111] hover:text-[#FBBF04] border border-[#111111] font-black uppercase flex items-center justify-between transition-colors cursor-pointer"
+                >
+                  <span>{b.label}</span>
+                  <ArrowUpRight className="w-3.5 h-3.5" />
+                </button>
+              ))}
+            </div>
           </div>
-        </section>
-      </div>
+        </div>
+      </section>
 
       {/* ============================================================== */}
-      {/* 5. RAZOR-SHARP SWISS ⌘K COMMAND INDEX MODAL                    */}
+      {/* 6. ⌘K COMMAND PALETTE                                          */}
       {/* ============================================================== */}
       {cmdOpen && (
         <div
@@ -1122,18 +1025,18 @@ export default function Portfolio({
             className="w-full max-w-lg bg-white border-2 border-[#111111] shadow-[8px_8px_0px_#111111]"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="px-4 py-3 border-b-2 border-[#111111] flex items-center gap-2.5 bg-[#FAFAF8]">
+            <div className="px-4 py-3 border-b-2 border-[#111111] flex items-center gap-2.5 bg-[#EAE8E4]">
               <Search className="w-4 h-4 text-[#111111] shrink-0" />
               <input
                 autoFocus
                 value={cmdQuery}
                 onChange={(e) => setCmdQuery(e.target.value)}
-                placeholder="TYPE COMMAND (FORGE, CODECLASH, RESUME, EMAIL)..."
-                className="flex-1 bg-transparent font-mono text-xs text-[#111111] placeholder:text-stone-400 focus:outline-none uppercase"
+                placeholder="SEARCH PROJECTS, RESUME, EMAIL..."
+                className="flex-1 bg-transparent font-mono text-xs font-bold text-[#111111] placeholder:text-stone-500 focus:outline-none uppercase"
               />
               <button
                 onClick={() => setCmdOpen(false)}
-                className="text-[#111111] hover:text-[#E11D24] cursor-pointer"
+                className="text-[#111111] hover:text-[#F94144] cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -1151,20 +1054,20 @@ export default function Portfolio({
                     }}
                     className="w-full text-left px-4 py-3 hover:bg-[#111111] hover:text-white flex items-center justify-between gap-3 font-mono text-xs transition-colors cursor-pointer group"
                   >
-                    <span className="flex items-center gap-2.5 font-bold">
-                      <Icon className="w-3.5 h-3.5 text-[#E11D24] group-hover:text-[#FFE600]" />
+                    <span className="flex items-center gap-2.5 font-black">
+                      <Icon className="w-3.5 h-3.5 text-[#2B44B8] group-hover:text-[#FBBF04]" />
                       {c.label}
                     </span>
-                    <span className="text-[10px] text-stone-400 group-hover:text-[#FFE600]">
+                    <span className="text-[10px] text-stone-500 group-hover:text-[#FBBF04]">
                       {c.meta}
                     </span>
                   </button>
                 );
               })}
             </div>
-            <div className="px-4 py-2 bg-[#111111] text-[#FFE600] flex items-center justify-between text-[10px] font-mono uppercase">
+            <div className="px-4 py-2 bg-[#111111] text-[#FBBF04] flex items-center justify-between text-[10px] font-mono font-bold uppercase">
               <span className="inline-flex items-center gap-1">
-                <Command className="w-3 h-3" /> SWISS QUICK INDEX
+                <Command className="w-3 h-3" /> QUICK INDEX
               </span>
               <span>ESC TO CLOSE</span>
             </div>

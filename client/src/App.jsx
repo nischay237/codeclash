@@ -173,7 +173,7 @@ function AppContent() {
       <footer
         className={`py-6 px-5 sm:px-8 text-[11px] font-mono uppercase tracking-[0.08em] ${
           currentView === 'portfolio'
-            ? 'border-t-2 border-[#111111] bg-white text-[#111111]'
+            ? 'border-t-2 border-[#111111] bg-[#EAE8E4] text-[#111111]'
             : currentView === 'forge'
             ? 'border-t border-stone-200 bg-[#FAFAF8] text-stone-600'
             : 'border-t border-slate-900 bg-[#04060a] text-slate-400'
