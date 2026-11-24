@@ -47,6 +47,10 @@ const PROJECTS = [
     badgeClass: 'bg-[#F5C542] text-[#141413]',
     accentBar: 'bg-[#F5C542]',
     impactStat: '100% F1 · 0% FPR · 8/8 Tests',
+    whatItDoes:
+      'Automatically audits pull requests before merge — parses Java codebases into real AST dependency graphs, maps every downstream service & test affected by a change, masks leaked secrets, and runs verified AI security reviews.',
+    industryProblem:
+      'Engineering teams lose hours to slow manual PR reviews, surprise production outages from hidden code dependencies, and unsafe AI bots that leak API keys or hallucinate false alarms. Forge catches real risks before CI breaks with 100% F1 and 0% false positives.',
     summary:
       'A multi-tenant Spring Boot 3.5 platform that parses real Java AST dependency graphs, computes exact BFS blast radius before merge, masks leaked secrets and blocks prompt injections, and verifies accuracy with an 8-case reproducible eval suite.',
     highlights: [
@@ -71,6 +75,10 @@ const PROJECTS = [
     badgeClass: 'bg-[#DC4A3D] text-white',
     accentBar: 'bg-[#DC4A3D]',
     impactStat: 'Zero-Lag Sockets · FIDE Elo',
+    whatItDoes:
+      'Matches two developers live on the same algorithmic problem over low-latency WebSockets — syncing test-case pass counts in real time, running submissions inside an isolated sandbox judge, and updating global FIDE Elo ratings.',
+    industryProblem:
+      'Traditional DSA practice platforms are solitary and fail to replicate real-time technical interview pressure or safe multi-user code execution. CodeClash turns coding prep into live head-to-head matches with strict timeout-guarded sandboxing and fair skill matchmaking.',
     summary:
       'Head-to-head DSA battle arena where two developers race on the same algorithmic problem over low-latency Socket.io channels, with isolated sandbox judging and live FIDE Elo ratings.',
     highlights: [
@@ -95,6 +103,10 @@ const PROJECTS = [
     badgeClass: 'bg-[#1D8F5A] text-white',
     accentBar: 'bg-[#1D8F5A]',
     impactStat: '2.4KB Snippet · 0 Cookies',
+    whatItDoes:
+      'Drops into any website with a single <3KB script (zero cookies) to stream live active visitor heartbeats, pageview velocity, and conversion funnel drop-offs into a self-hosted real-time dashboard.',
+    industryProblem:
+      'Heavy third-party trackers like Google Analytics bloat sites (45KB+), trigger intrusive GDPR cookie consent banners, get stripped by ad-blockers, and delay reporting. This gives product teams instant, privacy-compliant traffic insights they fully own with zero speed penalty.',
     summary:
       'A privacy-first, self-hosted alternative to heavy third-party analytics. Embeds under 3KB with zero cookies and streams live visitor heartbeats, pageview velocity, and conversion funnels.',
     highlights: [
@@ -490,9 +502,9 @@ export default function Portfolio({
                     >
                       <div className="overflow-hidden">
                         <div className="pb-6 pl-0 sm:pl-14 lg:pl-16">
-                          <div className="rounded-2xl bg-white/92 backdrop-blur-md border border-[#141413]/15 p-5 sm:p-6 shadow-[0_14px_36px_rgba(20,20,19,0.10)] grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
-                            <div className="lg:col-span-7 space-y-3">
-                              <div className="flex flex-wrap items-center gap-2">
+                          <div className="rounded-2xl bg-white/95 backdrop-blur-md border border-[#141413]/15 p-5 sm:p-6 shadow-[0_14px_36px_rgba(20,20,19,0.12)] grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
+                            <div className="lg:col-span-9 space-y-3.5">
+                              <div className="flex flex-wrap items-center gap-2.5">
                                 <span
                                   className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold ${project.badgeClass}`}
                                 >
@@ -501,10 +513,41 @@ export default function Portfolio({
                                 <span className="text-xs font-bold text-stone-700" style={FONT_MONO}>
                                   {project.repoSlug}
                                 </span>
+                                <span className="hidden sm:inline text-stone-300">·</span>
+                                <span className="text-xs font-extrabold text-[#141413]">
+                                  {project.editorialTitle}
+                                </span>
                               </div>
-                              <p className="text-sm sm:text-[15px] font-bold text-[#141413] leading-relaxed">
-                                {project.summary}
-                              </p>
+
+                              {/* Structured What It Does + Industry Problem Solved Cards */}
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+                                <div className="rounded-xl bg-[#F4F2EC] border border-[#141413]/15 p-3.5 sm:p-4 space-y-1.5">
+                                  <div
+                                    className="inline-flex items-center gap-1.5 text-[10.5px] font-extrabold uppercase tracking-[0.08em] text-[#141413]"
+                                    style={FONT_MONO}
+                                  >
+                                    <span className={`w-2 h-2 rounded-full ${project.accentBar}`} />
+                                    <span>What This Project Does</span>
+                                  </div>
+                                  <p className="text-[13px] sm:text-[13.5px] font-bold text-[#141413] leading-relaxed">
+                                    {project.whatItDoes}
+                                  </p>
+                                </div>
+
+                                <div className="rounded-xl bg-[#141413] text-white border border-[#141413] p-3.5 sm:p-4 space-y-1.5">
+                                  <div
+                                    className="inline-flex items-center gap-1.5 text-[10.5px] font-extrabold uppercase tracking-[0.08em] text-[#F5C542]"
+                                    style={FONT_MONO}
+                                  >
+                                    <Zap className="w-3 h-3 text-[#F5C542]" />
+                                    <span>Industry Problem Solved</span>
+                                  </div>
+                                  <p className="text-[13px] sm:text-[13.5px] font-bold text-white/95 leading-relaxed">
+                                    {project.industryProblem}
+                                  </p>
+                                </div>
+                              </div>
+
                               <div className="flex flex-wrap gap-1.5 pt-0.5">
                                 {project.techStack.slice(0, 6).map((tech) => (
                                   <span
@@ -517,13 +560,13 @@ export default function Portfolio({
                               </div>
                             </div>
 
-                            <div className="lg:col-span-5 flex flex-col sm:flex-row lg:flex-col gap-2.5 lg:items-end justify-center">
+                            <div className="lg:col-span-3 flex flex-col sm:flex-row lg:flex-col gap-2.5 lg:items-stretch justify-center">
                               <button
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   launchProject(project.id);
                                 }}
-                                className="h-10 px-5 rounded-full bg-[#141413] hover:bg-[#2E2D2A] text-white text-xs font-bold inline-flex items-center justify-center gap-1.5 transition-colors cursor-pointer w-full sm:w-auto lg:w-56"
+                                className="h-10 px-4 rounded-full bg-[#141413] hover:bg-[#2E2D2A] text-white text-xs font-bold inline-flex items-center justify-center gap-1.5 transition-colors cursor-pointer w-full"
                               >
                                 {project.cta} <ArrowUpRight className="w-3.5 h-3.5" />
                               </button>
@@ -532,7 +575,7 @@ export default function Portfolio({
                                 target="_blank"
                                 rel="noreferrer"
                                 onClick={(e) => e.stopPropagation()}
-                                className="h-10 px-5 rounded-full bg-white hover:bg-[#F5C542] border border-[#141413] text-[#141413] text-xs font-bold inline-flex items-center justify-center gap-1.5 transition-colors w-full sm:w-auto lg:w-56"
+                                className="h-10 px-4 rounded-full bg-white hover:bg-[#F5C542] border border-[#141413] text-[#141413] text-xs font-bold inline-flex items-center justify-center gap-1.5 transition-colors w-full"
                               >
                                 <GithubIcon className="w-3.5 h-3.5" /> View GitHub Repo ↗
                               </a>
@@ -542,7 +585,7 @@ export default function Portfolio({
                                   setActiveProjectId(project.id);
                                   scrollTo('interactive-lab');
                                 }}
-                                className="text-xs font-bold text-[#141413] underline underline-offset-4 hover:opacity-70 inline-flex items-center justify-center gap-1 pt-1 cursor-pointer lg:w-56"
+                                className="text-xs font-bold text-[#141413] underline underline-offset-4 hover:opacity-70 inline-flex items-center justify-center gap-1 pt-1 cursor-pointer w-full"
                               >
                                 Try interactive sandbox <ArrowDown className="w-3 h-3" />
                               </button>
@@ -684,22 +727,32 @@ export default function Portfolio({
                       >
                         {project.editorialTitle}
                       </h3>
-                      <p className="text-[14px] font-bold text-[#1E1D1B] mt-2.5 leading-relaxed">
-                        {project.summary}
-                      </p>
+                      <div className="mt-3 space-y-2.5">
+                        <div>
+                          <div
+                            className="text-[10px] font-extrabold uppercase tracking-[0.08em] text-stone-600 mb-1"
+                            style={FONT_MONO}
+                          >
+                            What It Does
+                          </div>
+                          <p className="text-[13.5px] font-bold text-[#1E1D1B] leading-relaxed">
+                            {project.whatItDoes}
+                          </p>
+                        </div>
+                        <div className="rounded-xl bg-[#141413] text-white p-3.5 space-y-1">
+                          <div
+                            className="inline-flex items-center gap-1 text-[10px] font-extrabold uppercase tracking-[0.08em] text-[#F5C542]"
+                            style={FONT_MONO}
+                          >
+                            <Zap className="w-3 h-3 text-[#F5C542]" />
+                            <span>Industry Problem Solved</span>
+                          </div>
+                          <p className="text-[12.5px] font-bold text-white/95 leading-relaxed">
+                            {project.industryProblem}
+                          </p>
+                        </div>
+                      </div>
                     </div>
-
-                    <ul className="space-y-2 pt-1">
-                      {project.highlights.slice(0, 2).map((h, i) => (
-                        <li
-                          key={i}
-                          className="flex items-start gap-2 text-xs font-bold text-[#1E1D1B] leading-relaxed"
-                        >
-                          <CheckCircle2 className="w-4 h-4 text-[#1D8F5A] shrink-0 mt-0.5" />
-                          <span>{h}</span>
-                        </li>
-                      ))}
-                    </ul>
 
                     <div className="flex flex-wrap gap-1.5 pt-1">
                       {project.techStack.slice(0, 5).map((t) => (
