@@ -170,53 +170,61 @@ function AppContent() {
       </main>
 
       {/* Footer */}
-      <footer className={`py-8 px-5 sm:px-8 text-xs border-t ${currentView === 'portfolio' || currentView === 'forge' ? 'border-stone-200 bg-[#FAFAF8] text-stone-600' : 'border-slate-900 bg-[#04060a] text-slate-400'}`}>
-        <div className="max-w-[1320px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      <footer
+        className={`py-6 px-5 sm:px-8 text-[11px] font-mono uppercase tracking-[0.08em] ${
+          currentView === 'portfolio'
+            ? 'border-t-2 border-[#111111] bg-white text-[#111111]'
+            : currentView === 'forge'
+            ? 'border-t border-stone-200 bg-[#FAFAF8] text-stone-600'
+            : 'border-t border-slate-900 bg-[#04060a] text-slate-400'
+        }`}
+      >
+        <div className="max-w-[1360px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2.5">
-            <span className={`font-semibold tracking-[-0.02em] ${currentView === 'portfolio' || currentView === 'forge' ? 'text-[#111111]' : 'text-white'}`}>
-              Nischay Srivastava
+            <span className={`font-bold ${currentView === 'portfolio' || currentView === 'forge' ? 'text-[#111111]' : 'text-white'}`}>
+              NISCHAY // SRIVASTAVA
             </span>
-            <span className="opacity-40">·</span>
-            <span className="font-mono text-[11px]">Engineering Portfolio &amp; Live Systems</span>
+            <span className="opacity-40">—</span>
+            <span>SWISS EDITORIAL PORTFOLIO © {new Date().getFullYear()}</span>
           </div>
-          <div className="flex flex-wrap items-center justify-center gap-4 font-medium">
+          <div className="flex flex-wrap items-center justify-center gap-4">
             <button
               onClick={() => setCurrentView('forge')}
-              className={`transition-colors cursor-pointer ${currentView === 'portfolio' || currentView === 'forge' ? 'hover:text-[#111111]' : 'hover:text-emerald-400'}`}
+              className={`transition-colors cursor-pointer ${currentView === 'portfolio' ? 'hover:text-[#E11D24]' : currentView === 'forge' ? 'hover:text-[#111111]' : 'hover:text-emerald-400'}`}
             >
-              FORGE AI
+              01 FORGE AI
             </button>
             <span className="opacity-30">/</span>
             <button
               onClick={() => setCurrentView('lobby')}
-              className={`transition-colors cursor-pointer ${currentView === 'portfolio' || currentView === 'forge' ? 'hover:text-[#111111]' : 'hover:text-emerald-400'}`}
+              className={`transition-colors cursor-pointer ${currentView === 'portfolio' ? 'hover:text-[#E11D24]' : currentView === 'forge' ? 'hover:text-[#111111]' : 'hover:text-emerald-400'}`}
             >
-              CodeClash Arena
+              02 CODECLASH
             </button>
             <span className="opacity-30">/</span>
             <button
               onClick={() => setCurrentView('analytics')}
-              className={`transition-colors cursor-pointer ${currentView === 'portfolio' || currentView === 'forge' ? 'hover:text-[#111111]' : 'hover:text-emerald-400'}`}
+              className={`transition-colors cursor-pointer ${currentView === 'portfolio' ? 'hover:text-[#E11D24]' : currentView === 'forge' ? 'hover:text-[#111111]' : 'hover:text-emerald-400'}`}
             >
-              Live Analytics
+              03 ANALYTICS
             </button>
             <span className="opacity-30">/</span>
             <a
               href="/resume.pdf"
               target="_blank"
               rel="noreferrer"
-              className={`transition-colors ${currentView === 'portfolio' || currentView === 'forge' ? 'hover:text-[#111111]' : 'hover:text-emerald-400'}`}
+              className={`transition-colors ${currentView === 'portfolio' ? 'hover:text-[#E11D24]' : currentView === 'forge' ? 'hover:text-[#111111]' : 'hover:text-emerald-400'}`}
             >
-              Resume
+              RESUME.PDF ↗
             </a>
             <span className="opacity-30">/</span>
             <a
               href="https://github.com/nischay237"
               target="_blank"
               rel="noreferrer"
-              className={`transition-colors ${currentView === 'portfolio' || currentView === 'forge' ? 'hover:text-[#111111]' : 'hover:text-emerald-400'}`}
+              className={`transition-colors ${currentView === 'portfolio' ? 'hover:text-[#E11D24]' : currentView === 'forge' ? 'hover:text-[#111111]' : 'hover:text-emerald-400'}`}
             >
-              GitHub ↗
+              GITHUB ↗
             </a>
           </div>
         </div>
