@@ -309,7 +309,7 @@ function analyzeJavaDiff(rawDiff) {
   const findings = [];
   let inLoop = false;
   let currentFile = 'PaymentSettlementService.java';
-  let currentLineNo = 0;
+  let currentLineNo = -1;
 
   lines.forEach((rawLine, idx) => {
     if (rawLine.startsWith('+++ b/')) {
@@ -317,7 +317,7 @@ function analyzeJavaDiff(rawDiff) {
       inLoop = false;
       return;
     }
-    if (rawLine.startsWith('diff --git') || rawLine.startsWith('--- ')) {
+    if (rawLine.startsWith('diff --git') || rawLine.startsWith('--- ') || rawLine.startsWith('new file mode') || rawLine.startsWith('index ')) {
       return;
     }
     const hunkMatch = rawLine.match(/^@@ -\d+(?:,\d+)? \+(\d+)(?:,\d+)? @@/);
@@ -329,7 +329,7 @@ function analyzeJavaDiff(rawDiff) {
     const isRemoved = rawLine.startsWith('-');
     const isAdded = rawLine.trimStart().startsWith('+') && !rawLine.startsWith('+++');
     if (!isRemoved) {
-      currentLineNo = currentLineNo > 0 ? currentLineNo + 1 : idx + 1;
+      currentLineNo = currentLineNo >= 0 ? currentLineNo + 1 : idx + 1;
     }
     if (!isAdded) return;
 
