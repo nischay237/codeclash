@@ -367,7 +367,7 @@ export default function Portfolio({
 
           {/* Primary Dreamy Blurred Artwork: Girl Looking Upward at Bold Project Titles */}
           <div
-            className="absolute inset-0 flex items-end justify-center"
+            className="absolute inset-0 flex items-end justify-center pb-14 sm:pb-16"
             style={{
               WebkitMaskImage:
                 'linear-gradient(to right, transparent 0%, black 14%, black 86%, transparent 100%)',
@@ -378,8 +378,12 @@ export default function Portfolio({
             <img
               src="/hero-creative-bg.jpg"
               alt="Creative blurred background illustration"
-              className={`h-full w-auto max-w-[1060px] object-cover object-bottom transition-all duration-500 ${
-                hoveredId ? 'blur-[6px] scale-[1.03] opacity-75' : 'blur-[4px] scale-[1.01] opacity-85'
+              style={{
+                WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 84%, transparent 100%)',
+                maskImage: 'linear-gradient(to bottom, black 0%, black 84%, transparent 100%)',
+              }}
+              className={`h-[94%] w-auto max-w-[1040px] object-cover object-bottom transition-all duration-500 ${
+                hoveredId ? 'blur-[6px] scale-[1.03] opacity-75' : 'blur-[3.5px] scale-[1.01] opacity-88'
               }`}
             />
           </div>
