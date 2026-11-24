@@ -171,9 +171,9 @@ function AppContent() {
 
       {/* Footer */}
       <footer
-        className={`py-8 px-5 sm:px-8 text-[13px] ${
+        className={`py-8 px-5 sm:px-8 text-[13px] font-bold ${
           currentView === 'portfolio'
-            ? 'border-t border-stone-200/90 bg-[#F9F8F5] text-stone-500'
+            ? 'border-t border-stone-200/90 bg-[#F9F8F5] text-stone-700'
             : currentView === 'forge'
             ? 'border-t border-stone-200 bg-[#FAFAF8] text-stone-600'
             : 'border-t border-slate-900 bg-[#04060a] text-slate-400'
@@ -182,15 +182,15 @@ function AppContent() {
         <div className="max-w-[1240px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2.5">
             <span
-              className={`font-medium ${currentView === 'portfolio' || currentView === 'forge' ? 'text-[#141413]' : 'text-white'}`}
-              style={currentView === 'portfolio' ? { fontFamily: "'Newsreader', Georgia, serif", fontSize: '16px' } : undefined}
+              className={`font-bold ${currentView === 'portfolio' || currentView === 'forge' ? 'text-[#141413]' : 'text-white'}`}
+              style={currentView === 'portfolio' ? { fontFamily: "'Newsreader', Georgia, serif", fontSize: '17px' } : undefined}
             >
               Nischay Srivastava
             </span>
-            <span className="opacity-35">·</span>
-            <span className="text-xs">Built with care in India</span>
+            <span className="opacity-45">·</span>
+            <span className="text-xs font-bold">Built with care in India</span>
           </div>
-          <div className="flex flex-wrap items-center justify-center gap-5 text-xs font-medium">
+          <div className="flex flex-wrap items-center justify-center gap-5 text-xs font-bold">
             <button
               onClick={() => setCurrentView('forge')}
               className={`transition-colors cursor-pointer ${currentView === 'portfolio' || currentView === 'forge' ? 'hover:text-[#141413]' : 'hover:text-emerald-400'}`}

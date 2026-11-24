@@ -279,7 +279,7 @@ export default function Portfolio({
 
   return (
     <div
-      className="min-h-screen bg-[#F9F8F5] text-[#141413] selection:bg-[#F5C542] selection:text-[#141413]"
+      className="min-h-screen bg-[#F9F8F5] text-[#141413] font-bold selection:bg-[#F5C542] selection:text-[#141413]"
       style={FONT_SANS}
     >
       {/* ============================================================== */}
@@ -305,7 +305,7 @@ export default function Portfolio({
             </span>
           </button>
 
-          <nav className="hidden md:flex items-center gap-7 text-[13.5px] font-medium text-[#141413]/75">
+          <nav className="hidden md:flex items-center gap-7 text-[13.5px] font-bold text-[#141413]/75">
             <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="hover:text-[#141413] transition-colors cursor-pointer">
               Projects
             </button>
@@ -323,11 +323,11 @@ export default function Portfolio({
           <div className="flex items-center gap-2">
             <button
               onClick={() => setCmdOpen(true)}
-              className="hidden sm:inline-flex items-center gap-2 h-9 px-3 rounded-lg bg-white/75 hover:bg-white border border-[#141413]/15 text-xs font-medium text-[#141413] transition-colors cursor-pointer"
+              className="hidden sm:inline-flex items-center gap-2 h-9 px-3 rounded-lg bg-white/75 hover:bg-white border border-[#141413]/15 text-xs font-bold text-[#141413] transition-colors cursor-pointer"
             >
-              <Search className="w-3.5 h-3.5 text-stone-500" />
+              <Search className="w-3.5 h-3.5 text-[#1E1D1B]" />
               <span>Quick jump</span>
-              <span className="text-[10.5px] text-stone-500" style={FONT_MONO}>
+              <span className="text-[10.5px] text-[#1E1D1B]" style={FONT_MONO}>
                 ⌘K
               </span>
             </button>
@@ -335,13 +335,13 @@ export default function Portfolio({
               href="/resume.pdf"
               target="_blank"
               rel="noreferrer"
-              className="h-9 px-3.5 rounded-lg bg-white/80 hover:bg-white border border-[#141413]/20 text-xs font-medium text-[#141413] inline-flex items-center gap-1 transition-colors"
+              className="h-9 px-3.5 rounded-lg bg-white/80 hover:bg-white border border-[#141413]/20 text-xs font-bold text-[#141413] inline-flex items-center gap-1 transition-colors"
             >
               Resume <ArrowUpRight className="w-3.5 h-3.5" />
             </a>
             <a
               href="mailto:nischaysrivastava2@gmail.com"
-              className="h-9 px-4 rounded-lg bg-[#141413] hover:bg-[#2E2D2A] text-white text-xs font-medium inline-flex items-center transition-colors"
+              className="h-9 px-4 rounded-lg bg-[#141413] hover:bg-[#2E2D2A] text-white text-xs font-bold inline-flex items-center transition-colors"
             >
               Contact
             </a>
@@ -374,12 +374,12 @@ export default function Portfolio({
 
         {/* Foreground Giant Bold Interactive Project List */}
         <div className="relative z-10 max-w-[1320px] mx-auto px-5 sm:px-10 py-8 sm:py-10 min-h-[calc(100vh-64px)] flex flex-col justify-between gap-8">
-          <div className="flex flex-wrap items-center justify-between gap-3 text-xs font-medium text-[#141413]">
+          <div className="flex flex-wrap items-center justify-between gap-3 text-xs font-bold text-[#141413]">
             <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm px-3.5 py-1.5 rounded-full border border-[#141413]/12">
               <span className="w-2 h-2 rounded-full bg-[#1D8F5A]" />
               <span>Full-Stack &amp; Distributed Systems Engineer</span>
             </div>
-            <div className="inline-flex items-center gap-2.5 bg-white/80 backdrop-blur-sm px-3.5 py-1.5 rounded-full border border-[#141413]/12 text-stone-700">
+            <div className="inline-flex items-center gap-2.5 bg-white/80 backdrop-blur-sm px-3.5 py-1.5 rounded-full border border-[#141413]/12 text-[#1E1D1B]">
               <span>B.Tech CSE (AKTU)</span>
               <span className="opacity-35">·</span>
               <span>Click any project to launch live</span>
@@ -418,7 +418,7 @@ export default function Portfolio({
                       }`}
                     >
                       <span
-                        className="text-sm font-medium text-[#141413]/80 bg-white/80 px-2 py-0.5 rounded border border-[#141413]/20"
+                        className="text-sm font-bold text-[#141413]/80 bg-white/80 px-2 py-0.5 rounded border border-[#141413]/20"
                         style={FONT_MONO}
                       >
                         {project.index}
@@ -437,11 +437,11 @@ export default function Portfolio({
                     <div className="flex flex-wrap items-center gap-3 pl-12 sm:pl-16 lg:pl-0">
                       <div className="text-left lg:text-right">
                         <span
-                          className={`inline-block px-2.5 py-0.5 rounded-full text-[11px] font-semibold tracking-tight ${project.badgeClass}`}
+                          className={`inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold tracking-tight ${project.badgeClass}`}
                         >
                           {project.badge}
                         </span>
-                        <div className="text-xs font-medium text-[#141413] bg-[#F4F2EE]/85 backdrop-blur-xs px-2.5 py-0.5 rounded mt-1">
+                        <div className="text-xs font-bold text-[#141413] bg-[#F4F2EE]/85 backdrop-blur-xs px-2.5 py-0.5 rounded mt-1">
                           {project.subtitle}
                         </div>
                       </div>
@@ -466,11 +466,11 @@ export default function Portfolio({
           <div className="rounded-2xl bg-white/88 backdrop-blur-md border border-[#141413]/12 p-4 sm:px-6 flex flex-col lg:flex-row lg:items-center justify-between gap-4 shadow-[0_8px_30px_rgba(20,20,19,0.08)]">
             <div className="min-w-0 flex items-start sm:items-center gap-3.5">
               <span
-                className={`px-2.5 py-1 rounded-full text-xs font-semibold shrink-0 ${focusedHeroProject.badgeClass}`}
+                className={`px-2.5 py-1 rounded-full text-xs font-bold shrink-0 ${focusedHeroProject.badgeClass}`}
               >
                 {focusedHeroProject.shortName}
               </span>
-              <p className="text-[13.5px] text-stone-700 leading-relaxed line-clamp-2">
+              <p className="text-[13.5px] text-[#1E1D1B] leading-relaxed line-clamp-2">
                 {focusedHeroProject.summary}
               </p>
             </div>
@@ -478,13 +478,13 @@ export default function Portfolio({
             <div className="flex flex-wrap items-center gap-2 shrink-0">
               <button
                 onClick={() => launchProject(focusedHeroProject.id)}
-                className="h-10 px-5 rounded-full bg-[#141413] hover:bg-[#2E2D2A] text-white text-xs font-medium inline-flex items-center gap-1.5 transition-colors cursor-pointer"
+                className="h-10 px-5 rounded-full bg-[#141413] hover:bg-[#2E2D2A] text-white text-xs font-bold inline-flex items-center gap-1.5 transition-colors cursor-pointer"
               >
                 {focusedHeroProject.cta} <ArrowUpRight className="w-3.5 h-3.5" />
               </button>
               <button
                 onClick={() => scrollTo('interactive-lab')}
-                className="h-10 px-4 rounded-full bg-[#F4F2EE] hover:bg-stone-200/80 text-[#141413] text-xs font-medium inline-flex items-center gap-1.5 transition-colors cursor-pointer"
+                className="h-10 px-4 rounded-full bg-[#F4F2EE] hover:bg-stone-200/80 text-[#141413] text-xs font-bold inline-flex items-center gap-1.5 transition-colors cursor-pointer"
               >
                 Explore below <ArrowDown className="w-3.5 h-3.5" />
               </button>
@@ -502,9 +502,9 @@ export default function Portfolio({
           {/* Natural Editorial Header + Minimal Underline Tabs */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-stone-200/90 pb-6">
             <div>
-              <p className="text-xs font-medium text-stone-500 mb-2">Interactive walkthrough</p>
+              <p className="text-xs font-bold text-[#1E1D1B] mb-2">Interactive walkthrough</p>
               <h2
-                className="text-3xl sm:text-[44px] font-normal tracking-[-0.02em] leading-[1.1] text-[#141413]"
+                className="text-3xl sm:text-[44px] font-bold tracking-[-0.02em] leading-[1.1] text-[#141413]"
                 style={FONT_SERIF}
               >
                 A closer look at <em className="italic">how they work.</em>
@@ -519,7 +519,7 @@ export default function Portfolio({
                     key={p.id}
                     onClick={() => setActiveProjectId(p.id)}
                     className={`relative pb-2 text-sm transition-colors cursor-pointer whitespace-nowrap flex items-baseline gap-2 ${
-                      active ? 'text-[#141413] font-semibold' : 'text-stone-400 hover:text-stone-700'
+                      active ? 'text-[#141413] font-bold' : 'text-stone-800 hover:text-[#1E1D1B]'
                     }`}
                   >
                     <span className="text-[11px]" style={FONT_MONO}>
@@ -540,16 +540,16 @@ export default function Portfolio({
             {/* Left: Narrative Story & Decisions */}
             <div className="lg:col-span-5 space-y-6">
               <div className="space-y-3">
-                <div className="text-xs text-stone-500" style={FONT_MONO}>
+                <div className="text-xs text-[#1E1D1B]" style={FONT_MONO}>
                   {activeLabProject.subtitle}
                 </div>
                 <h3
-                  className="text-2xl sm:text-[31px] font-normal tracking-[-0.015em] leading-[1.2] text-[#141413]"
+                  className="text-2xl sm:text-[31px] font-bold tracking-[-0.015em] leading-[1.2] text-[#141413]"
                   style={FONT_SERIF}
                 >
                   {activeLabProject.editorialTitle}
                 </h3>
-                <p className="text-[15.5px] text-stone-600 leading-[1.72]">
+                <p className="text-[15.5px] text-stone-800 leading-[1.72]">
                   {activeLabProject.summary}
                 </p>
               </div>
@@ -558,22 +558,22 @@ export default function Portfolio({
                 {activeLabProject.highlights.map((item, i) => (
                   <li
                     key={i}
-                    className="flex items-start gap-3 text-[14px] text-stone-700 leading-[1.65]"
+                    className="flex items-start gap-3 text-[14px] text-[#1E1D1B] leading-[1.65]"
                   >
-                    <span className="text-stone-400 select-none mt-0.5">—</span>
+                    <span className="text-stone-800 select-none mt-0.5">—</span>
                     <span>{item}</span>
                   </li>
                 ))}
               </ul>
 
-              <div className="text-xs text-stone-500 leading-relaxed pt-1">
+              <div className="text-xs text-[#1E1D1B] leading-relaxed pt-1">
                 {activeLabProject.techStack.join(' · ')}
               </div>
 
               <div className="flex flex-wrap items-center gap-3 pt-2">
                 <button
                   onClick={() => launchProject(activeLabProject.id)}
-                  className="h-10 px-5 rounded-full bg-[#141413] hover:bg-[#2E2D2A] text-white text-xs font-medium inline-flex items-center gap-1.5 transition-colors cursor-pointer"
+                  className="h-10 px-5 rounded-full bg-[#141413] hover:bg-[#2E2D2A] text-white text-xs font-bold inline-flex items-center gap-1.5 transition-colors cursor-pointer"
                 >
                   {activeLabProject.cta} <ArrowUpRight className="w-3.5 h-3.5" />
                 </button>
@@ -581,7 +581,7 @@ export default function Portfolio({
                   href={activeLabProject.githubUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="h-10 px-4 rounded-full border border-stone-300 hover:border-[#141413] text-xs font-medium text-[#141413] inline-flex items-center gap-1.5 transition-colors"
+                  className="h-10 px-4 rounded-full border border-stone-300 hover:border-[#141413] text-xs font-bold text-[#141413] inline-flex items-center gap-1.5 transition-colors"
                 >
                   <GithubIcon className="w-3.5 h-3.5" /> Source on GitHub
                 </a>
@@ -590,7 +590,7 @@ export default function Portfolio({
                     href={activeLabProject.driveUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="text-xs font-medium text-stone-600 hover:text-[#141413] underline underline-offset-4 inline-flex items-center gap-1 ml-1"
+                    className="text-xs font-bold text-stone-800 hover:text-[#141413] underline underline-offset-4 inline-flex items-center gap-1 ml-1"
                   >
                     Artifacts <ExternalLink className="w-3 h-3" />
                   </a>
@@ -605,15 +605,15 @@ export default function Portfolio({
                   <div className="space-y-6">
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <div>
-                        <h4 className="text-[15px] font-semibold text-[#141413]" style={FONT_DISPLAY}>
+                        <h4 className="text-[15px] font-bold text-[#141413]" style={FONT_DISPLAY}>
                           AST Blast-Radius Tracer
                         </h4>
-                        <p className="text-xs text-stone-500 mt-0.5">
+                        <p className="text-xs text-[#1E1D1B] mt-0.5">
                           Select any service class to inspect downstream callers and test impact
                         </p>
                       </div>
                       <span
-                        className={`px-2.5 py-1 rounded-full text-xs font-medium ${
+                        className={`px-2.5 py-1 rounded-full text-xs font-bold ${
                           astInfo.risk === 'High'
                             ? 'bg-orange-50 text-orange-800 border border-orange-200'
                             : 'bg-emerald-50 text-emerald-800 border border-emerald-200'
@@ -640,16 +640,16 @@ export default function Portfolio({
                             }`}
                           >
                             <div className="flex items-center justify-between text-[11px] mb-1">
-                              <span className={isSel ? 'text-stone-400' : 'text-stone-500'}>
+                              <span className={isSel ? 'text-stone-800' : 'text-[#1E1D1B]'}>
                                 {meta.layer}
                               </span>
                               {isImp && (
-                                <span className="text-[10.5px] font-medium text-orange-700">
+                                <span className="text-[10.5px] font-bold text-orange-700">
                                   Impacted
                                 </span>
                               )}
                             </div>
-                            <div className="text-sm font-medium truncate" style={FONT_MONO}>
+                            <div className="text-sm font-bold truncate" style={FONT_MONO}>
                               {nodeName}
                             </div>
                           </button>
@@ -657,7 +657,7 @@ export default function Portfolio({
                       })}
                     </div>
 
-                    <div className="pt-4 border-t border-stone-100 flex flex-wrap items-center justify-between gap-3 text-xs text-stone-600">
+                    <div className="pt-4 border-t border-stone-100 flex flex-wrap items-center justify-between gap-3 text-xs text-stone-800">
                       <span>
                         Editing <strong className="text-[#141413]">{selectedAstNode}</strong> touches{' '}
                         <strong className="text-[#141413]">{astInfo.callers.length}</strong>{' '}
@@ -665,7 +665,7 @@ export default function Portfolio({
                       </span>
                       <button
                         onClick={onOpenForge}
-                        className="font-medium text-[#141413] underline underline-offset-4 hover:opacity-70 cursor-pointer"
+                        className="font-bold text-[#141413] underline underline-offset-4 hover:opacity-70 cursor-pointer"
                       >
                         Open full AST graph ↗
                       </button>
@@ -677,17 +677,17 @@ export default function Portfolio({
                   <div className="space-y-6">
                     <div className="flex flex-wrap items-center justify-between gap-3">
                       <div>
-                        <h4 className="text-[15px] font-semibold text-[#141413]" style={FONT_DISPLAY}>
+                        <h4 className="text-[15px] font-bold text-[#141413]" style={FONT_DISPLAY}>
                           1v1 Duel &amp; FIDE Elo Simulator
                         </h4>
-                        <p className="text-xs text-stone-500 mt-0.5">
+                        <p className="text-xs text-[#1E1D1B] mt-0.5">
                           Watch live test-case progress race and calculate updated rating
                         </p>
                       </div>
                       <button
                         onClick={simulateDuel}
                         disabled={duelRunning}
-                        className="h-9 px-4 rounded-full bg-[#141413] hover:bg-[#2E2D2A] text-white text-xs font-medium inline-flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+                        className="h-9 px-4 rounded-full bg-[#141413] hover:bg-[#2E2D2A] text-white text-xs font-bold inline-flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
                       >
                         <Play className="w-3 h-3 fill-current" />
                         {duelRunning ? 'Running match...' : 'Simulate duel'}
@@ -697,10 +697,10 @@ export default function Portfolio({
                     <div className="space-y-4 py-2">
                       <div className="space-y-2">
                         <div className="flex justify-between text-xs">
-                          <span className="font-medium text-[#141413]" style={FONT_MONO}>
+                          <span className="font-bold text-[#141413]" style={FONT_MONO}>
                             nischay_dev
                           </span>
-                          <span className="text-stone-600" style={FONT_MONO}>
+                          <span className="text-stone-800" style={FONT_MONO}>
                             {p1Tests} / 12 passed
                           </span>
                         </div>
@@ -713,7 +713,7 @@ export default function Portfolio({
                       </div>
 
                       <div className="space-y-2">
-                        <div className="flex justify-between text-xs text-stone-500">
+                        <div className="flex justify-between text-xs text-[#1E1D1B]">
                           <span style={FONT_MONO}>algo_rival</span>
                           <span style={FONT_MONO}>{p2Tests} / 12 passed</span>
                         </div>
@@ -728,17 +728,17 @@ export default function Portfolio({
 
                     <div className="pt-4 border-t border-stone-100 flex flex-wrap items-center justify-between gap-3">
                       <div className="flex items-baseline gap-2.5">
-                        <span className="text-xs text-stone-500">FIDE Elo</span>
-                        <span className="text-2xl font-semibold text-[#141413]" style={FONT_DISPLAY}>
+                        <span className="text-xs text-[#1E1D1B]">FIDE Elo</span>
+                        <span className="text-2xl font-bold text-[#141413]" style={FONT_DISPLAY}>
                           {elo}
                         </span>
-                        <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700">
+                        <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700">
                           {eloDelta}
                         </span>
                       </div>
                       <button
                         onClick={onOpenLeaderboard}
-                        className="text-xs font-medium text-[#141413] underline underline-offset-4 hover:opacity-70 cursor-pointer"
+                        className="text-xs font-bold text-[#141413] underline underline-offset-4 hover:opacity-70 cursor-pointer"
                       >
                         View global leaderboard ↗
                       </button>
@@ -750,16 +750,16 @@ export default function Portfolio({
                   <div className="space-y-6">
                     <div className="flex flex-wrap items-center justify-between gap-3">
                       <div>
-                        <h4 className="text-[15px] font-semibold text-[#141413]" style={FONT_DISPLAY}>
+                        <h4 className="text-[15px] font-bold text-[#141413]" style={FONT_DISPLAY}>
                           Live Web Telemetry Stream
                         </h4>
-                        <p className="text-xs text-stone-500 mt-0.5">
+                        <p className="text-xs text-[#1E1D1B] mt-0.5">
                           Fire simulated visitor events to watch real-time ingestion velocity
                         </p>
                       </div>
                       <button
                         onClick={fireTelemetry}
-                        className="h-9 px-4 rounded-full bg-[#141413] hover:bg-[#2E2D2A] text-white text-xs font-medium inline-flex items-center gap-1.5 cursor-pointer"
+                        className="h-9 px-4 rounded-full bg-[#141413] hover:bg-[#2E2D2A] text-white text-xs font-bold inline-flex items-center gap-1.5 cursor-pointer"
                       >
                         <Zap className="w-3 h-3" /> Send pageview
                       </button>
@@ -767,21 +767,21 @@ export default function Portfolio({
 
                     <div className="flex items-center gap-8 text-xs">
                       <div>
-                        <div className="text-stone-400">Active visitors</div>
-                        <div className="text-2xl font-semibold text-[#141413] mt-0.5 flex items-center gap-2" style={FONT_DISPLAY}>
+                        <div className="text-stone-800">Active visitors</div>
+                        <div className="text-2xl font-bold text-[#141413] mt-0.5 flex items-center gap-2" style={FONT_DISPLAY}>
                           <span className="w-2 h-2 rounded-full bg-[#1D8F5A] animate-pulse" />
                           {visitors}
                         </div>
                       </div>
                       <div>
-                        <div className="text-stone-400">Events ingested</div>
-                        <div className="text-2xl font-semibold text-[#141413] mt-0.5" style={FONT_DISPLAY}>
+                        <div className="text-stone-800">Events ingested</div>
+                        <div className="text-2xl font-bold text-[#141413] mt-0.5" style={FONT_DISPLAY}>
                           {events.toLocaleString()}
                         </div>
                       </div>
                       <div>
-                        <div className="text-stone-400">Script weight</div>
-                        <div className="text-2xl font-semibold text-[#141413] mt-0.5" style={FONT_DISPLAY}>
+                        <div className="text-stone-800">Script weight</div>
+                        <div className="text-2xl font-bold text-[#141413] mt-0.5" style={FONT_DISPLAY}>
                           2.4 KB
                         </div>
                       </div>
@@ -799,11 +799,11 @@ export default function Portfolio({
                       ))}
                     </div>
 
-                    <div className="flex items-center justify-between text-xs text-stone-500">
+                    <div className="flex items-center justify-between text-xs text-[#1E1D1B]">
                       <span>Zero cookies · Self-hosted Node + MongoDB</span>
                       <button
                         onClick={onOpenAnalytics}
-                        className="font-medium text-[#141413] underline underline-offset-4 hover:opacity-70 cursor-pointer"
+                        className="font-bold text-[#141413] underline underline-offset-4 hover:opacity-70 cursor-pointer"
                       >
                         Open full dashboard ↗
                       </button>
@@ -824,9 +824,9 @@ export default function Portfolio({
         <div className="max-w-[1240px] mx-auto space-y-10">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
-              <p className="text-xs font-medium text-stone-500 mb-2">Stack &amp; craft</p>
+              <p className="text-xs font-bold text-[#1E1D1B] mb-2">Stack &amp; craft</p>
               <h2
-                className="text-3xl sm:text-[44px] font-normal tracking-[-0.02em] leading-[1.1] text-[#141413]"
+                className="text-3xl sm:text-[44px] font-bold tracking-[-0.02em] leading-[1.1] text-[#141413]"
                 style={FONT_SERIF}
               >
                 Tools I actually <em className="italic">ship with.</em>
@@ -835,9 +835,9 @@ export default function Portfolio({
 
             {/* Quiet Inline Proof Readout */}
             {selectedSkill && (
-              <div className="flex flex-wrap items-center gap-2 text-xs text-stone-600">
-                <span className="font-medium text-[#141413]">{selectedSkill.name}</span>
-                <span className="text-stone-400">used in</span>
+              <div className="flex flex-wrap items-center gap-2 text-xs text-stone-800">
+                <span className="font-bold text-[#141413]">{selectedSkill.name}</span>
+                <span className="text-stone-800">used in</span>
                 {selectedSkill.projects.map((pid) => {
                   const proj = PROJECTS.find((p) => p.id === pid);
                   if (!proj) return null;
@@ -845,7 +845,7 @@ export default function Portfolio({
                     <button
                       key={pid}
                       onClick={() => launchProject(pid)}
-                      className="px-3 py-1 rounded-full bg-[#F4F2EC] hover:bg-[#141413] hover:text-white text-[#141413] font-medium inline-flex items-center gap-1 transition-colors cursor-pointer"
+                      className="px-3 py-1 rounded-full bg-[#F4F2EC] hover:bg-[#141413] hover:text-white text-[#141413] font-bold inline-flex items-center gap-1 transition-colors cursor-pointer"
                     >
                       {proj.shortName} <ArrowUpRight className="w-3 h-3" />
                     </button>
@@ -862,10 +862,10 @@ export default function Portfolio({
                 className="py-7 grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-start"
               >
                 <div className="lg:col-span-4">
-                  <h3 className="text-[16px] font-semibold text-[#141413]" style={FONT_DISPLAY}>
+                  <h3 className="text-[16px] font-bold text-[#141413]" style={FONT_DISPLAY}>
                     {row.title}
                   </h3>
-                  <p className="text-[13.5px] text-stone-500 mt-1 leading-relaxed">{row.note}</p>
+                  <p className="text-[13.5px] text-[#1E1D1B] mt-1 leading-relaxed">{row.note}</p>
                 </div>
 
                 <div className="lg:col-span-8 flex flex-wrap gap-2">
@@ -875,10 +875,10 @@ export default function Portfolio({
                       <button
                         key={item.name}
                         onClick={() => setSelectedSkill(item)}
-                        className={`px-3.5 py-2 rounded-full text-[13px] font-medium transition-all cursor-pointer ${
+                        className={`px-3.5 py-2 rounded-full text-[13px] font-bold transition-all cursor-pointer ${
                           isPicked
                             ? 'bg-[#141413] text-white'
-                            : 'bg-[#F6F5F0] text-stone-700 hover:bg-stone-200/80 hover:text-[#141413]'
+                            : 'bg-[#F6F5F0] text-[#1E1D1B] hover:bg-stone-200/80 hover:text-[#141413]'
                         }`}
                       >
                         {item.name}
@@ -899,18 +899,18 @@ export default function Portfolio({
         <div className="max-w-[1240px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           {/* Left: Personal Narrative */}
           <div className="lg:col-span-7 space-y-6">
-            <p className="text-xs font-medium text-stone-500">About me</p>
+            <p className="text-xs font-bold text-[#1E1D1B]">About me</p>
             <h2
-              className="text-3xl sm:text-[46px] font-normal tracking-[-0.02em] leading-[1.1] text-[#141413]"
+              className="text-3xl sm:text-[46px] font-bold tracking-[-0.02em] leading-[1.1] text-[#141413]"
               style={FONT_SERIF}
             >
               Hi, I&apos;m <em className="italic">Nischay.</em>
             </h2>
 
-            <div className="space-y-4 text-[16px] text-stone-700 leading-[1.78] max-w-xl">
+            <div className="space-y-4 text-[16px] text-[#1E1D1B] leading-[1.78] max-w-xl">
               <p>
                 I&apos;m a Computer Science undergraduate at{' '}
-                <strong className="font-semibold text-[#141413]">
+                <strong className="font-bold text-[#141413]">
                   Feroze Gandhi Institute of Engineering and Technology (AKTU)
                 </strong>{' '}
                 in Raebareli, India. I like building software where architecture and user feel both
@@ -926,19 +926,19 @@ export default function Portfolio({
 
             <div className="pt-6 border-t border-stone-300/70 grid grid-cols-1 sm:grid-cols-3 gap-6 text-sm">
               <div>
-                <div className="text-xs text-stone-500 mb-1">Education</div>
-                <div className="font-medium text-[#141413]">B.Tech CSE, AKTU</div>
-                <div className="text-xs text-stone-500 mt-0.5">2023 – 2027</div>
+                <div className="text-xs text-[#1E1D1B] mb-1">Education</div>
+                <div className="font-bold text-[#141413]">B.Tech CSE, AKTU</div>
+                <div className="text-xs text-[#1E1D1B] mt-0.5">2023 – 2027</div>
               </div>
               <div>
-                <div className="text-xs text-stone-500 mb-1">Based in</div>
-                <div className="font-medium text-[#141413]">Raebareli, India</div>
-                <div className="text-xs text-stone-500 mt-0.5">Open to relocate / remote</div>
+                <div className="text-xs text-[#1E1D1B] mb-1">Based in</div>
+                <div className="font-bold text-[#141413]">Raebareli, India</div>
+                <div className="text-xs text-[#1E1D1B] mt-0.5">Open to relocate / remote</div>
               </div>
               <div>
-                <div className="text-xs text-stone-500 mb-1">Focus</div>
-                <div className="font-medium text-[#141413]">Backend &amp; Full-Stack</div>
-                <div className="text-xs text-stone-500 mt-0.5">Java, Spring, React</div>
+                <div className="text-xs text-[#1E1D1B] mb-1">Focus</div>
+                <div className="font-bold text-[#141413]">Backend &amp; Full-Stack</div>
+                <div className="text-xs text-[#1E1D1B] mt-0.5">Java, Spring, React</div>
               </div>
             </div>
           </div>
@@ -947,12 +947,12 @@ export default function Portfolio({
           <div className="lg:col-span-5 rounded-2xl bg-white border border-stone-200/90 p-7 sm:p-9 shadow-[0_4px_24px_rgba(20,20,19,0.04)] space-y-6">
             <div>
               <h3
-                className="text-2xl font-normal tracking-[-0.015em] text-[#141413]"
+                className="text-2xl font-bold tracking-[-0.015em] text-[#141413]"
                 style={FONT_SERIF}
               >
                 Say hello.
               </h3>
-              <p className="text-sm text-stone-500 mt-1.5 leading-relaxed">
+              <p className="text-sm text-[#1E1D1B] mt-1.5 leading-relaxed">
                 Always happy to chat about engineering roles, backend architecture, or side
                 projects.
               </p>
@@ -961,10 +961,10 @@ export default function Portfolio({
             <div className="divide-y divide-stone-100 border-y border-stone-100 text-sm">
               <div className="py-3.5 flex items-center justify-between gap-3">
                 <div className="min-w-0">
-                  <div className="text-[11px] text-stone-400">Email</div>
+                  <div className="text-[11px] text-stone-800">Email</div>
                   <a
                     href="mailto:nischaysrivastava2@gmail.com"
-                    className="font-medium text-[#141413] hover:underline truncate block"
+                    className="font-bold text-[#141413] hover:underline truncate block"
                     style={FONT_MONO}
                   >
                     nischaysrivastava2@gmail.com
@@ -972,7 +972,7 @@ export default function Portfolio({
                 </div>
                 <button
                   onClick={handleCopyEmail}
-                  className="px-3 py-1.5 rounded-full bg-[#F4F2EC] hover:bg-[#141413] hover:text-white text-xs font-medium text-[#141413] inline-flex items-center gap-1 shrink-0 transition-colors cursor-pointer"
+                  className="px-3 py-1.5 rounded-full bg-[#F4F2EC] hover:bg-[#141413] hover:text-white text-xs font-bold text-[#141413] inline-flex items-center gap-1 shrink-0 transition-colors cursor-pointer"
                 >
                   {copiedEmail ? (
                     <>
@@ -992,10 +992,10 @@ export default function Portfolio({
                 rel="noreferrer"
                 className="py-3.5 flex items-center justify-between text-[#141413] hover:opacity-70 transition-opacity"
               >
-                <span className="inline-flex items-center gap-2.5 font-medium">
-                  <FileText className="w-4 h-4 text-stone-400" /> Resume (PDF)
+                <span className="inline-flex items-center gap-2.5 font-bold">
+                  <FileText className="w-4 h-4 text-stone-800" /> Resume (PDF)
                 </span>
-                <ArrowUpRight className="w-4 h-4 text-stone-400" />
+                <ArrowUpRight className="w-4 h-4 text-stone-800" />
               </a>
 
               <a
@@ -1004,15 +1004,15 @@ export default function Portfolio({
                 rel="noreferrer"
                 className="py-3.5 flex items-center justify-between text-[#141413] hover:opacity-70 transition-opacity"
               >
-                <span className="inline-flex items-center gap-2.5 font-medium">
-                  <GithubIcon className="w-4 h-4 text-stone-400" /> GitHub (@nischay237)
+                <span className="inline-flex items-center gap-2.5 font-bold">
+                  <GithubIcon className="w-4 h-4 text-stone-800" /> GitHub (@nischay237)
                 </span>
-                <ArrowUpRight className="w-4 h-4 text-stone-400" />
+                <ArrowUpRight className="w-4 h-4 text-stone-800" />
               </a>
             </div>
 
             <div className="space-y-2.5">
-              <div className="text-xs text-stone-400">Jump straight to live projects</div>
+              <div className="text-xs text-stone-800">Jump straight to live projects</div>
               <div className="flex flex-wrap gap-2">
                 {[
                   { label: 'Forge AI', fn: onOpenForge },
@@ -1023,7 +1023,7 @@ export default function Portfolio({
                   <button
                     key={item.label}
                     onClick={item.fn}
-                    className="px-3.5 py-1.5 rounded-full bg-[#F6F5F0] hover:bg-[#141413] hover:text-white text-xs font-medium text-[#141413] inline-flex items-center gap-1 transition-colors cursor-pointer"
+                    className="px-3.5 py-1.5 rounded-full bg-[#F6F5F0] hover:bg-[#141413] hover:text-white text-xs font-bold text-[#141413] inline-flex items-center gap-1 transition-colors cursor-pointer"
                   >
                     {item.label} <ArrowUpRight className="w-3 h-3" />
                   </button>
@@ -1047,17 +1047,17 @@ export default function Portfolio({
             onClick={(e) => e.stopPropagation()}
           >
             <div className="px-4 py-3.5 border-b border-stone-100 flex items-center gap-2.5">
-              <Search className="w-4 h-4 text-stone-400 shrink-0" />
+              <Search className="w-4 h-4 text-stone-800 shrink-0" />
               <input
                 autoFocus
                 value={cmdQuery}
                 onChange={(e) => setCmdQuery(e.target.value)}
                 placeholder="Jump to Forge AI, CodeClash, Resume, Email..."
-                className="flex-1 bg-transparent text-sm text-[#141413] placeholder:text-stone-400 focus:outline-none"
+                className="flex-1 bg-transparent text-sm text-[#141413] placeholder:text-stone-800 focus:outline-none"
               />
               <button
                 onClick={() => setCmdOpen(false)}
-                className="text-stone-400 hover:text-[#141413] cursor-pointer"
+                className="text-stone-800 hover:text-[#141413] cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -1075,11 +1075,11 @@ export default function Portfolio({
                     }}
                     className="w-full text-left px-3 py-2.5 rounded-xl hover:bg-[#F6F5F0] flex items-center justify-between gap-3 text-sm transition-colors cursor-pointer"
                   >
-                    <span className="flex items-center gap-2.5 font-medium text-[#141413]">
-                      <Icon className="w-4 h-4 text-stone-500" />
+                    <span className="flex items-center gap-2.5 font-bold text-[#141413]">
+                      <Icon className="w-4 h-4 text-[#1E1D1B]" />
                       {c.label}
                     </span>
-                    <span className="text-[11px] text-stone-400" style={FONT_MONO}>
+                    <span className="text-[11px] text-stone-800" style={FONT_MONO}>
                       {c.meta}
                     </span>
                   </button>
@@ -1087,7 +1087,7 @@ export default function Portfolio({
               })}
             </div>
             <div
-              className="px-4 py-2.5 bg-[#FAF9F6] border-t border-stone-100 flex items-center justify-between text-[11px] text-stone-400"
+              className="px-4 py-2.5 bg-[#FAF9F6] border-t border-stone-100 flex items-center justify-between text-[11px] text-stone-800"
               style={FONT_MONO}
             >
               <span className="inline-flex items-center gap-1">
