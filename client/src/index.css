@@ -4,8 +4,8 @@
 
 body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  background-color: #fed836;
-  color: #0f172a;
+  background-color: #ffffff;
+  color: #111111;
   overflow-x: hidden;
 }
 
@@ -15,14 +15,14 @@ body {
   height: 7px;
 }
 ::-webkit-scrollbar-track {
-  background: #fcd34d;
+  background: #f7f7f5;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
+  background: #c8c5be;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #0f172a;
+  background: #111111;
 }
 
 /* ========================================= */

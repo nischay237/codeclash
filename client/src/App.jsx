@@ -127,7 +127,7 @@ function AppContent() {
   };
 
   return (
-    <div className={`min-h-screen flex flex-col font-sans transition-colors duration-500 ${currentView === 'portfolio' ? 'bg-[#fed836]' : 'bg-[#06080e] text-slate-100'}`}>
+    <div className={`min-h-screen flex flex-col font-sans transition-colors duration-300 ${currentView === 'portfolio' || currentView === 'forge' ? 'bg-white text-[#111111]' : 'bg-[#06080e] text-slate-100'}`}>
       {/* Show top arena navbar only when playing CodeClash or on leaderboard */}
       {['lobby', 'battle', 'leaderboard'].includes(currentView) && (
         <Navbar currentView={currentView} setCurrentView={setCurrentView} />
@@ -170,42 +170,53 @@ function AppContent() {
       </main>
 
       {/* Footer */}
-      <footer className={`py-8 px-4 text-center text-xs font-bold border-t-2 ${currentView === 'portfolio' ? 'border-slate-950/20 bg-[#090d1c] text-slate-100' : 'border-slate-900 bg-[#04060a] text-slate-400'}`}>
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <span className="font-black text-white">Nischay Srivastava</span>
-            <span>•</span>
-            <span className="font-bold text-slate-200">Portfolio & Engineering Showcase</span>
+      <footer className={`py-8 px-5 sm:px-8 text-xs border-t ${currentView === 'portfolio' || currentView === 'forge' ? 'border-stone-200 bg-[#FAFAF8] text-stone-600' : 'border-slate-900 bg-[#04060a] text-slate-400'}`}>
+        <div className="max-w-[1320px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-2.5">
+            <span className={`font-semibold tracking-[-0.02em] ${currentView === 'portfolio' || currentView === 'forge' ? 'text-[#111111]' : 'text-white'}`}>
+              Nischay Srivastava
+            </span>
+            <span className="opacity-40">·</span>
+            <span className="font-mono text-[11px]">Engineering Portfolio &amp; Live Systems</span>
           </div>
-          <div className="flex flex-wrap items-center justify-center gap-3 text-slate-300 font-bold">
-            <button 
-              onClick={() => setCurrentView('lobby')} 
-              className="hover:text-emerald-400 transition-colors cursor-pointer"
+          <div className="flex flex-wrap items-center justify-center gap-4 font-medium">
+            <button
+              onClick={() => setCurrentView('forge')}
+              className={`transition-colors cursor-pointer ${currentView === 'portfolio' || currentView === 'forge' ? 'hover:text-[#111111]' : 'hover:text-emerald-400'}`}
             >
-              1. CodeClash Arena
+              FORGE AI
             </button>
-            <span>•</span>
-            <button 
-              onClick={() => setCurrentView('analytics')} 
-              className="hover:text-emerald-400 transition-colors cursor-pointer"
+            <span className="opacity-30">/</span>
+            <button
+              onClick={() => setCurrentView('lobby')}
+              className={`transition-colors cursor-pointer ${currentView === 'portfolio' || currentView === 'forge' ? 'hover:text-[#111111]' : 'hover:text-emerald-400'}`}
             >
-              2. Live Analytics
+              CodeClash Arena
             </button>
-            <span>•</span>
-            <button 
-              onClick={() => setCurrentView('forge')} 
-              className="hover:text-emerald-400 transition-colors cursor-pointer"
+            <span className="opacity-30">/</span>
+            <button
+              onClick={() => setCurrentView('analytics')}
+              className={`transition-colors cursor-pointer ${currentView === 'portfolio' || currentView === 'forge' ? 'hover:text-[#111111]' : 'hover:text-emerald-400'}`}
             >
-              3. FORGE AI Platform
+              Live Analytics
             </button>
-            <span>•</span>
-            <a 
-              href="https://github.com/nischay237" 
-              target="_blank" 
-              rel="noreferrer" 
-              className="hover:text-emerald-400 transition-colors"
+            <span className="opacity-30">/</span>
+            <a
+              href="/resume.pdf"
+              target="_blank"
+              rel="noreferrer"
+              className={`transition-colors ${currentView === 'portfolio' || currentView === 'forge' ? 'hover:text-[#111111]' : 'hover:text-emerald-400'}`}
             >
-              GitHub
+              Resume
+            </a>
+            <span className="opacity-30">/</span>
+            <a
+              href="https://github.com/nischay237"
+              target="_blank"
+              rel="noreferrer"
+              className={`transition-colors ${currentView === 'portfolio' || currentView === 'forge' ? 'hover:text-[#111111]' : 'hover:text-emerald-400'}`}
+            >
+              GitHub ↗
             </a>
           </div>
         </div>
