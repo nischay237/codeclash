@@ -139,8 +139,8 @@ const PR_QUEUE = [
 
 const DEFAULT_GITHUB_PR = {
   owner: 'nischay237',
-  repo: 'codeclash',
-  fullName: 'nischay237/codeclash',
+  repo: 'forge-ai-platform',
+  fullName: 'nischay237/forge-ai-platform',
   prNumber: null,
   branch: 'forge-demo/buggy-payment-pr',
   targetBranch: 'main',
@@ -148,9 +148,9 @@ const DEFAULT_GITHUB_PR = {
   author: 'nischay237',
   fileName: 'forge-live-demo/PaymentSettlementService.java',
   githubUrl:
-    'https://github.com/nischay237/codeclash/pull/new/forge-demo/buggy-payment-pr?expand=1&title=feat(payments):+add+merchant+settlement+batch+processor',
+    'https://github.com/nischay237/forge-ai-platform/pull/new/forge-demo/buggy-payment-pr?expand=1&title=feat(payments):+add+merchant+settlement+batch+processor',
   diffApiUrl:
-    'https://api.github.com/repos/nischay237/codeclash/compare/main...forge-demo/buggy-payment-pr',
+    'https://api.github.com/repos/nischay237/forge-ai-platform/compare/main...forge-demo/buggy-payment-pr',
   isRealOpenPr: false,
 };
 
@@ -580,10 +580,10 @@ export default function ForgePlatformDemo() {
     return () => clearScanTimers();
   }, []);
 
-  // Auto-detect if a real open PR already exists on nischay237/codeclash
+  // Auto-detect if a real open PR already exists on nischay237/forge-ai-platform
   useEffect(() => {
     let cancelled = false;
-    fetch('https://api.github.com/repos/nischay237/codeclash/pulls?state=open&per_page=5', {
+    fetch('https://api.github.com/repos/nischay237/forge-ai-platform/pulls?state=open&per_page=5', {
       headers: { Accept: 'application/vnd.github+json' },
     })
       .then((r) => (r.ok ? r.json() : []))
@@ -592,8 +592,8 @@ export default function ForgePlatformDemo() {
         const pr = prs[0];
         setActivePr({
           owner: 'nischay237',
-          repo: 'codeclash',
-          fullName: 'nischay237/codeclash',
+          repo: 'forge-ai-platform',
+          fullName: 'nischay237/forge-ai-platform',
           prNumber: pr.number,
           branch: pr.head?.ref || 'forge-demo/buggy-payment-pr',
           targetBranch: pr.base?.ref || 'main',
@@ -601,7 +601,7 @@ export default function ForgePlatformDemo() {
           author: pr.user?.login || 'nischay237',
           fileName: 'Live GitHub Pull Request',
           githubUrl: pr.html_url,
-          diffApiUrl: `https://api.github.com/repos/nischay237/codeclash/pulls/${pr.number}`,
+          diffApiUrl: `https://api.github.com/repos/nischay237/forge-ai-platform/pulls/${pr.number}`,
           isRealOpenPr: true,
         });
       })
@@ -779,7 +779,7 @@ export default function ForgePlatformDemo() {
       /^(?:https?:\/\/(?:www\.)?github\.com\/)?([A-Za-z0-9_.-]+)\/([A-Za-z0-9_.-]+)(?:\/pull\/|#)(\d+)/
     );
     if (!m) {
-      setCustomPrError('Enter a valid GitHub PR URL like https://github.com/nischay237/codeclash/pull/1');
+      setCustomPrError('Enter a valid GitHub PR URL like https://github.com/nischay237/forge-ai-platform/pull/1');
       return;
     }
     const [, owner, repo, numStr] = m;
@@ -1262,7 +1262,7 @@ export default function ForgePlatformDemo() {
                   required
                   value={customPrUrl}
                   onChange={(e) => setCustomPrUrl(e.target.value)}
-                  placeholder="Paste any public GitHub PR URL: https://github.com/nischay237/codeclash/pull/1"
+                  placeholder="Paste any public GitHub PR URL: https://github.com/nischay237/forge-ai-platform/pull/1"
                   className="flex-1 h-9 px-3 rounded-md bg-[#FAFAF8] border border-stone-300 font-mono text-xs text-[#111111] focus:outline-none focus:border-[#111111]"
                 />
                 <button
