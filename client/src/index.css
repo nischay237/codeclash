@@ -26,6 +26,39 @@ body {
   background: #111111;
 }
 
+@keyframes forge-scan-beam {
+  0% {
+    top: 0%;
+    opacity: 0.95;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    top: 96%;
+    opacity: 0.95;
+  }
+}
+
+@keyframes forge-pop-in {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.985);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-forge-beam {
+  animation: forge-scan-beam 1.9s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
+}
+
+.animate-forge-pop {
+  animation: forge-pop-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
 /* ========================================= */
 /* ANIMATIONS FOR INTERACTIVE THEMES */
 /* ========================================= */
