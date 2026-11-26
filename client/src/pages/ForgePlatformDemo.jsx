@@ -1250,10 +1250,6 @@ export default function ForgePlatformDemo() {
                 </div>
                 <div className="min-w-0">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-100 text-amber-950 border border-amber-300 text-xs font-bold">
-                      <span className="w-2 h-2 rounded-full bg-amber-600" />
-                      {activePr.isRealOpenPr ? `Live GitHub PR #${activePr.prNumber}` : 'Incoming GitHub PR'}
-                    </span>
                     <span className="text-xs sm:text-[13px] font-bold text-[#09090B]">
                       {activePr.fullName}
                     </span>
