@@ -519,6 +519,8 @@ function sevStyle(sev) {
 export default function ForgePlatformDemo() {
   const scanTimersRef = useRef([]);
   const [activePr, setActivePr] = useState(DEFAULT_GITHUB_PR);
+  const [prCleared, setPrCleared] = useState(false);
+  const [importingPr, setImportingPr] = useState(false);
   const [customPrUrl, setCustomPrUrl] = useState('');
   const [showCustomImport, setShowCustomImport] = useState(false);
   const [customPrError, setCustomPrError] = useState(null);
@@ -680,9 +682,53 @@ export default function ForgePlatformDemo() {
 
   const isScanningNow = scanState === 'FETCHING' || scanState === 'IMPACT' || scanState === 'SCANNING';
 
+  const resetForNewPr = () => {
+    clearScanTimers();
+    setPrCleared(true);
+    setDiffText('');
+    setLiveLogs([]);
+    setDecisions({});
+    setExpandedCards({});
+    setReportFilter('ALL');
+    setPublishNotice(null);
+    setPublishedCommentUrl(null);
+    setPublishedMarkdown('');
+    setScanState('IDLE');
+    setScanPercent(0);
+    setScanningLine(0);
+    setRevealedCount(0);
+    setShowDiffEditor(false);
+    setCustomPrUrl('');
+    setCustomPrError(null);
+    setShowCustomImport(true);
+    setDiffSourceLabel('Waiting for new PR');
+    scrollToSection('incoming-github');
+  };
+
+  const loadDefaultDemoPr = () => {
+    clearScanTimers();
+    setPrCleared(false);
+    setActivePr(DEFAULT_GITHUB_PR);
+    setDiffText(INITIAL_DIFF);
+    setDiffSourceLabel('GitHub Live Repo');
+    setShowCustomImport(false);
+    setCustomPrError(null);
+    setScanState('IDLE');
+    setScanPercent(0);
+    setLiveLogs([]);
+    setDecisions({});
+    setExpandedCards({});
+    setPublishNotice(null);
+  };
+
   const startRealTimePrScan = async (prOverride) => {
+    if (prCleared && !prOverride) {
+      scrollToSection('incoming-github');
+      return;
+    }
     clearScanTimers();
     const targetPr = prOverride || activePr;
+    setPrCleared(false);
     setActivePr(targetPr);
     setPublishNotice(null);
     setPublishedCommentUrl(null);
@@ -790,7 +836,7 @@ export default function ForgePlatformDemo() {
           type: 'gate',
           label: 'STEP 5 · PAUSED AT HUMAN APPROVAL GATE',
           title: `Scan complete! ${detected.length} real issue(s) found — Report & Graphs ready below.`,
-          detail: 'Scroll to Section 02 to inspect charts, review 1-click fixes, and approve comments.',
+          detail: 'Scroll to Section 03 to inspect charts, review 1-click fixes, and approve comments.',
         });
       }, (detected.length + 1) * 720 + 400);
       scanTimersRef.current.push(tDone);
@@ -811,6 +857,7 @@ export default function ForgePlatformDemo() {
     }
     const [, owner, repo, numStr] = m;
     const prNumber = Number(numStr);
+    setImportingPr(true);
     try {
       const headers = { Accept: 'application/vnd.github+json' };
       if (githubToken.trim()) headers.Authorization = `Bearer ${githubToken.trim()}`;
@@ -836,11 +883,14 @@ export default function ForgePlatformDemo() {
         diffApiUrl: `https://api.github.com/repos/${owner}/${repo}/pulls/${prNumber}`,
         isRealOpenPr: true,
       };
+      setPrCleared(false);
       setShowCustomImport(false);
       setCustomPrUrl('');
       startRealTimePrScan(loadedPr);
     } catch {
       setCustomPrError('Could not reach GitHub API. Check your internet connection.');
+    } finally {
+      setImportingPr(false);
     }
   };
 
@@ -1238,132 +1288,72 @@ export default function ForgePlatformDemo() {
                 <KeyRound className="w-3.5 h-3.5" />
                 {githubToken.trim() ? 'GitHub Token Ready ✓' : 'Connect GitHub Token'}
               </button>
+              {!prCleared && (
+                <button
+                  onClick={resetForNewPr}
+                  className="h-10 px-4 rounded-lg bg-red-50 hover:bg-red-100 border border-red-200 text-xs font-bold text-red-800 inline-flex items-center gap-1.5 cursor-pointer transition-colors"
+                  title="Clear current PR, diff, and scan report to load a new PR"
+                >
+                  <RefreshCw className="w-3.5 h-3.5" />
+                  Reset PR
+                </button>
+              )}
             </div>
           </div>
 
-          {/* Dedicated Bold Incoming GitHub PR Card */}
-          <div className="rounded-2xl bg-white border border-stone-200/90 overflow-hidden shadow-[0_14px_38px_rgba(15,23,42,0.07)]">
-            <div className="p-6 sm:p-7 space-y-6">
-              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
-                <div className="flex items-start gap-4 min-w-0">
-                  <div className="w-12 h-12 rounded-xl bg-[#09090B] text-amber-400 flex items-center justify-center shrink-0 shadow-xs">
-                    <GitPullRequest className="w-5 h-5" />
-                  </div>
-                  <div className="min-w-0">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className="text-xs sm:text-[13.5px] font-bold text-[#09090B]">
-                        {activePr.fullName}
-                      </span>
-                      <span className="text-stone-400 font-bold select-none">·</span>
-                      <span className="inline-flex flex-wrap items-center gap-1.5 text-xs font-semibold text-[#09090B]">
-                        <code
-                          className="px-2 py-0.5 rounded-md bg-sky-50 text-sky-950 border border-sky-200/90 font-semibold"
-                          style={FONT_MONO}
-                        >
-                          {activePr.branch}
-                        </code>
-                        <span className="text-stone-500 font-bold">→</span>
-                        <code
-                          className="px-2 py-0.5 rounded-md bg-stone-100 text-[#09090B] border border-stone-200 font-semibold"
-                          style={FONT_MONO}
-                        >
-                          {activePr.targetBranch}
-                        </code>
-                      </span>
-                    </div>
-                    <h3 className="text-lg sm:text-[21px] font-bold tracking-[-0.025em] text-[#09090B] mt-2" style={FONT_DISPLAY}>
-                      {activePr.title}
-                    </h3>
-                  </div>
+          {/* Dedicated Bold Incoming GitHub PR Card (or Clean Empty State after Reset) */}
+          {prCleared ? (
+            <div className="rounded-2xl bg-[#FAFAF8] border-2 border-dashed border-stone-300 p-7 sm:p-9 space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-[#09090B] text-white flex items-center justify-center shrink-0">
+                  <GitPullRequest className="w-5 h-5" />
                 </div>
-
-                <div className="flex flex-wrap items-center gap-2.5 shrink-0">
-                  <button
-                    onClick={() => startRealTimePrScan(activePr)}
-                    disabled={isScanningNow}
-                    className="h-11 px-5 rounded-lg bg-[#09090B] hover:bg-[#27272A] text-white text-[13px] font-bold inline-flex items-center gap-2 transition-all cursor-pointer disabled:opacity-60"
-                  >
-                    {isScanningNow ? (
-                      <>
-                        <Loader2 className="w-4 h-4 animate-spin text-amber-300" />
-                        Scanning Live ({scanPercent}%)...
-                      </>
-                    ) : (
-                      <>
-                        <Play className="w-3.5 h-3.5 fill-current text-amber-300" />
-                        {scanState === 'IDLE' ? 'Open PR & Start Live Scan' : 'Re-Run Real-Time Scan'}
-                      </>
-                    )}
-                  </button>
-                  <a
-                    href={activePr.githubUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="h-11 px-4 rounded-lg bg-white hover:bg-stone-50 border border-stone-300 text-xs font-bold text-[#09090B] inline-flex items-center gap-1.5 transition-colors"
-                  >
-                    Open on GitHub <ArrowUpRight className="w-3.5 h-3.5" />
-                  </a>
+                <div className="space-y-1">
+                  <h3 className="text-lg sm:text-xl font-bold text-[#09090B] tracking-[-0.02em]" style={FONT_DISPLAY}>
+                    Previous PR cleared. Ready for a new GitHub PR.
+                  </h3>
+                  <p className="text-xs sm:text-sm font-medium text-stone-600">
+                    Paste any public GitHub Pull Request link below to fetch its live code diff and start a fresh scan.
+                  </p>
                 </div>
               </div>
 
-              {/* 3-Column Live PR Metadata Strip */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-5 border-t border-stone-200">
-                <div className="rounded-xl bg-[#FAFAF8] border border-stone-200 px-4 py-3">
-                  <div className="text-[10.5px] font-bold uppercase tracking-[0.06em] text-stone-500">
-                    Incoming Diff File
-                  </div>
-                  <div className="text-xs font-bold text-[#09090B] mt-1 truncate" style={FONT_MONO}>
-                    {activePr.fileName}
-                  </div>
-                  <div className="text-[11px] font-semibold text-emerald-700 mt-0.5" style={FONT_MONO}>
-                    +{codeLines.length || 36} lines ready for inspection
-                  </div>
-                </div>
-                <div className="rounded-xl bg-[#FAFAF8] border border-stone-200 px-4 py-3">
-                  <div className="text-[10.5px] font-bold uppercase tracking-[0.06em] text-stone-500">
-                    Author &amp; Sync Source
-                  </div>
-                  <div className="text-xs font-bold text-[#09090B] mt-1">
-                    @{activePr.author}
-                  </div>
-                  <div className="text-[11px] font-semibold text-stone-600 mt-0.5" style={FONT_MONO}>
-                    {diffSourceLabel}
-                  </div>
-                </div>
-                <div className="rounded-xl bg-[#FAFAF8] border border-stone-200 px-4 py-3">
-                  <div className="text-[10.5px] font-bold uppercase tracking-[0.06em] text-stone-500">
-                    Branch Protection Policy
-                  </div>
-                  <div className="text-xs font-bold text-[#09090B] mt-1">
-                    Human Approval Gate Active
-                  </div>
-                  <div className="text-[11px] font-semibold text-stone-600 mt-0.5" style={FONT_MONO}>
-                    {activePr.targetBranch} · zero auto-posts
-                  </div>
-                </div>
-              </div>
-
-              {showCustomImport && (
-                <form
-                  onSubmit={handleImportCustomPr}
-                  className="pt-4 border-t border-stone-200 flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5"
+              <form
+                onSubmit={handleImportCustomPr}
+                className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3"
+              >
+                <input
+                  required
+                  autoFocus
+                  value={customPrUrl}
+                  onChange={(e) => setCustomPrUrl(e.target.value)}
+                  placeholder="https://github.com/owner/repo/pull/12  (or  owner/repo#12)"
+                  className="flex-1 h-11 px-4 rounded-lg bg-white border border-stone-300 text-xs sm:text-[13px] font-semibold text-[#09090B] focus:outline-none focus:border-[#09090B] shadow-xs"
+                  style={FONT_MONO}
+                />
+                <button
+                  type="submit"
+                  disabled={importingPr}
+                  className="h-11 px-6 rounded-lg bg-[#09090B] hover:bg-[#27272A] text-white text-xs sm:text-[13px] font-bold inline-flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 transition-colors shrink-0"
                 >
-                  <input
-                    required
-                    value={customPrUrl}
-                    onChange={(e) => setCustomPrUrl(e.target.value)}
-                    placeholder="Paste any public GitHub PR URL: https://github.com/nischay237/forge-ai-platform/pull/1"
-                    className="flex-1 h-10 px-3.5 rounded-lg bg-[#F9F8F5] border border-stone-300 text-xs font-semibold text-[#09090B] focus:outline-none focus:border-[#09090B]"
-                    style={FONT_MONO}
-                  />
-                  <button
-                    type="submit"
-                    className="h-10 px-4 rounded-lg bg-[#09090B] hover:bg-[#27272A] text-white text-xs font-bold cursor-pointer"
-                  >
-                    Fetch &amp; Scan Live
-                  </button>
-                  {customPrError && <span className="text-xs font-bold text-red-700">{customPrError}</span>}
-                </form>
+                  {importingPr ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin text-amber-300" />
+                      Fetching PR...
+                    </>
+                  ) : (
+                    <>
+                      <Play className="w-3.5 h-3.5 fill-current text-amber-300" />
+                      Fetch &amp; Scan New PR
+                    </>
+                  )}
+                </button>
+              </form>
+
+              {customPrError && (
+                <div className="px-4 py-2.5 rounded-lg bg-red-50 border border-red-200 text-xs font-bold text-red-800">
+                  {customPrError}
+                </div>
               )}
 
               {showTokenBox && (
@@ -1372,8 +1362,8 @@ export default function ForgePlatformDemo() {
                     type="password"
                     value={githubToken}
                     onChange={(e) => setGithubToken(e.target.value)}
-                    placeholder="Optional GitHub Token (ghp_...) to post approved comments live onto your PR"
-                    className="flex-1 h-10 px-3.5 rounded-lg bg-[#F9F8F5] border border-stone-300 text-xs font-semibold text-[#09090B] focus:outline-none focus:border-[#09090B]"
+                    placeholder="Optional GitHub Token (ghp_...) to fetch private PRs or post comments"
+                    className="flex-1 h-10 px-3.5 rounded-lg bg-white border border-stone-300 text-xs font-semibold text-[#09090B] focus:outline-none focus:border-[#09090B]"
                     style={FONT_MONO}
                   />
                   <button
@@ -1384,8 +1374,175 @@ export default function ForgePlatformDemo() {
                   </button>
                 </div>
               )}
+
+              <div className="pt-4 border-t border-stone-200 flex flex-wrap items-center justify-between gap-3 text-xs">
+                <span className="font-medium text-stone-600">
+                  Want to test quickly with the built-in payment settlement PR?
+                </span>
+                <button
+                  type="button"
+                  onClick={loadDefaultDemoPr}
+                  className="h-9 px-4 rounded-lg bg-white hover:bg-stone-100 border border-stone-300 text-xs font-bold text-[#09090B] inline-flex items-center gap-1.5 cursor-pointer transition-colors"
+                >
+                  <RefreshCw className="w-3.5 h-3.5" />
+                  Reload Demo PR ({DEFAULT_GITHUB_PR.fullName})
+                </button>
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="rounded-2xl bg-white border border-stone-200/90 overflow-hidden shadow-[0_14px_38px_rgba(15,23,42,0.07)]">
+              <div className="p-6 sm:p-7 space-y-6">
+                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
+                  <div className="flex items-start gap-4 min-w-0">
+                    <div className="w-12 h-12 rounded-xl bg-[#09090B] text-amber-400 flex items-center justify-center shrink-0 shadow-xs">
+                      <GitPullRequest className="w-5 h-5" />
+                    </div>
+                    <div className="min-w-0">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="text-xs sm:text-[13.5px] font-bold text-[#09090B]">
+                          {activePr.fullName}
+                        </span>
+                        <span className="text-stone-400 font-bold select-none">·</span>
+                        <span className="inline-flex flex-wrap items-center gap-1.5 text-xs font-semibold text-[#09090B]">
+                          <code
+                            className="px-2 py-0.5 rounded-md bg-sky-50 text-sky-950 border border-sky-200/90 font-semibold"
+                            style={FONT_MONO}
+                          >
+                            {activePr.branch}
+                          </code>
+                          <span className="text-stone-500 font-bold">→</span>
+                          <code
+                            className="px-2 py-0.5 rounded-md bg-stone-100 text-[#09090B] border border-stone-200 font-semibold"
+                            style={FONT_MONO}
+                          >
+                            {activePr.targetBranch}
+                          </code>
+                        </span>
+                      </div>
+                      <h3 className="text-lg sm:text-[21px] font-bold tracking-[-0.025em] text-[#09090B] mt-2" style={FONT_DISPLAY}>
+                        {activePr.title}
+                      </h3>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+                    <button
+                      onClick={() => startRealTimePrScan(activePr)}
+                      disabled={isScanningNow}
+                      className="h-11 px-5 rounded-lg bg-[#09090B] hover:bg-[#27272A] text-white text-[13px] font-bold inline-flex items-center gap-2 transition-all cursor-pointer disabled:opacity-60"
+                    >
+                      {isScanningNow ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin text-amber-300" />
+                          Scanning Live ({scanPercent}%)...
+                        </>
+                      ) : (
+                        <>
+                          <Play className="w-3.5 h-3.5 fill-current text-amber-300" />
+                          {scanState === 'IDLE' ? 'Open PR & Start Live Scan' : 'Re-Run Real-Time Scan'}
+                        </>
+                      )}
+                    </button>
+                    <a
+                      href={activePr.githubUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="h-11 px-4 rounded-lg bg-white hover:bg-stone-50 border border-stone-300 text-xs font-bold text-[#09090B] inline-flex items-center gap-1.5 transition-colors"
+                    >
+                      Open on GitHub <ArrowUpRight className="w-3.5 h-3.5" />
+                    </a>
+                  </div>
+                </div>
+
+                {/* 3-Column Live PR Metadata Strip */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-5 border-t border-stone-200">
+                  <div className="rounded-xl bg-[#FAFAF8] border border-stone-200 px-4 py-3">
+                    <div className="text-[10.5px] font-bold uppercase tracking-[0.06em] text-stone-500">
+                      Incoming Diff File
+                    </div>
+                    <div className="text-xs font-bold text-[#09090B] mt-1 truncate" style={FONT_MONO}>
+                      {activePr.fileName}
+                    </div>
+                    <div className="text-[11px] font-semibold text-emerald-700 mt-0.5" style={FONT_MONO}>
+                      +{codeLines.length || 36} lines ready for inspection
+                    </div>
+                  </div>
+                  <div className="rounded-xl bg-[#FAFAF8] border border-stone-200 px-4 py-3">
+                    <div className="text-[10.5px] font-bold uppercase tracking-[0.06em] text-stone-500">
+                      Author &amp; Sync Source
+                    </div>
+                    <div className="text-xs font-bold text-[#09090B] mt-1">
+                      @{activePr.author}
+                    </div>
+                    <div className="text-[11px] font-semibold text-stone-600 mt-0.5" style={FONT_MONO}>
+                      {diffSourceLabel}
+                    </div>
+                  </div>
+                  <div className="rounded-xl bg-[#FAFAF8] border border-stone-200 px-4 py-3">
+                    <div className="text-[10.5px] font-bold uppercase tracking-[0.06em] text-stone-500">
+                      Branch Protection Policy
+                    </div>
+                    <div className="text-xs font-bold text-[#09090B] mt-1">
+                      Human Approval Gate Active
+                    </div>
+                    <div className="text-[11px] font-semibold text-stone-600 mt-0.5" style={FONT_MONO}>
+                      {activePr.targetBranch} · zero auto-posts
+                    </div>
+                  </div>
+                </div>
+
+                {showCustomImport && (
+                  <form
+                    onSubmit={handleImportCustomPr}
+                    className="pt-4 border-t border-stone-200 flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5"
+                  >
+                    <input
+                      required
+                      value={customPrUrl}
+                      onChange={(e) => setCustomPrUrl(e.target.value)}
+                      placeholder="Paste any public GitHub PR URL: https://github.com/nischay237/forge-ai-platform/pull/1"
+                      className="flex-1 h-10 px-3.5 rounded-lg bg-[#F9F8F5] border border-stone-300 text-xs font-semibold text-[#09090B] focus:outline-none focus:border-[#09090B]"
+                      style={FONT_MONO}
+                    />
+                    <button
+                      type="submit"
+                      disabled={importingPr}
+                      className="h-10 px-4 rounded-lg bg-[#09090B] hover:bg-[#27272A] text-white text-xs font-bold inline-flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-60"
+                    >
+                      {importingPr ? (
+                        <>
+                          <Loader2 className="w-3.5 h-3.5 animate-spin text-amber-300" />
+                          Fetching...
+                        </>
+                      ) : (
+                        'Fetch & Scan Live'
+                      )}
+                    </button>
+                    {customPrError && <span className="text-xs font-bold text-red-700">{customPrError}</span>}
+                  </form>
+                )}
+
+                {showTokenBox && (
+                  <div className="pt-4 border-t border-stone-200 flex flex-col sm:flex-row sm:items-center gap-3">
+                    <input
+                      type="password"
+                      value={githubToken}
+                      onChange={(e) => setGithubToken(e.target.value)}
+                      placeholder="Optional GitHub Token (ghp_...) to post approved comments live onto your PR"
+                      className="flex-1 h-10 px-3.5 rounded-lg bg-[#F9F8F5] border border-stone-300 text-xs font-semibold text-[#09090B] focus:outline-none focus:border-[#09090B]"
+                      style={FONT_MONO}
+                    />
+                    <button
+                      onClick={() => setShowTokenBox(false)}
+                      className="h-10 px-4 rounded-lg bg-[#09090B] hover:bg-[#27272A] text-white text-xs font-bold cursor-pointer"
+                    >
+                      Save for Session
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
@@ -1414,29 +1571,42 @@ export default function ForgePlatformDemo() {
             </div>
 
             <div className="flex flex-wrap items-center gap-2.5 shrink-0">
-              <button
-                onClick={() => startRealTimePrScan(activePr)}
-                disabled={isScanningNow}
-                className="h-10 px-5 rounded-lg bg-[#09090B] hover:bg-[#27272A] text-white text-xs font-bold inline-flex items-center gap-2 transition-colors cursor-pointer disabled:opacity-60"
-              >
-                {isScanningNow ? (
-                  <>
-                    <Loader2 className="w-3.5 h-3.5 animate-spin text-amber-300" />
-                    Scanning Live ({scanPercent}%)...
-                  </>
-                ) : (
-                  <>
-                    <Play className="w-3.5 h-3.5 fill-current text-amber-300" />
-                    {scanState === 'IDLE' ? 'Start Live X-Ray Scan' : 'Re-Run X-Ray Scan'}
-                  </>
-                )}
-              </button>
-              <button
-                onClick={() => scrollToSection('incoming-github')}
-                className="h-10 px-4 rounded-lg bg-white hover:bg-stone-50 border border-stone-300 text-xs font-bold text-[#09090B] cursor-pointer transition-colors"
-              >
-                Change PR ↑
-              </button>
+              {prCleared ? (
+                <button
+                  onClick={() => scrollToSection('incoming-github')}
+                  className="h-10 px-5 rounded-lg bg-[#09090B] hover:bg-[#27272A] text-white text-xs font-bold inline-flex items-center gap-2 transition-colors cursor-pointer"
+                >
+                  <GitPullRequest className="w-3.5 h-3.5 text-amber-300" />
+                  Load New GitHub PR ↑
+                </button>
+              ) : (
+                <>
+                  <button
+                    onClick={() => startRealTimePrScan(activePr)}
+                    disabled={isScanningNow}
+                    className="h-10 px-5 rounded-lg bg-[#09090B] hover:bg-[#27272A] text-white text-xs font-bold inline-flex items-center gap-2 transition-colors cursor-pointer disabled:opacity-60"
+                  >
+                    {isScanningNow ? (
+                      <>
+                        <Loader2 className="w-3.5 h-3.5 animate-spin text-amber-300" />
+                        Scanning Live ({scanPercent}%)...
+                      </>
+                    ) : (
+                      <>
+                        <Play className="w-3.5 h-3.5 fill-current text-amber-300" />
+                        {scanState === 'IDLE' ? 'Start Live X-Ray Scan' : 'Re-Run X-Ray Scan'}
+                      </>
+                    )}
+                  </button>
+                  <button
+                    onClick={resetForNewPr}
+                    className="h-10 px-4 rounded-lg bg-red-50 hover:bg-red-100 border border-red-200 text-xs font-bold text-red-800 inline-flex items-center gap-1.5 cursor-pointer transition-colors"
+                  >
+                    <RefreshCw className="w-3.5 h-3.5" />
+                    Reset PR
+                  </button>
+                </>
+              )}
             </div>
           </div>
 
@@ -1617,7 +1787,25 @@ export default function ForgePlatformDemo() {
                     />
                   )}
 
-                  {codeLines.map((line) => {
+                  {codeLines.length === 0 ? (
+                    <div className="h-full min-h-[300px] flex flex-col items-center justify-center text-center px-6 py-10 text-stone-400 space-y-3">
+                      <GitPullRequest className="w-8 h-8 text-stone-500" />
+                      <div className="text-sm font-semibold text-stone-200" style={FONT_DISPLAY}>
+                        Workspace cleared — no active PR diff
+                      </div>
+                      <p className="text-xs text-stone-400 max-w-sm" style={FONT_SANS}>
+                        Paste a new GitHub Pull Request link in Section 01 above (or reload the demo PR) to start scanning live.
+                      </p>
+                      <button
+                        onClick={() => scrollToSection('incoming-github')}
+                        className="mt-1 h-9 px-4 rounded-lg bg-white hover:bg-stone-100 text-[#09090B] text-xs font-bold cursor-pointer"
+                        style={FONT_SANS}
+                      >
+                        Load New GitHub PR ↑
+                      </button>
+                    </div>
+                  ) : (
+                    codeLines.map((line) => {
                     const hit = findingsByLine.get(line.lineNo);
                     const isCursor = isScanningNow && scanningLine === line.lineNo;
                     return (
@@ -1663,7 +1851,8 @@ export default function ForgePlatformDemo() {
                         )}
                       </div>
                     );
-                  })}
+                  })
+                  )}
                 </div>
               )}
             </div>
@@ -1693,20 +1882,21 @@ export default function ForgePlatformDemo() {
                       <ScanLine className="w-6 h-6 text-amber-700" />
                     </div>
                     <div className="space-y-1.5">
-                      <h4 className="text-base font-semibold text-[#09090B]" style={FONT_DISPLAY}>
-                        Ready for Real-Time PR Scan
+                      <h4 className="text-base font-bold text-[#09090B]" style={FONT_DISPLAY}>
+                        {prCleared ? 'Waiting for New GitHub PR' : 'Ready for Real-Time PR Scan'}
                       </h4>
                       <p className="text-xs font-normal text-stone-600 max-w-xs leading-relaxed">
-                        Click below to watch Forge sweep the live GitHub PR line by line and stream
-                        every detected issue and fix in real time.
+                        {prCleared
+                          ? 'Old PR results have been cleared. Paste a new GitHub PR URL in Section 01 to run a fresh scan.'
+                          : 'Click below to watch Forge sweep the live GitHub PR line by line and stream every detected issue and fix in real time.'}
                       </p>
                     </div>
                     <button
-                      onClick={() => startRealTimePrScan(activePr)}
-                      className="h-10 px-5 rounded-lg bg-[#09090B] hover:bg-[#27272A] text-white text-xs font-medium inline-flex items-center gap-2 cursor-pointer"
+                      onClick={() => (prCleared ? scrollToSection('incoming-github') : startRealTimePrScan(activePr))}
+                      className="h-10 px-5 rounded-lg bg-[#09090B] hover:bg-[#27272A] text-white text-xs font-bold inline-flex items-center gap-2 cursor-pointer"
                     >
-                      <Play className="w-3.5 h-3.5 fill-current" />
-                      Start Live PR Scan Now
+                      <Play className="w-3.5 h-3.5 fill-current text-amber-300" />
+                      {prCleared ? 'Paste New PR Above ↑' : 'Start Live PR Scan Now'}
                     </button>
                   </div>
                 ) : (
@@ -1817,7 +2007,9 @@ export default function ForgePlatformDemo() {
                 </span>
                 <span
                   className={`px-2.5 py-0.5 rounded-full text-[10.5px] font-semibold ${
-                    riskScore >= 70
+                    prCleared
+                      ? 'bg-white/10 text-stone-300 border border-white/15'
+                      : riskScore >= 70
                       ? 'bg-red-500/20 text-red-300 border border-red-500/30'
                       : riskScore >= 35
                       ? 'bg-amber-400/20 text-amber-200 border border-amber-400/30'
@@ -1825,7 +2017,7 @@ export default function ForgePlatformDemo() {
                   }`}
                   style={FONT_MONO}
                 >
-                  {riskScore >= 70 ? 'MERGE BLOCKED' : riskScore >= 35 ? 'NEEDS FIXES' : 'SAFE TO MERGE'}
+                  {prCleared ? 'WAITING FOR PR' : riskScore >= 70 ? 'MERGE BLOCKED' : riskScore >= 35 ? 'NEEDS FIXES' : 'SAFE TO MERGE'}
                 </span>
               </div>
 
@@ -1934,7 +2126,11 @@ export default function ForgePlatformDemo() {
 
               <div className="space-y-3 flex-1 flex flex-col justify-center">
                 {categoryBreakdown.length === 0 ? (
-                  <div className="text-sm font-medium text-emerald-700">Zero risk categories detected — clean PR!</div>
+                  <div className="text-sm font-medium text-stone-600">
+                    {prCleared
+                      ? 'Workspace cleared — paste a new PR in Section 01 to inspect risk categories.'
+                      : 'Zero risk categories detected — clean PR!'}
+                  </div>
                 ) : (
                   categoryBreakdown.map((cat) => {
                     const widthPct = Math.max(18, Math.round((cat.count / Math.max(1, findings.length)) * 100));
@@ -2044,8 +2240,20 @@ export default function ForgePlatformDemo() {
           {/* EXPANDABLE REPORT CARDS */}
           <div className="space-y-3.5">
             {filteredReportFindings.length === 0 ? (
-              <div className="rounded-xl bg-[#FAFAF8] border border-stone-200 p-10 text-center text-sm font-medium text-stone-500">
-                No issues in this filter category.
+              <div className="rounded-xl bg-[#FAFAF8] border border-stone-200 p-10 text-center space-y-3">
+                <div className="text-sm font-semibold text-stone-700">
+                  {prCleared
+                    ? 'Old PR cleared — load a new GitHub PR in Section 01 to generate a fresh scan report.'
+                    : 'No issues in this filter category.'}
+                </div>
+                {prCleared && (
+                  <button
+                    onClick={() => scrollToSection('incoming-github')}
+                    className="h-9 px-4 rounded-lg bg-[#09090B] hover:bg-[#27272A] text-white text-xs font-bold cursor-pointer"
+                  >
+                    Load New GitHub PR ↑
+                  </button>
+                )}
               </div>
             ) : (
               filteredReportFindings.map((f, idx) => {
