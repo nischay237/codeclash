@@ -267,3 +267,71 @@ body {
     drop-shadow(-3px 3px 0 #ffd60a)
     drop-shadow(6px 8px 16px rgba(0, 0, 0, 0.3));
 }
+
+@keyframes forge-scan-beam {
+  0% {
+    top: 0%;
+    opacity: 0.95;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    top: 96%;
+    opacity: 0.95;
+  }
+}
+
+@keyframes forge-pop-in {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.985);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes forge-toast-in {
+  0% {
+    opacity: 0;
+    transform: translate3d(32px, 16px, 0) scale(0.94);
+    filter: blur(4px);
+  }
+  65% {
+    opacity: 1;
+    transform: translate3d(-2px, -2px, 0) scale(1.01);
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+    filter: blur(0px);
+  }
+}
+
+@keyframes forge-toast-drain {
+  0% {
+    width: 100%;
+  }
+  100% {
+    width: 0%;
+  }
+}
+
+.animate-forge-beam {
+  animation: forge-scan-beam 1.9s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
+}
+
+.animate-forge-pop {
+  animation: forge-pop-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.animate-forge-toast {
+  animation: forge-toast-in 0.42s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-forge-drain {
+  animation: forge-toast-drain 4.4s linear forwards;
+}

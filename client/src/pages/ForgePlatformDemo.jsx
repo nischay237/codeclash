@@ -542,6 +542,7 @@ export default function ForgePlatformDemo() {
   const [scanningLine, setScanningLine] = useState(0);
   const [revealedCount, setRevealedCount] = useState(0);
   const [liveLogs, setLiveLogs] = useState([]);
+  const [popupAlerts, setPopupAlerts] = useState([]);
   const [diffSourceLabel, setDiffSourceLabel] = useState('Waiting for PR');
 
   // Interactive Impact Map, Security, CI, Pipeline
@@ -650,6 +651,19 @@ export default function ForgePlatformDemo() {
     setLiveLogs((prev) => [...prev, { id: `${Date.now()}-${Math.random()}`, ...entry }]);
   };
 
+  const dismissPopup = (id) => {
+    setPopupAlerts((prev) => prev.filter((p) => p.id !== id));
+  };
+
+  const pushPopup = (alert, ttlMs = 4600) => {
+    const id = `${Date.now()}-${Math.random()}`;
+    setPopupAlerts((prev) => [...prev.slice(-2), { id, ...alert }]);
+    const tRemove = setTimeout(() => {
+      setPopupAlerts((prev) => prev.filter((p) => p.id !== id));
+    }, ttlMs);
+    scanTimersRef.current.push(tRemove);
+  };
+
   const isScanningNow = scanState === 'FETCHING' || scanState === 'IMPACT' || scanState === 'SCANNING';
 
   const resetForNewPr = () => {
@@ -658,6 +672,7 @@ export default function ForgePlatformDemo() {
     setWasReset(true);
     setDiffText('');
     setLiveLogs([]);
+    setPopupAlerts([]);
     setDecisions({});
     setExpandedCards({});
     setReportFilter('ALL');
@@ -710,6 +725,7 @@ export default function ForgePlatformDemo() {
     setScanningLine(1);
     setScanPercent(8);
     setLiveLogs([]);
+    setPopupAlerts([]);
     setScanState('FETCHING');
     scrollToSection('live-scanner');
 
@@ -796,6 +812,15 @@ export default function ForgePlatformDemo() {
             detail: `Solution: ${bug.after}`,
             findingId: bug.id,
           });
+          pushPopup({
+            badge: `${bug.severity} · LINE ${bug.lineNo}`,
+            counter: `${String(idx + 1).padStart(2, '0')} / ${String(detected.length).padStart(2, '0')}`,
+            category: bug.category,
+            title: bug.title,
+            fixPreview: bug.after,
+            findingId: bug.id,
+            isCritical: bug.severity === 'CRITICAL',
+          });
         }, (idx + 1) * 720);
         scanTimersRef.current.push(tBug);
       });
@@ -810,6 +835,17 @@ export default function ForgePlatformDemo() {
           title: `Scan complete! ${detected.length} real issue(s) found — Report & Graphs ready below.`,
           detail: 'Scroll to Section 03 to inspect charts, review 1-click fixes, and approve comments.',
         });
+        pushPopup(
+          {
+            badge: 'SCAN COMPLETE · HUMAN GATE',
+            counter: `${detected.length} FOUND`,
+            category: 'Report Ready',
+            title: `${detected.length} real issues caught — awaiting your sign-off`,
+            fixPreview: 'Click to view Risk Score, charts & 1-click fixes',
+            isSummary: true,
+          },
+          7000
+        );
       }, (detected.length + 1) * 720 + 400);
       scanTimersRef.current.push(tDone);
     }, 1650);
@@ -3198,6 +3234,91 @@ export default function ForgePlatformDemo() {
           </div>
         </div>
       </section>
+
+      {/* ================================================================== */}
+      {/* FLOATING REAL-TIME MONOCHROME ISSUE DETECTION POPUPS               */}
+      {/* ================================================================== */}
+      {popupAlerts.length > 0 && (
+        <div
+          aria-live="polite"
+          className="fixed bottom-5 right-5 z-50 w-[390px] max-w-[calc(100vw-2rem)] flex flex-col gap-2.5 pointer-events-none"
+        >
+          {popupAlerts.length > 1 && (
+            <div className="flex justify-end pointer-events-auto">
+              <button
+                onClick={() => setPopupAlerts([])}
+                className="px-2.5 py-1 rounded-md bg-[#09090B]/95 border border-white/25 text-[10.5px] font-bold text-white hover:bg-zinc-800 transition-colors cursor-pointer shadow-lg"
+                style={FONT_MONO}
+              >
+                DISMISS ALL ({popupAlerts.length})
+              </button>
+            </div>
+          )}
+
+          {popupAlerts.map((alert) => (
+            <div
+              key={alert.id}
+              onClick={() => {
+                if (alert.findingId) {
+                  setExpandedCards((p) => ({ ...p, [alert.findingId]: true }));
+                }
+                dismissPopup(alert.id);
+                scrollToSection('scan-report');
+              }}
+              className={`pointer-events-auto relative overflow-hidden rounded-xl bg-[#09090B]/95 backdrop-blur-md text-white border border-white/25 border-l-[3px] shadow-[0_24px_56px_rgba(0,0,0,0.5)] cursor-pointer hover:border-white/50 transition-colors animate-forge-toast ${
+                alert.isCritical ? 'border-l-red-500' : 'border-l-white'
+              }`}
+            >
+              <div className="p-4 space-y-2">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <span
+                      className="px-2 py-0.5 rounded bg-[#09090B] text-white border border-white/35 text-[10px] font-bold tracking-[0.04em] shrink-0"
+                      style={FONT_MONO}
+                    >
+                      {alert.badge}
+                    </span>
+                    <span className="text-[10.5px] font-bold text-zinc-400 tabular-nums shrink-0" style={FONT_MONO}>
+                      {alert.counter}
+                    </span>
+                  </div>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      dismissPopup(alert.id);
+                    }}
+                    className="w-6 h-6 rounded-md hover:bg-white/10 text-zinc-400 hover:text-white flex items-center justify-center shrink-0 cursor-pointer transition-colors"
+                    aria-label="Dismiss popup"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+
+                <div className="text-[13.5px] font-bold text-white leading-snug tracking-[-0.01em]" style={FONT_DISPLAY}>
+                  {alert.title}
+                </div>
+
+                <div className="flex items-center justify-between gap-3 pt-0.5">
+                  <span className="text-[11px] text-zinc-400 truncate" style={FONT_MONO}>
+                    {alert.isSummary ? alert.fixPreview : `Fix: ${alert.fixPreview}`}
+                  </span>
+                  <span className="text-[11px] font-bold text-white shrink-0">
+                    {alert.isSummary ? 'Open Report →' : 'Inspect Fix →'}
+                  </span>
+                </div>
+              </div>
+
+              {/* Ultra-thin auto-dismiss hairline bar */}
+              <div className="h-[2px] w-full bg-white/10">
+                <div
+                  className={`h-full animate-forge-drain ${alert.isCritical ? 'bg-red-500' : 'bg-white'}`}
+                  style={alert.isSummary ? { animationDuration: '7s' } : undefined}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
