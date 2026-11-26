@@ -519,12 +519,13 @@ function sevStyle(sev) {
 export default function ForgePlatformDemo() {
   const scanTimersRef = useRef([]);
   const [activePr, setActivePr] = useState(DEFAULT_GITHUB_PR);
-  const [prCleared, setPrCleared] = useState(false);
+  const [prCleared, setPrCleared] = useState(true);
+  const [wasReset, setWasReset] = useState(false);
   const [importingPr, setImportingPr] = useState(false);
   const [customPrUrl, setCustomPrUrl] = useState('');
-  const [showCustomImport, setShowCustomImport] = useState(false);
+  const [showCustomImport, setShowCustomImport] = useState(true);
   const [customPrError, setCustomPrError] = useState(null);
-  const [diffText, setDiffText] = useState(INITIAL_DIFF);
+  const [diffText, setDiffText] = useState('');
   const [showDiffEditor, setShowDiffEditor] = useState(false);
   const [decisions, setDecisions] = useState({});
   const [expandedCards, setExpandedCards] = useState({});
@@ -544,7 +545,7 @@ export default function ForgePlatformDemo() {
   const [scanningLine, setScanningLine] = useState(0);
   const [revealedCount, setRevealedCount] = useState(0);
   const [liveLogs, setLiveLogs] = useState([]);
-  const [diffSourceLabel, setDiffSourceLabel] = useState('GitHub Live Repo');
+  const [diffSourceLabel, setDiffSourceLabel] = useState('Waiting for PR');
 
   // Interactive Impact Map, Security, CI, Pipeline
   const [selectedNode, setSelectedNode] = useState('FraudRiskEngine');
@@ -563,37 +564,6 @@ export default function ForgePlatformDemo() {
   };
 
   useEffect(() => () => clearScanTimers(), []);
-
-  // Auto-detect open real PR on nischay237/forge-ai-platform
-  useEffect(() => {
-    let cancelled = false;
-    fetch('https://api.github.com/repos/nischay237/forge-ai-platform/pulls?state=open&per_page=5', {
-      headers: { Accept: 'application/vnd.github+json' },
-    })
-      .then((r) => (r.ok ? r.json() : []))
-      .then((prs) => {
-        if (cancelled || !Array.isArray(prs) || prs.length === 0) return;
-        const pr = prs[0];
-        setActivePr({
-          owner: 'nischay237',
-          repo: 'forge-ai-platform',
-          fullName: 'nischay237/forge-ai-platform',
-          prNumber: pr.number,
-          branch: pr.head?.ref || 'forge-demo/buggy-payment-pr',
-          targetBranch: pr.base?.ref || 'main',
-          title: pr.title || DEFAULT_GITHUB_PR.title,
-          author: pr.user?.login || 'nischay237',
-          fileName: 'Live GitHub Pull Request',
-          githubUrl: pr.html_url,
-          diffApiUrl: `https://api.github.com/repos/nischay237/forge-ai-platform/pulls/${pr.number}`,
-          isRealOpenPr: true,
-        });
-      })
-      .catch(() => {});
-    return () => {
-      cancelled = true;
-    };
-  }, []);
 
   const codeLines = useMemo(() => extractCodeLines(diffText), [diffText]);
   const allFindings = useMemo(() => analyzeJavaDiff(diffText), [diffText]);
@@ -685,6 +655,7 @@ export default function ForgePlatformDemo() {
   const resetForNewPr = () => {
     clearScanTimers();
     setPrCleared(true);
+    setWasReset(true);
     setDiffText('');
     setLiveLogs([]);
     setDecisions({});
@@ -701,13 +672,14 @@ export default function ForgePlatformDemo() {
     setCustomPrUrl('');
     setCustomPrError(null);
     setShowCustomImport(true);
-    setDiffSourceLabel('Waiting for new PR');
+    setDiffSourceLabel('Waiting for PR');
     scrollToSection('incoming-github');
   };
 
   const loadDefaultDemoPr = () => {
     clearScanTimers();
     setPrCleared(false);
+    setWasReset(false);
     setActivePr(DEFAULT_GITHUB_PR);
     setDiffText(INITIAL_DIFF);
     setDiffSourceLabel('GitHub Live Repo');
@@ -1011,7 +983,7 @@ export default function ForgePlatformDemo() {
     { label: 'Critical', count: criticalCount, color: '#DC2626', bg: 'bg-red-500' },
     { label: 'High', count: highCount, color: '#D97706', bg: 'bg-amber-500' },
     { label: 'Medium', count: mediumCount, color: '#0284C7', bg: 'bg-sky-500' },
-    { label: 'Clean Rules', count: Math.max(2, 12 - findings.length), color: '#059669', bg: 'bg-emerald-500' },
+    { label: 'Clean Rules', count: prCleared ? 0 : Math.max(2, 12 - findings.length), color: '#059669', bg: 'bg-emerald-500' },
   ];
   const maxSevBar = Math.max(1, ...severityBars.map((b) => b.count));
 
@@ -1232,7 +1204,7 @@ export default function ForgePlatformDemo() {
         <div className="bg-[#09090B] text-white py-4 px-5 sm:px-8">
           <div className="max-w-[1320px] mx-auto flex flex-wrap items-center justify-between gap-4">
             <span className="text-xs font-medium text-stone-300" style={FONT_MONO}>
-              GitHub Sync · <span className="text-white">{activePr.fullName}</span>
+              GitHub Sync · <span className="text-white">{prCleared ? 'Ready for any public PR' : activePr.fullName}</span>
             </span>
             <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs font-medium text-stone-400">
               {['Java 21 LTS', 'Spring Boot 3.5', 'Apache Kafka', 'PostgreSQL', 'Redis 7', 'JavaParser AST', 'ArchUnit'].map(
@@ -1310,7 +1282,7 @@ export default function ForgePlatformDemo() {
                 </div>
                 <div className="space-y-1">
                   <h3 className="text-lg sm:text-xl font-bold text-[#09090B] tracking-[-0.02em]" style={FONT_DISPLAY}>
-                    Previous PR cleared. Ready for a new GitHub PR.
+                    {wasReset ? 'Previous PR cleared. Ready for a new GitHub PR.' : 'Paste a GitHub Pull Request to start scanning.'}
                   </h3>
                   <p className="text-xs sm:text-sm font-medium text-stone-600">
                     Paste any public GitHub Pull Request link below to fetch its live code diff and start a fresh scan.
@@ -1324,7 +1296,6 @@ export default function ForgePlatformDemo() {
               >
                 <input
                   required
-                  autoFocus
                   value={customPrUrl}
                   onChange={(e) => setCustomPrUrl(e.target.value)}
                   placeholder="https://github.com/owner/repo/pull/12  (or  owner/repo#12)"
@@ -1385,7 +1356,7 @@ export default function ForgePlatformDemo() {
                   className="h-9 px-4 rounded-lg bg-white hover:bg-stone-100 border border-stone-300 text-xs font-bold text-[#09090B] inline-flex items-center gap-1.5 cursor-pointer transition-colors"
                 >
                   <RefreshCw className="w-3.5 h-3.5" />
-                  Reload Demo PR ({DEFAULT_GITHUB_PR.fullName})
+                  {wasReset ? `Reload Demo PR (${DEFAULT_GITHUB_PR.fullName})` : `Load Sample PR (${DEFAULT_GITHUB_PR.fullName})`}
                 </button>
               </div>
             </div>
@@ -1632,12 +1603,14 @@ export default function ForgePlatformDemo() {
                 ) : (
                   <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-stone-200 text-stone-700 text-[11.5px] font-medium">
                     <Radar className="w-3.5 h-3.5 text-emerald-600" />
-                    Ready — click &ldquo;Open PR &amp; Start Live Scan&rdquo; to inspect live code
+                    {prCleared
+                      ? 'Waiting for PR — paste a GitHub Pull Request link in Section 01 above'
+                      : 'Ready — click "Open PR & Start Live Scan" to inspect live code'}
                   </span>
                 )}
               </div>
               <span className="text-xs font-medium text-stone-600 tabular-nums" style={FONT_MONO}>
-                {scanState === 'IDLE' ? 'Ready' : `${scanPercent}% complete`}
+                {prCleared ? 'Waiting for PR' : scanState === 'IDLE' ? 'Ready' : `${scanPercent}% complete`}
               </span>
             </div>
 
@@ -1731,7 +1704,7 @@ export default function ForgePlatformDemo() {
                     <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/90" />
                   </div>
                   <span className="text-xs font-medium text-stone-200" style={FONT_MONO}>
-                    {activePr.fileName}
+                    {prCleared ? 'No file loaded' : activePr.fileName}
                   </span>
                   <span className="px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 text-[10.5px] font-medium" style={FONT_MONO}>
                     {diffSourceLabel}
@@ -1751,20 +1724,28 @@ export default function ForgePlatformDemo() {
                     rows={16}
                     value={diffText}
                     onChange={(e) => setDiffText(e.target.value)}
+                    placeholder="Paste any Java / code diff here..."
                     className="w-full flex-1 p-3.5 rounded-xl bg-[#09090B] border border-white/15 text-xs text-emerald-200 focus:outline-none focus:border-amber-400"
                     style={FONT_MONO}
                   />
                   <div className="flex items-center justify-between">
                     <button
-                      onClick={() => setDiffText(INITIAL_DIFF)}
+                      onClick={() => {
+                        setDiffText('');
+                        setPrCleared(true);
+                      }}
                       className="text-xs font-medium text-stone-400 hover:text-white underline cursor-pointer"
                     >
-                      Reset GitHub PR Code
+                      Clear Code
                     </button>
                     <button
                       onClick={() => {
                         setShowDiffEditor(false);
-                        setScanState('AWAITING_APPROVAL');
+                        if (diffText.trim()) {
+                          setPrCleared(false);
+                          setDiffSourceLabel('Custom Code Snippet');
+                          setScanState('AWAITING_APPROVAL');
+                        }
                       }}
                       className="h-9 px-4 rounded-lg bg-white hover:bg-stone-100 text-[#09090B] text-xs font-semibold cursor-pointer"
                     >
@@ -1791,10 +1772,10 @@ export default function ForgePlatformDemo() {
                     <div className="h-full min-h-[300px] flex flex-col items-center justify-center text-center px-6 py-10 text-stone-400 space-y-3">
                       <GitPullRequest className="w-8 h-8 text-stone-500" />
                       <div className="text-sm font-semibold text-stone-200" style={FONT_DISPLAY}>
-                        Workspace cleared — no active PR diff
+                        No active PR diff loaded
                       </div>
                       <p className="text-xs text-stone-400 max-w-sm" style={FONT_SANS}>
-                        Paste a new GitHub Pull Request link in Section 01 above (or reload the demo PR) to start scanning live.
+                        Paste any public GitHub Pull Request link in Section 01 above (or load the sample PR) to start scanning live.
                       </p>
                       <button
                         onClick={() => scrollToSection('incoming-github')}
@@ -1887,7 +1868,7 @@ export default function ForgePlatformDemo() {
                       </h4>
                       <p className="text-xs font-normal text-stone-600 max-w-xs leading-relaxed">
                         {prCleared
-                          ? 'Old PR results have been cleared. Paste a new GitHub PR URL in Section 01 to run a fresh scan.'
+                          ? 'No PR loaded yet. Paste any public GitHub PR URL in Section 01 above to run a live scan.'
                           : 'Click below to watch Forge sweep the live GitHub PR line by line and stream every detected issue and fix in real time.'}
                       </p>
                     </div>
@@ -2128,7 +2109,7 @@ export default function ForgePlatformDemo() {
                 {categoryBreakdown.length === 0 ? (
                   <div className="text-sm font-medium text-stone-600">
                     {prCleared
-                      ? 'Workspace cleared — paste a new PR in Section 01 to inspect risk categories.'
+                      ? 'No PR loaded — paste a GitHub PR link in Section 01 to view risk categories.'
                       : 'Zero risk categories detected — clean PR!'}
                   </div>
                 ) : (
@@ -2243,7 +2224,7 @@ export default function ForgePlatformDemo() {
               <div className="rounded-xl bg-[#FAFAF8] border border-stone-200 p-10 text-center space-y-3">
                 <div className="text-sm font-semibold text-stone-700">
                   {prCleared
-                    ? 'Old PR cleared — load a new GitHub PR in Section 01 to generate a fresh scan report.'
+                    ? 'No PR scanned yet — paste a GitHub Pull Request link in Section 01 above to generate your live report.'
                     : 'No issues in this filter category.'}
                 </div>
                 {prCleared && (
