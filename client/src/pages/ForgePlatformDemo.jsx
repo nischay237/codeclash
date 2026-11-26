@@ -1250,15 +1250,31 @@ export default function ForgePlatformDemo() {
                 </div>
                 <div className="min-w-0">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200 text-[11px] font-semibold">
-                      <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-ping" />
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-100 text-amber-950 border border-amber-300 text-xs font-bold">
+                      <span className="w-2 h-2 rounded-full bg-amber-600" />
                       {activePr.isRealOpenPr ? `Live GitHub PR #${activePr.prNumber}` : 'Incoming GitHub PR'}
                     </span>
-                    <span className="text-xs text-stone-500" style={FONT_MONO}>
-                      {activePr.fullName} · {activePr.branch} → {activePr.targetBranch}
+                    <span className="text-xs sm:text-[13px] font-bold text-[#09090B]">
+                      {activePr.fullName}
+                    </span>
+                    <span className="text-stone-400 font-bold select-none">·</span>
+                    <span className="inline-flex flex-wrap items-center gap-1.5 text-xs font-semibold text-[#09090B]">
+                      <code
+                        className="px-2 py-0.5 rounded-md bg-sky-50 text-sky-950 border border-sky-200/90 font-semibold"
+                        style={FONT_MONO}
+                      >
+                        {activePr.branch}
+                      </code>
+                      <span className="text-stone-500 font-bold">→</span>
+                      <code
+                        className="px-2 py-0.5 rounded-md bg-stone-100 text-[#09090B] border border-stone-200 font-semibold"
+                        style={FONT_MONO}
+                      >
+                        {activePr.targetBranch}
+                      </code>
                     </span>
                   </div>
-                  <h3 className="text-base sm:text-[18px] font-semibold tracking-[-0.02em] text-[#09090B] mt-1.5" style={FONT_DISPLAY}>
+                  <h3 className="text-base sm:text-[19px] font-bold tracking-[-0.02em] text-[#09090B] mt-2" style={FONT_DISPLAY}>
                     {activePr.title}
                   </h3>
                 </div>
@@ -1972,17 +1988,17 @@ export default function ForgePlatformDemo() {
                         </span>
                         <div className="min-w-0 space-y-1">
                           <div className="flex flex-wrap items-center gap-2">
-                            <span className={`px-2 py-0.5 rounded-md text-[10.5px] font-semibold border ${sevStyle(f.severity)}`} style={FONT_MONO}>
+                            <span className={`px-2 py-0.5 rounded-md text-[10.5px] font-bold border ${sevStyle(f.severity)}`} style={FONT_MONO}>
                               {f.severity}
                             </span>
-                            <span className="px-2 py-0.5 rounded-md bg-white border border-stone-200 text-[11px] font-medium text-stone-700">
+                            <span className="px-2 py-0.5 rounded-md bg-white border border-stone-200 text-[11px] font-semibold text-[#09090B]">
                               {f.category}
                             </span>
-                            <span className="text-xs text-stone-500" style={FONT_MONO}>
+                            <span className="text-xs font-semibold text-stone-700" style={FONT_MONO}>
                               {f.filePath}:{f.lineNo} · {f.confidence}% confidence
                             </span>
                           </div>
-                          <h3 className="text-[15.5px] sm:text-[17px] font-semibold text-[#09090B] tracking-[-0.015em]" style={FONT_DISPLAY}>
+                          <h3 className="text-[15.5px] sm:text-[17px] font-bold text-[#09090B] tracking-[-0.015em]" style={FONT_DISPLAY}>
                             {f.title}
                           </h3>
                         </div>
@@ -2401,10 +2417,10 @@ export default function ForgePlatformDemo() {
                     </span>
                   </div>
 
-                  <h3 className="text-[16px] font-semibold text-[#09090B] leading-snug tracking-[-0.015em]" style={FONT_DISPLAY}>
+                  <h3 className="text-[16px] font-bold text-[#09090B] leading-snug tracking-[-0.015em]" style={FONT_DISPLAY}>
                     {item.title}
                   </h3>
-                  <div className="text-xs text-stone-500" style={FONT_MONO}>
+                  <div className="text-xs font-semibold text-stone-700" style={FONT_MONO}>
                     {item.location} · {item.cwe}
                   </div>
                   <div className="px-3 py-2 rounded-lg bg-[#111113] text-red-300 text-xs overflow-x-auto" style={FONT_MONO}>
@@ -2498,7 +2514,7 @@ export default function ForgePlatformDemo() {
                           {b.status}
                         </span>
                       </div>
-                      <div className="text-[11px] text-stone-500 mt-1" style={FONT_MONO}>
+                      <div className="text-[11px] font-semibold text-stone-700 mt-1" style={FONT_MONO}>
                         {b.branch} · {b.duration}
                       </div>
                     </button>
@@ -2510,10 +2526,10 @@ export default function ForgePlatformDemo() {
             <div className="xl:col-span-8 rounded-2xl bg-white border border-stone-200 p-6 space-y-5 shadow-[0_8px_24px_rgba(15,23,42,0.04)]">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div>
-                  <h3 className="text-lg font-semibold text-[#09090B] tracking-[-0.02em]" style={FONT_DISPLAY}>
+                  <h3 className="text-lg font-bold text-[#09090B] tracking-[-0.02em]" style={FONT_DISPLAY}>
                     {activeCi.pipeline}
                   </h3>
-                  <div className="text-xs text-stone-500 mt-0.5" style={FONT_MONO}>
+                  <div className="text-xs font-semibold text-stone-700 mt-0.5" style={FONT_MONO}>
                     {activeCi.repo} · commit {activeCi.sha} · {activeCi.duration}
                   </div>
                 </div>
