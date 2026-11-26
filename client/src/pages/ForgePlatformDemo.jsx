@@ -2463,150 +2463,325 @@ export default function ForgePlatformDemo() {
       {/* ================================================================== */}
       <section id="builds-proof" className="py-16 sm:py-24 px-5 sm:px-8 bg-[#F9F8F5] border-b border-stone-200">
         <div className="max-w-[1320px] mx-auto space-y-10">
-          <div className="space-y-2 max-w-2xl">
-            <div className="inline-flex items-center gap-2 text-xs font-semibold text-stone-500 uppercase tracking-[0.08em]">
-              <Activity className="w-3.5 h-3.5 text-emerald-600" />
-              <span>05 · Build Diagnosis &amp; Verified Accuracy</span>
+          {/* Bold Section Header + Executive Proof Strip */}
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+            <div className="space-y-2.5 max-w-2xl">
+              <div className="inline-flex items-center gap-2 text-xs font-bold text-stone-600 uppercase tracking-[0.08em]">
+                <Activity className="w-4 h-4 text-emerald-600" />
+                <span>05 · Build Diagnosis &amp; Verified Accuracy</span>
+              </div>
+              <h2
+                className="text-3xl sm:text-[44px] font-bold tracking-[-0.035em] leading-[1.08] text-[#09090B]"
+                style={FONT_DISPLAY}
+              >
+                Plain-English CI fixes &amp; 100% proven accuracy.
+              </h2>
+              <p className="text-sm sm:text-[15.5px] font-medium text-stone-600 leading-relaxed">
+                Stop digging through 2,000-line Maven and Docker logs. Forge isolates the exact failing
+                step and generates verified fix instructions in under 2 seconds.
+              </p>
             </div>
-            <h2
-              className="text-3xl sm:text-[42px] font-semibold tracking-[-0.03em] leading-[1.1] text-[#09090B]"
-              style={FONT_DISPLAY}
-            >
-              Plain-English CI fixes &amp; 100% proven accuracy.
-            </h2>
+
+            <div className="grid grid-cols-3 gap-3 shrink-0">
+              <div className="rounded-xl bg-white border border-stone-200 px-4 py-3 shadow-xs">
+                <div className="text-[11px] font-bold uppercase tracking-wider text-stone-500">Avg Triage</div>
+                <div className="text-xl sm:text-2xl font-bold text-[#09090B] mt-0.5 tabular-nums" style={FONT_DISPLAY}>
+                  1.4s
+                </div>
+              </div>
+              <div className="rounded-xl bg-[#09090B] text-white px-4 py-3 shadow-sm">
+                <div className="text-[11px] font-bold uppercase tracking-wider text-emerald-400">Eval Score</div>
+                <div className="text-xl sm:text-2xl font-bold text-white mt-0.5 tabular-nums" style={FONT_DISPLAY}>
+                  100%
+                </div>
+              </div>
+              <div className="rounded-xl bg-white border border-stone-200 px-4 py-3 shadow-xs">
+                <div className="text-[11px] font-bold uppercase tracking-wider text-stone-500">False Alarms</div>
+                <div className="text-xl sm:text-2xl font-bold text-emerald-700 mt-0.5 tabular-nums" style={FONT_DISPLAY}>
+                  0%
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Failed Builds + Root Cause + Fix */}
-          <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
-            <div className="xl:col-span-4 rounded-2xl bg-white border border-stone-200 overflow-hidden shadow-[0_8px_24px_rgba(15,23,42,0.04)]">
-              <div className="px-5 py-3.5 bg-[#09090B] text-white text-xs font-medium flex items-center justify-between">
-                <span>Recent Build Runs</span>
-                <span className="text-stone-400 tabular-nums" style={FONT_MONO}>{CI_BUILDS.length}</span>
+          <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 items-stretch">
+            {/* LEFT 4 COLS: BOLD PIPELINE LIST + CI HEALTH SUMMARY */}
+            <div className="xl:col-span-4 rounded-2xl bg-white border border-stone-200/90 overflow-hidden shadow-[0_12px_32px_rgba(15,23,42,0.06)] flex flex-col justify-between">
+              <div>
+                <div className="px-5 py-4 bg-[#09090B] text-white flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2 text-xs font-bold tracking-[0.02em]">
+                    <Terminal className="w-4 h-4 text-amber-400" />
+                    <span>Recent Build Runs</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 text-[11px] font-bold" style={FONT_MONO}>
+                    <span className="px-2 py-0.5 rounded bg-red-500/20 text-red-300">2 Failed</span>
+                    <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300">1 Pass</span>
+                  </div>
+                </div>
+
+                <div className="divide-y divide-stone-200">
+                  {CI_BUILDS.map((b) => {
+                    const sel = b.id === activeCi.id;
+                    const isPass = b.status === 'PASSED';
+                    return (
+                      <button
+                        key={b.id}
+                        onClick={() => {
+                          setActiveCiId(b.id);
+                          setShowRawLog(false);
+                        }}
+                        className={`w-full text-left px-5 py-4 transition-all cursor-pointer border-l-4 ${
+                          sel
+                            ? isPass
+                              ? 'bg-emerald-50/55 border-l-emerald-600'
+                              : 'bg-amber-50/60 border-l-[#09090B]'
+                            : 'bg-white hover:bg-stone-50 border-l-transparent'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between gap-2.5">
+                          <div className="flex items-center gap-2.5 min-w-0">
+                            <span
+                              className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 ${
+                                isPass ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-600'
+                              }`}
+                            >
+                              {isPass ? <Check className="w-3.5 h-3.5 stroke-[2.5]" /> : <X className="w-3.5 h-3.5 stroke-[2.5]" />}
+                            </span>
+                            <span className="text-[14px] font-bold text-[#09090B] truncate">{b.pipeline}</span>
+                          </div>
+                          <span
+                            className={`px-2.5 py-0.5 rounded-md text-[10.5px] font-bold shrink-0 ${
+                              isPass ? 'bg-emerald-600 text-white' : 'bg-red-600 text-white'
+                            }`}
+                            style={FONT_MONO}
+                          >
+                            {b.status}
+                          </span>
+                        </div>
+                        <div className="mt-2.5 pl-8.5 flex items-center justify-between gap-2">
+                          <div className="flex items-center gap-2 min-w-0">
+                            <code
+                              className="px-2 py-0.5 rounded bg-stone-100 border border-stone-200 text-[11px] font-semibold text-[#09090B] truncate"
+                              style={FONT_MONO}
+                            >
+                              {b.branch}
+                            </code>
+                            <span className="text-[11px] font-bold text-stone-600 shrink-0" style={FONT_MONO}>
+                              {b.duration}
+                            </span>
+                          </div>
+                          {sel && <ArrowRight className="w-4 h-4 text-[#09090B] shrink-0" />}
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
-              <div className="divide-y divide-stone-200">
-                {CI_BUILDS.map((b) => {
-                  const sel = b.id === activeCi.id;
-                  return (
-                    <button
-                      key={b.id}
-                      onClick={() => {
-                        setActiveCiId(b.id);
-                        setShowRawLog(false);
-                      }}
-                      className={`w-full text-left p-4 transition-colors cursor-pointer border-l-[3px] ${
-                        sel ? 'bg-[#FAFAF8] border-l-[#09090B]' : 'hover:bg-stone-50 border-l-transparent'
-                      }`}
-                    >
-                      <div className="flex items-center justify-between gap-2">
-                        <span className="text-[13px] font-semibold text-[#09090B] truncate">{b.pipeline}</span>
-                        <span
-                          className={`px-2 py-0.5 rounded text-[10px] font-semibold ${
-                            b.status === 'PASSED'
-                              ? 'bg-emerald-100 text-emerald-800 border border-emerald-200'
-                              : 'bg-red-100 text-red-800 border border-red-200'
-                          }`}
-                          style={FONT_MONO}
-                        >
-                          {b.status}
-                        </span>
-                      </div>
-                      <div className="text-[11px] font-semibold text-stone-700 mt-1" style={FONT_MONO}>
-                        {b.branch} · {b.duration}
-                      </div>
-                    </button>
-                  );
-                })}
+
+              {/* Bottom Pipeline Health Summary Bar (eliminates empty space cleanly) */}
+              <div className="p-5 bg-[#FAFAF8] border-t border-stone-200 space-y-2.5">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="font-bold text-[#09090B]">CI Pipeline Health</span>
+                  <span className="font-bold text-red-700" style={FONT_MONO}>2 action required</span>
+                </div>
+                <div className="h-2.5 w-full rounded-full bg-stone-200 overflow-hidden flex">
+                  <div className="h-full bg-red-600" style={{ width: '67%' }} />
+                  <div className="h-full bg-emerald-500" style={{ width: '33%' }} />
+                </div>
+                <div className="text-[11.5px] font-medium text-stone-600">
+                  Click any build above to inspect its root cause &amp; verified fix.
+                </div>
               </div>
             </div>
 
-            <div className="xl:col-span-8 rounded-2xl bg-white border border-stone-200 p-6 space-y-5 shadow-[0_8px_24px_rgba(15,23,42,0.04)]">
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <div>
-                  <h3 className="text-lg font-bold text-[#09090B] tracking-[-0.02em]" style={FONT_DISPLAY}>
-                    {activeCi.pipeline}
-                  </h3>
-                  <div className="text-xs font-semibold text-stone-700 mt-0.5" style={FONT_MONO}>
-                    {activeCi.repo} · commit {activeCi.sha} · {activeCi.duration}
-                  </div>
-                </div>
-                <span className="px-2.5 py-1 rounded-md bg-amber-50 border border-amber-200 text-amber-900 text-xs font-medium" style={FONT_MONO}>
-                  {activeCi.category}
-                </span>
-              </div>
+            {/* RIGHT 8 COLS: HIGH-IMPACT DIAGNOSIS & FIX PANEL */}
+            <div className="xl:col-span-8 rounded-2xl bg-white border border-stone-200/90 overflow-hidden shadow-[0_12px_32px_rgba(15,23,42,0.06)] flex flex-col justify-between">
+              {/* Bold Status Top Accent Bar */}
+              <div className={`h-1.5 w-full ${activeCi.status === 'PASSED' ? 'bg-emerald-500' : 'bg-red-600'}`} />
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="p-5 rounded-xl bg-[#FAFAF8] border border-stone-200 space-y-2">
-                  <div className="text-[11px] font-semibold uppercase tracking-[0.06em] text-red-700">
-                    What went wrong
-                  </div>
-                  <p className="text-[13.5px] font-normal text-stone-700 leading-relaxed">{activeCi.rootCause}</p>
-                </div>
-                <div className="p-5 rounded-xl bg-[#09090B] text-white space-y-2.5">
-                  <div className="text-[11px] font-medium uppercase tracking-[0.06em] text-amber-300">
-                    How to fix it
-                  </div>
-                  <ul className="space-y-2 text-xs font-normal text-stone-200 leading-relaxed">
-                    {activeCi.remediation.map((step, i) => (
-                      <li key={i} className="flex items-start gap-2">
-                        <span className="text-amber-300 font-medium" style={FONT_MONO}>{i + 1}.</span>
-                        <span>{step}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-
-              <div>
-                <button
-                  onClick={() => setShowRawLog((v) => !v)}
-                  className="inline-flex items-center gap-1.5 text-xs font-medium text-stone-700 hover:text-[#09090B] transition-colors cursor-pointer"
-                >
-                  <Terminal className="w-3.5 h-3.5" />
-                  {showRawLog ? 'Hide Raw Terminal Log' : 'Inspect Raw Terminal Log'}
-                  <ChevronDown className={`w-3.5 h-3.5 transition-transform ${showRawLog ? 'rotate-180' : ''}`} />
-                </button>
-                {showRawLog && (
-                  <div className="mt-3 rounded-xl bg-[#111113] p-4 text-[11.5px] text-stone-300 space-y-1 overflow-x-auto" style={FONT_MONO}>
-                    {activeCi.log.split('\n').map((line, i) => (
-                      <div
-                        key={i}
-                        className={
-                          /ERROR|FAILURE|mismatch/i.test(line)
-                            ? 'text-red-300 bg-red-500/20 px-2 py-0.5 rounded'
-                            : 'px-2 py-0.5'
-                        }
-                      >
-                        {line}
+              <div className="p-6 sm:p-7 space-y-6 flex-1 flex flex-col justify-between">
+                <div className="space-y-6">
+                  {/* Pipeline Title + Bold Metadata Badges */}
+                  <div className="flex flex-wrap items-start justify-between gap-4 pb-5 border-b border-stone-200">
+                    <div className="space-y-2">
+                      <div className="flex flex-wrap items-center gap-2.5">
+                        <span
+                          className={`px-2.5 py-0.5 rounded-md text-[11px] font-bold ${
+                            activeCi.status === 'PASSED' ? 'bg-emerald-600 text-white' : 'bg-red-600 text-white'
+                          }`}
+                          style={FONT_MONO}
+                        >
+                          {activeCi.status === 'PASSED' ? 'BUILD PASSED' : 'BUILD FAILED'}
+                        </span>
+                        <h3 className="text-xl sm:text-2xl font-bold text-[#09090B] tracking-[-0.025em]" style={FONT_DISPLAY}>
+                          {activeCi.pipeline}
+                        </h3>
                       </div>
-                    ))}
+                      <div className="flex flex-wrap items-center gap-2 text-xs">
+                        <span className="font-bold text-[#09090B]">{activeCi.repo}</span>
+                        <span className="text-stone-400 font-bold">·</span>
+                        <code className="px-2 py-0.5 rounded bg-stone-100 border border-stone-200 font-semibold text-[#09090B]" style={FONT_MONO}>
+                          commit {activeCi.sha}
+                        </code>
+                        <span className="text-stone-400 font-bold">·</span>
+                        <span className="font-bold text-stone-700" style={FONT_MONO}>{activeCi.duration}</span>
+                      </div>
+                    </div>
+
+                    <span
+                      className="px-3 py-1.5 rounded-lg bg-[#09090B] text-amber-300 text-xs font-bold tracking-[0.03em]"
+                      style={FONT_MONO}
+                    >
+                      {activeCi.category}
+                    </span>
                   </div>
-                )}
+
+                  {/* Side-by-Side Bold Root Cause + Obsidian Fix Card */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div
+                      className={`p-5 sm:p-6 rounded-xl border flex flex-col justify-between gap-4 ${
+                        activeCi.status === 'PASSED'
+                          ? 'bg-emerald-50/70 border-emerald-200'
+                          : 'bg-red-50/70 border-red-200'
+                      }`}
+                    >
+                      <div className="space-y-3">
+                        <div className="flex items-center gap-2">
+                          <span
+                            className={`w-7 h-7 rounded-lg flex items-center justify-center ${
+                              activeCi.status === 'PASSED'
+                                ? 'bg-emerald-600 text-white'
+                                : 'bg-red-600 text-white'
+                            }`}
+                          >
+                            {activeCi.status === 'PASSED' ? (
+                              <CheckCircle2 className="w-4 h-4" />
+                            ) : (
+                              <ShieldAlert className="w-4 h-4" />
+                            )}
+                          </span>
+                          <span
+                            className={`text-xs font-bold uppercase tracking-[0.07em] ${
+                              activeCi.status === 'PASSED' ? 'text-emerald-900' : 'text-red-800'
+                            }`}
+                          >
+                            {activeCi.status === 'PASSED' ? 'Build Status' : 'What Went Wrong'}
+                          </span>
+                        </div>
+                        <p className="text-[15px] font-semibold text-[#09090B] leading-relaxed">
+                          {activeCi.rootCause}
+                        </p>
+                      </div>
+
+                      <div className="pt-3 border-t border-black/10 flex items-center justify-between text-xs font-semibold text-stone-700">
+                        <span>Auto-diagnosed by Forge</span>
+                        <span className="text-[#09090B]" style={FONT_MONO}>1.4s</span>
+                      </div>
+                    </div>
+
+                    <div className="p-5 sm:p-6 rounded-xl bg-[#09090B] text-white flex flex-col justify-between gap-4 shadow-[0_14px_30px_rgba(15,23,42,0.16)]">
+                      <div className="space-y-3.5">
+                        <div className="flex items-center justify-between gap-2">
+                          <div className="flex items-center gap-2">
+                            <span className="w-7 h-7 rounded-lg bg-amber-400 text-[#09090B] flex items-center justify-center">
+                              <Wrench className="w-4 h-4" />
+                            </span>
+                            <span className="text-xs font-bold uppercase tracking-[0.07em] text-amber-300">
+                              How To Fix It
+                            </span>
+                          </div>
+                          <span className="px-2 py-0.5 rounded bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 text-[10.5px] font-bold" style={FONT_MONO}>
+                            VERIFIED
+                          </span>
+                        </div>
+
+                        <ul className="space-y-3 text-[13.5px] font-medium text-stone-100 leading-relaxed">
+                          {activeCi.remediation.map((step, i) => (
+                            <li key={i} className="flex items-start gap-3">
+                              <span
+                                className="w-5 h-5 rounded-full bg-amber-400 text-[#09090B] text-[11px] font-bold flex items-center justify-center shrink-0 mt-0.5"
+                                style={FONT_MONO}
+                              >
+                                {i + 1}
+                              </span>
+                              <span>{step}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Bold Interactive Footer Buttons + Expandable Terminal Log */}
+                <div className="pt-2 space-y-3">
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <button
+                      onClick={() => setShowRawLog((v) => !v)}
+                      className="h-10 px-4 rounded-lg bg-[#FAFAF8] hover:bg-stone-100 border border-stone-300 text-xs font-bold text-[#09090B] inline-flex items-center gap-2 transition-colors cursor-pointer"
+                    >
+                      <Terminal className="w-4 h-4 text-[#09090B]" />
+                      {showRawLog ? 'Hide Raw Terminal Log' : 'Inspect Raw Terminal Log'}
+                      <ChevronDown className={`w-4 h-4 transition-transform ${showRawLog ? 'rotate-180' : ''}`} />
+                    </button>
+
+                    <button
+                      onClick={() => {
+                        navigator.clipboard?.writeText(activeCi.remediation.map((s, i) => `${i + 1}. ${s}`).join('\n')).catch(() => {});
+                        setCopiedFixId(activeCi.id);
+                        setTimeout(() => setCopiedFixId(null), 1800);
+                      }}
+                      className="h-10 px-4 rounded-lg bg-[#09090B] hover:bg-[#27272A] text-white text-xs font-bold inline-flex items-center gap-2 transition-colors cursor-pointer"
+                    >
+                      <Copy className="w-3.5 h-3.5 text-amber-300" />
+                      {copiedFixId === activeCi.id ? 'Copied Fix Steps!' : 'Copy Fix Steps'}
+                    </button>
+                  </div>
+
+                  {showRawLog && (
+                    <div className="rounded-xl bg-[#111113] border border-stone-800 p-4 text-[11.5px] text-stone-200 space-y-1 overflow-x-auto" style={FONT_MONO}>
+                      {activeCi.log.split('\n').map((line, i) => (
+                        <div
+                          key={i}
+                          className={
+                            /ERROR|FAILURE|mismatch/i.test(line)
+                              ? 'text-red-300 bg-red-500/20 px-2 py-0.5 rounded font-semibold'
+                              : 'px-2 py-0.5'
+                          }
+                        >
+                          {line}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
 
           {/* 8-Case Accuracy Benchmark */}
-          <div className="rounded-2xl bg-white border border-stone-200 overflow-hidden shadow-[0_8px_24px_rgba(15,23,42,0.04)]">
+          <div className="rounded-2xl bg-white border border-stone-200/90 overflow-hidden shadow-[0_12px_32px_rgba(15,23,42,0.06)]">
             <div className="px-6 py-5 bg-[#09090B] text-white flex flex-wrap items-center justify-between gap-4">
               <div>
-                <h3 className="text-base sm:text-lg font-semibold text-white tracking-[-0.02em]" style={FONT_DISPLAY}>
+                <h3 className="text-base sm:text-lg font-bold text-white tracking-[-0.02em]" style={FONT_DISPLAY}>
                   Verified 8-Case Accuracy Benchmark (Run #{evalRunCount})
                 </h3>
-                <p className="text-xs font-normal text-stone-400 mt-1">
+                <p className="text-xs font-medium text-stone-300 mt-1">
                   Every Forge release runs 7 real vulnerability PRs + 1 clean PR to guarantee 0% false alarms.
                 </p>
               </div>
               <div className="flex flex-wrap items-center gap-2">
-                <span className="px-2.5 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 text-xs font-medium" style={FONT_MONO}>
+                <span className="px-3 py-1 rounded-full bg-emerald-600 text-white text-xs font-bold" style={FONT_MONO}>
                   100% Accuracy
                 </span>
-                <span className="px-2.5 py-1 rounded-full bg-amber-400/15 border border-amber-400/30 text-amber-200 text-xs font-medium" style={FONT_MONO}>
+                <span className="px-3 py-1 rounded-full bg-amber-400 text-[#09090B] text-xs font-bold" style={FONT_MONO}>
                   0% False Alarms
                 </span>
                 <button
                   onClick={triggerEvalSuite}
                   disabled={evalRunning}
-                  className="h-8 px-3.5 rounded-lg bg-white hover:bg-stone-100 text-[#09090B] text-xs font-medium inline-flex items-center gap-1.5 cursor-pointer transition-colors"
+                  className="h-9 px-4 rounded-lg bg-white hover:bg-stone-100 text-[#09090B] text-xs font-bold inline-flex items-center gap-1.5 cursor-pointer transition-colors"
                 >
                   <RefreshCw className={`w-3.5 h-3.5 ${evalRunning ? 'animate-spin' : ''}`} />
                   {evalRunning ? 'Running...' : 'Re-Run Suite'}
@@ -2615,27 +2790,27 @@ export default function ForgePlatformDemo() {
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
-                <thead className="border-b border-stone-200 bg-[#FAFAF8] text-[11px] font-medium uppercase tracking-[0.04em] text-stone-500">
+                <thead className="border-b border-stone-200 bg-[#FAFAF8] text-[11px] font-bold uppercase tracking-[0.05em] text-stone-600">
                   <tr>
-                    <th className="px-6 py-3">Test</th>
-                    <th className="px-6 py-3">Real-World Scenario</th>
-                    <th className="px-6 py-3">Rule Triggered</th>
-                    <th className="px-6 py-3">Outcome</th>
-                    <th className="px-6 py-3 text-right">Speed</th>
+                    <th className="px-6 py-3.5">Test</th>
+                    <th className="px-6 py-3.5">Real-World Scenario</th>
+                    <th className="px-6 py-3.5">Rule Triggered</th>
+                    <th className="px-6 py-3.5">Outcome</th>
+                    <th className="px-6 py-3.5 text-right">Speed</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-stone-200">
                   {EVAL_CASES.map((c) => (
                     <tr key={c.id} className="hover:bg-[#FAFAF8]">
-                      <td className="px-6 py-3 font-medium text-[#09090B]" style={FONT_MONO}>{c.id}</td>
-                      <td className="px-6 py-3 font-medium text-[#09090B]">{c.name}</td>
-                      <td className="px-6 py-3 text-stone-500" style={FONT_MONO}>{c.triggered}</td>
-                      <td className="px-6 py-3">
-                        <span className="px-2 py-0.5 rounded-md text-[10.5px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200" style={FONT_MONO}>
+                      <td className="px-6 py-3.5 font-bold text-[#09090B]" style={FONT_MONO}>{c.id}</td>
+                      <td className="px-6 py-3.5 font-bold text-[#09090B]">{c.name}</td>
+                      <td className="px-6 py-3.5 font-semibold text-stone-700" style={FONT_MONO}>{c.triggered}</td>
+                      <td className="px-6 py-3.5">
+                        <span className="px-2.5 py-0.5 rounded-md text-[10.5px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300" style={FONT_MONO}>
                           {c.outcome}
                         </span>
                       </td>
-                      <td className="px-6 py-3 text-right text-stone-500 tabular-nums" style={FONT_MONO}>{c.ms}ms</td>
+                      <td className="px-6 py-3.5 text-right font-bold text-stone-700 tabular-nums" style={FONT_MONO}>{c.ms}ms</td>
                     </tr>
                   ))}
                 </tbody>
