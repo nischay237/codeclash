@@ -1243,37 +1243,6 @@ export default function ForgePlatformDemo() {
 
           {/* Dedicated Bold Incoming GitHub PR Card */}
           <div className="rounded-2xl bg-white border border-stone-200/90 overflow-hidden shadow-[0_14px_38px_rgba(15,23,42,0.07)]">
-            {/* Obsidian Webhook Intake Bar */}
-            <div className="px-6 py-3.5 bg-[#09090B] text-white flex flex-wrap items-center justify-between gap-3">
-              <div className="flex flex-wrap items-center gap-2.5 text-xs font-bold">
-                <span className="w-2 h-2 rounded-full bg-emerald-400" />
-                <span>GitHub Webhook Intake</span>
-                <span className="px-2 py-0.5 rounded bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 text-[10.5px] font-bold" style={FONT_MONO}>
-                  HMAC-SHA256 VERIFIED
-                </span>
-              </div>
-              <span
-                className={`px-2.5 py-0.5 rounded text-[11px] font-bold ${
-                  isScanningNow
-                    ? 'bg-amber-400 text-[#09090B]'
-                    : scanState === 'PUBLISHED'
-                    ? 'bg-emerald-500 text-white'
-                    : scanState === 'AWAITING_APPROVAL'
-                    ? 'bg-amber-400/20 text-amber-300 border border-amber-400/30'
-                    : 'bg-white/10 text-stone-200'
-                }`}
-                style={FONT_MONO}
-              >
-                {isScanningNow
-                  ? `SCANNING LIVE · ${scanPercent}%`
-                  : scanState === 'PUBLISHED'
-                  ? 'PUBLISHED TO GITHUB'
-                  : scanState === 'AWAITING_APPROVAL'
-                  ? `AWAITING HUMAN APPROVAL · ${findings.length} ISSUES`
-                  : 'READY TO SCAN'}
-              </span>
-            </div>
-
             <div className="p-6 sm:p-7 space-y-6">
               <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
                 <div className="flex items-start gap-4 min-w-0">
