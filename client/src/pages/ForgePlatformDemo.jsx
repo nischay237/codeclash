@@ -237,6 +237,7 @@ const EVAL_CASES = [
 ];
 
 function extractCodeLines(rawDiff) {
+  if (!rawDiff || !rawDiff.trim()) return [];
   const lines = rawDiff.split('\n');
   const parsed = [];
   let currentLineNo = -1;
@@ -276,6 +277,7 @@ function extractCodeLines(rawDiff) {
 }
 
 function analyzeJavaDiff(rawDiff) {
+  if (!rawDiff || !rawDiff.trim()) return [];
   const lines = rawDiff.split('\n');
   const findings = [];
   let inLoop = false;
