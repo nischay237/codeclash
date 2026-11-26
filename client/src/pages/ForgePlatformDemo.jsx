@@ -37,10 +37,9 @@ import {
   Zap,
 } from 'lucide-react';
 
-const FONT_DISPLAY = { fontFamily: "'Bricolage Grotesque', 'DM Sans', sans-serif" };
-const FONT_SERIF = { fontFamily: "'Newsreader', Georgia, serif" };
-const FONT_SANS = { fontFamily: "'DM Sans', 'Inter', system-ui, sans-serif" };
-const FONT_MONO = { fontFamily: "'IBM Plex Mono', 'JetBrains Mono', monospace" };
+const FONT_DISPLAY = { fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif" };
+const FONT_SANS = { fontFamily: "'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif" };
+const FONT_MONO = { fontFamily: "'Geist Mono', 'JetBrains Mono', ui-monospace, monospace" };
 
 const AST_NODES = [
   { id: 'TransferController', layer: 'API', file: 'com/acme/ledger/TransferController.java', cc: 2, x: 36, y: 120 },
@@ -968,7 +967,7 @@ export default function ForgePlatformDemo() {
 
   return (
     <div
-      className="min-h-screen bg-[#F9F8F5] text-[#141413] font-bold selection:bg-[#F5C542] selection:text-[#141413]"
+      className="min-h-screen bg-[#F9F8F5] text-[#09090B] selection:bg-[#F5C542] selection:text-[#09090B]"
       style={FONT_SANS}
     >
       {/* ================================================================== */}
@@ -979,7 +978,7 @@ export default function ForgePlatformDemo() {
           <div className="flex items-center gap-3.5">
             <a
               href="/"
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-stone-600 hover:text-[#141413] transition-colors"
+              className="inline-flex items-center gap-1.5 text-xs font-medium text-stone-500 hover:text-[#09090B] transition-colors"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Portfolio</span>
@@ -989,27 +988,27 @@ export default function ForgePlatformDemo() {
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
               className="flex items-center gap-2.5 cursor-pointer"
             >
-              <div className="w-7 h-7 rounded-md bg-[#141413] text-[#F5C542] flex items-center justify-center">
+              <div className="w-7 h-7 rounded-md bg-[#09090B] text-white flex items-center justify-center">
                 <ScanLine className="w-4 h-4" />
               </div>
-              <span className="font-extrabold text-[17px] tracking-[-0.03em] text-[#141413]" style={FONT_DISPLAY}>
-                FORGE AI
+              <span className="font-semibold text-[16px] tracking-[-0.025em] text-[#09090B]" style={FONT_DISPLAY}>
+                Forge
               </span>
             </button>
           </div>
 
-          <nav className="hidden lg:flex items-center gap-6 text-[13px] font-bold text-stone-600">
+          <nav className="hidden lg:flex items-center gap-6 text-[13px] font-medium text-stone-600">
             {[
-              { id: 'live-scanner', label: '01 Live Scan' },
-              { id: 'scan-report', label: '02 Report & Fixes' },
-              { id: 'impact-map', label: '03 Impact Map' },
-              { id: 'security-shield', label: '04 Security' },
-              { id: 'builds-proof', label: '05 Builds & Proof' },
+              { id: 'live-scanner', label: 'Live Scan' },
+              { id: 'scan-report', label: 'Report & Fixes' },
+              { id: 'impact-map', label: 'Impact Map' },
+              { id: 'security-shield', label: 'Security' },
+              { id: 'builds-proof', label: 'Builds & Proof' },
             ].map((item) => (
               <button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
-                className="hover:text-[#141413] transition-colors cursor-pointer"
+                className="hover:text-[#09090B] transition-colors cursor-pointer"
               >
                 {item.label}
               </button>
@@ -1021,15 +1020,15 @@ export default function ForgePlatformDemo() {
               href="https://github.com/nischay237/forge-ai-platform"
               target="_blank"
               rel="noreferrer"
-              className="hidden sm:inline-flex items-center gap-1 h-9 px-3.5 rounded-lg border border-stone-300 hover:border-[#141413] text-xs font-bold text-[#141413] transition-colors"
+              className="hidden sm:inline-flex items-center gap-1 h-9 px-3.5 rounded-lg border border-stone-200 hover:border-stone-400 text-xs font-medium text-stone-700 hover:text-[#09090B] transition-colors"
             >
               GitHub Repo <ArrowUpRight className="w-3.5 h-3.5" />
             </a>
             <button
               onClick={() => startRealTimePrScan(activePr)}
-              className="h-9 px-4 rounded-lg bg-[#141413] hover:bg-[#27272A] text-white text-xs font-extrabold inline-flex items-center gap-1.5 transition-colors cursor-pointer"
+              className="h-9 px-4 rounded-lg bg-[#09090B] hover:bg-[#27272A] text-white text-xs font-medium inline-flex items-center gap-1.5 transition-colors cursor-pointer"
             >
-              <Play className="w-3 h-3 fill-current text-[#F5C542]" />
+              <Play className="w-3 h-3 fill-current" />
               Run Live Scan
             </button>
           </div>
@@ -1058,44 +1057,41 @@ export default function ForgePlatformDemo() {
           <div className="max-w-[1320px] mx-auto px-5 sm:px-8 py-12 sm:py-16 lg:py-20">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
               <div className="lg:col-span-7">
-                <div className="bg-white p-8 sm:p-11 lg:p-12 shadow-[0_20px_60px_rgba(15,23,42,0.14)] border border-white/80 max-w-2xl rounded-xl">
-                  <div
-                    className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.12em] text-stone-600 mb-5"
-                    style={FONT_MONO}
-                  >
-                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+                <div className="bg-white p-8 sm:p-11 lg:p-12 shadow-[0_20px_60px_rgba(15,23,42,0.12)] border border-white/80 max-w-2xl rounded-xl">
+                  <div className="inline-flex items-center gap-2 text-xs font-medium text-stone-500 mb-5">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500" />
                     Automated Code Review &amp; Release Safety · Java 21 + Spring Boot
                   </div>
 
                   <h1
-                    className="text-3xl sm:text-[46px] lg:text-[52px] font-extrabold tracking-[-0.04em] leading-[1.05] text-[#141413]"
+                    className="text-3xl sm:text-[44px] lg:text-[48px] font-semibold tracking-[-0.035em] leading-[1.08] text-[#09090B]"
                     style={FONT_DISPLAY}
                   >
-                    <span className="bg-[#EFE8FF]/90 px-1.5 box-decoration-clone">
+                    <span className="bg-[#EFE8FF]/85 px-1.5 box-decoration-clone">
                       Catch bugs, leaks, and breaking changes before you merge.
                     </span>
                   </h1>
 
-                  <p className="mt-5 text-sm sm:text-[16px] font-bold text-[#1E1D1B] leading-relaxed max-w-xl">
-                    Forge automatically scans every pull request in real time. Watch it X-ray live
-                    GitHub code, chart your risk report, show exact 1-click fixes, and pause for
+                  <p className="mt-5 text-sm sm:text-[16px] font-normal text-stone-600 leading-relaxed max-w-xl">
+                    Forge automatically scans every pull request in real time. Watch it inspect live
+                    GitHub code, generate a clear risk report with 1-click fixes, and pause for
                     human approval before anything posts to GitHub.
                   </p>
 
                   <div className="mt-7 flex flex-wrap items-center gap-3">
                     <button
                       onClick={() => startRealTimePrScan(activePr)}
-                      className="h-12 px-6 rounded-lg bg-[#141413] hover:bg-[#27272A] text-white text-sm font-extrabold inline-flex items-center gap-2 transition-colors cursor-pointer"
+                      className="h-11 px-6 rounded-lg bg-[#09090B] hover:bg-[#27272A] text-white text-[13.5px] font-medium inline-flex items-center gap-2 transition-colors cursor-pointer"
                     >
-                      <Play className="w-4 h-4 fill-current text-[#F5C542]" />
-                      Start Live PR X-Ray Scan
+                      <Play className="w-3.5 h-3.5 fill-current" />
+                      Start Live PR Scan
                     </button>
                     <button
                       onClick={() => scrollToSection('scan-report')}
-                      className="h-12 px-5 rounded-lg bg-white hover:bg-stone-50 text-[#141413] border-2 border-[#141413] text-sm font-extrabold inline-flex items-center gap-2 transition-colors cursor-pointer"
+                      className="h-11 px-5 rounded-lg bg-white hover:bg-stone-50 text-[#09090B] border border-stone-300 text-[13.5px] font-medium inline-flex items-center gap-2 transition-colors cursor-pointer"
                     >
                       View Scan Report &amp; Charts
-                      <ArrowDown className="w-4 h-4" />
+                      <ArrowDown className="w-3.5 h-3.5" />
                     </button>
                   </div>
                 </div>
@@ -1104,9 +1100,9 @@ export default function ForgePlatformDemo() {
               <div className="lg:col-span-5 relative grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-5">
                 <div
                   onClick={() => scrollToSection('impact-map')}
-                  className="bg-white/95 backdrop-blur-md rounded-2xl p-5 border border-white shadow-[0_18px_40px_rgba(15,23,42,0.12)] hover:-translate-y-1 transition-all cursor-pointer"
+                  className="bg-white/95 backdrop-blur-md rounded-2xl p-5 border border-white shadow-[0_18px_40px_rgba(15,23,42,0.12)] hover:-translate-y-0.5 transition-all cursor-pointer"
                 >
-                  <div className="flex items-center gap-2 text-xs font-extrabold text-[#141413] mb-3.5">
+                  <div className="flex items-center gap-2 text-xs font-semibold text-[#09090B] mb-3.5">
                     <Network className="w-4 h-4 text-sky-700" />
                     See Impact
                   </div>
@@ -1118,9 +1114,9 @@ export default function ForgePlatformDemo() {
                     ].map((t) => (
                       <div
                         key={t}
-                        className="flex items-center gap-2 px-2.5 py-2 rounded-lg bg-[#F8F8F6] border border-stone-200/80 text-[12px] font-bold text-[#141413]"
+                        className="flex items-center gap-2 px-2.5 py-2 rounded-lg bg-[#F8F8F6] border border-stone-200/70 text-[12px] font-medium text-stone-700"
                       >
-                        <Check className="w-3.5 h-3.5 text-[#141413] shrink-0" />
+                        <Check className="w-3.5 h-3.5 text-[#09090B] shrink-0" />
                         <span>{t}</span>
                       </div>
                     ))}
@@ -1131,7 +1127,7 @@ export default function ForgePlatformDemo() {
                   onClick={() => scrollToSection('security-shield')}
                   className="bg-white/95 backdrop-blur-md rounded-2xl p-5 border border-white shadow-[0_18px_40px_rgba(15,23,42,0.12)] sm:translate-y-7 hover:sm:translate-y-6 transition-all cursor-pointer"
                 >
-                  <div className="flex items-center gap-2 text-xs font-extrabold text-[#141413] mb-3.5">
+                  <div className="flex items-center gap-2 text-xs font-semibold text-[#09090B] mb-3.5">
                     <ShieldCheck className="w-4 h-4 text-emerald-700" />
                     Protect
                   </div>
@@ -1143,9 +1139,9 @@ export default function ForgePlatformDemo() {
                     ].map((t) => (
                       <div
                         key={t}
-                        className="flex items-center gap-2 px-2.5 py-2 rounded-lg bg-[#F8F8F6] border border-stone-200/80 text-[12px] font-bold text-[#141413]"
+                        className="flex items-center gap-2 px-2.5 py-2 rounded-lg bg-[#F8F8F6] border border-stone-200/70 text-[12px] font-medium text-stone-700"
                       >
-                        <Check className="w-3.5 h-3.5 text-[#141413] shrink-0" />
+                        <Check className="w-3.5 h-3.5 text-[#09090B] shrink-0" />
                         <span>{t}</span>
                       </div>
                     ))}
@@ -1156,7 +1152,7 @@ export default function ForgePlatformDemo() {
                   onClick={() => scrollToSection('builds-proof')}
                   className="bg-white/95 backdrop-blur-md rounded-2xl p-5 border border-white shadow-[0_18px_40px_rgba(15,23,42,0.12)] sm:col-span-2 sm:max-w-[300px] sm:mx-auto sm:translate-y-2 hover:sm:translate-y-1 transition-all cursor-pointer"
                 >
-                  <div className="flex items-center gap-2 text-xs font-extrabold text-[#141413] mb-3.5">
+                  <div className="flex items-center gap-2 text-xs font-semibold text-[#09090B] mb-3.5">
                     <Activity className="w-4 h-4 text-amber-700" />
                     Verify
                   </div>
@@ -1168,9 +1164,9 @@ export default function ForgePlatformDemo() {
                     ].map((t) => (
                       <div
                         key={t}
-                        className="flex items-center gap-2 px-2.5 py-2 rounded-lg bg-[#F8F8F6] border border-stone-200/80 text-[12px] font-bold text-[#141413]"
+                        className="flex items-center gap-2 px-2.5 py-2 rounded-lg bg-[#F8F8F6] border border-stone-200/70 text-[12px] font-medium text-stone-700"
                       >
-                        <Check className="w-3.5 h-3.5 text-[#141413] shrink-0" />
+                        <Check className="w-3.5 h-3.5 text-[#09090B] shrink-0" />
                         <span>{t}</span>
                       </div>
                     ))}
@@ -1181,16 +1177,16 @@ export default function ForgePlatformDemo() {
           </div>
         </div>
 
-        {/* Bold Stack Proof Strip */}
-        <div className="bg-[#141413] text-white py-5 px-5 sm:px-8">
+        {/* Clean Stack Strip */}
+        <div className="bg-[#09090B] text-white py-4 px-5 sm:px-8">
           <div className="max-w-[1320px] mx-auto flex flex-wrap items-center justify-between gap-4">
-            <span className="text-xs font-bold uppercase tracking-[0.14em] text-[#F5C542]" style={FONT_MONO}>
-              LIVE GITHUB SYNC · {activePr.fullName}
+            <span className="text-xs font-medium text-stone-300" style={FONT_MONO}>
+              GitHub Sync · <span className="text-white">{activePr.fullName}</span>
             </span>
-            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs font-bold text-stone-200">
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs font-medium text-stone-400">
               {['Java 21 LTS', 'Spring Boot 3.5', 'Apache Kafka', 'PostgreSQL', 'Redis 7', 'JavaParser AST', 'ArchUnit'].map(
                 (t) => (
-                  <span key={t}>{t}</span>
+                  <span key={t} className="hover:text-white transition-colors">{t}</span>
                 )
               )}
             </div>
@@ -1203,25 +1199,20 @@ export default function ForgePlatformDemo() {
       {/* ================================================================== */}
       <section id="live-scanner" className="py-16 sm:py-24 px-5 sm:px-8 bg-[#F9F8F5] border-b border-stone-200">
         <div className="max-w-[1320px] mx-auto space-y-8">
-          {/* Big Bold Section Header */}
+          {/* Clean Human SaaS Section Header */}
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
             <div className="space-y-2">
-              <div
-                className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#141413] text-[#F5C542] text-xs font-bold"
-                style={FONT_MONO}
-              >
-                <span>01 · LIVE REAL-TIME SCANNER</span>
+              <div className="inline-flex items-center gap-2 text-xs font-semibold text-stone-500 uppercase tracking-[0.08em]">
+                <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                <span>01 · Live Pull Request Scanner</span>
               </div>
               <h2
-                className="text-3xl sm:text-5xl font-extrabold tracking-[-0.03em] leading-[1.06] text-[#141413]"
+                className="text-3xl sm:text-[42px] font-semibold tracking-[-0.03em] leading-[1.1] text-[#09090B]"
                 style={FONT_DISPLAY}
               >
-                Watch Forge X-ray your{' '}
-                <span className="italic font-bold" style={FONT_SERIF}>
-                  live GitHub PR.
-                </span>
+                Watch Forge scan your live GitHub PR.
               </h2>
-              <p className="text-sm sm:text-base font-bold text-stone-700 max-w-2xl">
+              <p className="text-sm sm:text-[15.5px] font-normal text-stone-600 max-w-2xl leading-relaxed">
                 Open the incoming Pull Request from your GitHub repo (or paste any PR link). Forge
                 sweeps every added line live, flags secrets &amp; bugs as it finds them, and stops
                 at the Human Approval Gate.
@@ -1231,43 +1222,43 @@ export default function ForgePlatformDemo() {
             <div className="flex flex-wrap items-center gap-2.5">
               <button
                 onClick={() => setShowCustomImport((v) => !v)}
-                className="h-11 px-4 rounded-xl bg-white hover:bg-stone-100 border-2 border-[#141413]/20 text-xs font-extrabold text-[#141413] inline-flex items-center gap-1.5 cursor-pointer"
+                className="h-10 px-4 rounded-lg bg-white hover:bg-stone-50 border border-stone-300 text-xs font-medium text-[#09090B] inline-flex items-center gap-1.5 cursor-pointer"
               >
-                <Globe className="w-4 h-4" />
+                <Globe className="w-3.5 h-3.5 text-stone-600" />
                 Load Any GitHub PR
               </button>
               <button
                 onClick={() => setShowTokenBox((v) => !v)}
-                className={`h-11 px-4 rounded-xl border-2 text-xs font-extrabold inline-flex items-center gap-1.5 cursor-pointer ${
+                className={`h-10 px-4 rounded-lg border text-xs font-medium inline-flex items-center gap-1.5 cursor-pointer ${
                   githubToken.trim()
-                    ? 'bg-emerald-100 border-emerald-500 text-emerald-950'
-                    : 'bg-white hover:bg-stone-100 border-[#141413]/20 text-[#141413]'
+                    ? 'bg-emerald-50 border-emerald-300 text-emerald-900'
+                    : 'bg-white hover:bg-stone-50 border-stone-300 text-[#09090B]'
                 }`}
               >
-                <KeyRound className="w-4 h-4" />
+                <KeyRound className="w-3.5 h-3.5" />
                 {githubToken.trim() ? 'GitHub Token Ready ✓' : 'Connect GitHub Token'}
               </button>
             </div>
           </div>
 
-          {/* Incoming GitHub PR Launch Card */}
-          <div className="rounded-2xl bg-white border-2 border-[#141413] shadow-[0_16px_42px_rgba(20,20,19,0.08)] p-5 sm:p-6 space-y-4">
+          {/* Incoming GitHub PR Launch Card (Refined Linear/GitHub Style) */}
+          <div className="rounded-2xl bg-white border border-stone-200/90 shadow-[0_8px_30px_rgba(15,23,42,0.05)] p-5 sm:p-6 space-y-4">
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
               <div className="flex items-start gap-4 min-w-0">
-                <div className="w-12 h-12 rounded-xl bg-[#F5C542] border-2 border-[#141413] flex items-center justify-center shrink-0">
-                  <Bell className="w-6 h-6 text-[#141413]" />
+                <div className="w-11 h-11 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-center shrink-0">
+                  <GitPullRequest className="w-5 h-5 text-amber-700" />
                 </div>
                 <div className="min-w-0">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-950 border border-amber-400 text-[11px] font-extrabold" style={FONT_MONO}>
-                      <span className="w-2 h-2 rounded-full bg-amber-600 animate-ping" />
-                      {activePr.isRealOpenPr ? `LIVE GITHUB PR #${activePr.prNumber}` : 'INCOMING GITHUB PR'}
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200 text-[11px] font-semibold">
+                      <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-ping" />
+                      {activePr.isRealOpenPr ? `Live GitHub PR #${activePr.prNumber}` : 'Incoming GitHub PR'}
                     </span>
-                    <span className="text-xs font-bold text-stone-700" style={FONT_MONO}>
+                    <span className="text-xs text-stone-500" style={FONT_MONO}>
                       {activePr.fullName} · {activePr.branch} → {activePr.targetBranch}
                     </span>
                   </div>
-                  <h3 className="text-lg sm:text-xl font-extrabold text-[#141413] mt-1" style={FONT_DISPLAY}>
+                  <h3 className="text-base sm:text-[18px] font-semibold tracking-[-0.02em] text-[#09090B] mt-1.5" style={FONT_DISPLAY}>
                     {activePr.title}
                   </h3>
                 </div>
@@ -1277,16 +1268,16 @@ export default function ForgePlatformDemo() {
                 <button
                   onClick={() => startRealTimePrScan(activePr)}
                   disabled={isScanningNow}
-                  className="h-12 px-6 rounded-xl bg-[#141413] hover:bg-[#27272A] text-white text-sm font-extrabold inline-flex items-center gap-2 transition-all cursor-pointer disabled:opacity-60"
+                  className="h-10 px-5 rounded-lg bg-[#09090B] hover:bg-[#27272A] text-white text-[13px] font-medium inline-flex items-center gap-2 transition-all cursor-pointer disabled:opacity-60"
                 >
                   {isScanningNow ? (
                     <>
-                      <Loader2 className="w-4 h-4 animate-spin text-[#F5C542]" />
+                      <Loader2 className="w-3.5 h-3.5 animate-spin text-amber-300" />
                       Scanning Live ({scanPercent}%)...
                     </>
                   ) : (
                     <>
-                      <Play className="w-4 h-4 fill-current text-[#F5C542]" />
+                      <Play className="w-3.5 h-3.5 fill-current" />
                       {scanState === 'IDLE' ? 'Open PR & Start Live Scan' : 'Re-Run Real-Time Scan'}
                     </>
                   )}
@@ -1295,9 +1286,9 @@ export default function ForgePlatformDemo() {
                   href={activePr.githubUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="h-12 px-4 rounded-xl bg-[#F9F8F5] hover:bg-[#F5C542] border-2 border-[#141413] text-xs font-extrabold text-[#141413] inline-flex items-center gap-1.5 transition-colors"
+                  className="h-10 px-4 rounded-lg bg-white hover:bg-stone-50 border border-stone-300 text-xs font-medium text-[#09090B] inline-flex items-center gap-1.5 transition-colors"
                 >
-                  Open on GitHub <ArrowUpRight className="w-4 h-4" />
+                  Open on GitHub <ArrowUpRight className="w-3.5 h-3.5" />
                 </a>
               </div>
             </div>
@@ -1312,16 +1303,16 @@ export default function ForgePlatformDemo() {
                   value={customPrUrl}
                   onChange={(e) => setCustomPrUrl(e.target.value)}
                   placeholder="Paste any public GitHub PR URL: https://github.com/nischay237/forge-ai-platform/pull/1"
-                  className="flex-1 h-11 px-4 rounded-xl bg-[#F9F8F5] border-2 border-stone-300 text-xs font-bold text-[#141413] focus:outline-none focus:border-[#141413]"
+                  className="flex-1 h-10 px-3.5 rounded-lg bg-[#F9F8F5] border border-stone-300 text-xs font-medium text-[#09090B] focus:outline-none focus:border-[#09090B]"
                   style={FONT_MONO}
                 />
                 <button
                   type="submit"
-                  className="h-11 px-5 rounded-xl bg-[#141413] text-white text-xs font-extrabold cursor-pointer"
+                  className="h-10 px-4 rounded-lg bg-[#09090B] hover:bg-[#27272A] text-white text-xs font-medium cursor-pointer"
                 >
                   Fetch &amp; Scan Live
                 </button>
-                {customPrError && <span className="text-xs font-bold text-red-700">{customPrError}</span>}
+                {customPrError && <span className="text-xs font-medium text-red-700">{customPrError}</span>}
               </form>
             )}
 
@@ -1332,12 +1323,12 @@ export default function ForgePlatformDemo() {
                   value={githubToken}
                   onChange={(e) => setGithubToken(e.target.value)}
                   placeholder="Optional GitHub Token (ghp_...) to post approved comments live onto your PR"
-                  className="flex-1 h-11 px-4 rounded-xl bg-[#F9F8F5] border-2 border-stone-300 text-xs font-bold text-[#141413] focus:outline-none focus:border-[#141413]"
+                  className="flex-1 h-10 px-3.5 rounded-lg bg-[#F9F8F5] border border-stone-300 text-xs font-medium text-[#09090B] focus:outline-none focus:border-[#09090B]"
                   style={FONT_MONO}
                 />
                 <button
                   onClick={() => setShowTokenBox(false)}
-                  className="h-11 px-5 rounded-xl bg-[#141413] text-white text-xs font-extrabold cursor-pointer"
+                  className="h-10 px-4 rounded-lg bg-[#09090B] hover:bg-[#27272A] text-white text-xs font-medium cursor-pointer"
                 >
                   Save for Session
                 </button>
@@ -1347,44 +1338,44 @@ export default function ForgePlatformDemo() {
 
           {/* 5-STEP ANIMATED SCANNING PROGRESS STRIP */}
           <div className="space-y-3">
-            <div className="flex flex-wrap items-center justify-between gap-2 text-xs font-extrabold">
+            <div className="flex flex-wrap items-center justify-between gap-2 text-xs font-medium">
               <div className="flex items-center gap-2">
                 {isScanningNow ? (
-                  <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#141413] text-[#F5C542]" style={FONT_MONO}>
+                  <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#09090B] text-amber-300 text-[11.5px] font-medium" style={FONT_MONO}>
                     <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                    X-RAY SCANNER ACTIVE · LINE {scanningLine || 1} OF {codeLines.length || 35}
+                    Scanning live · line {scanningLine || 1} of {codeLines.length || 35}
                   </span>
                 ) : scanState === 'AWAITING_APPROVAL' ? (
-                  <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#F5C542] text-[#141413] border border-[#141413]" style={FONT_MONO}>
-                    <PauseCircle className="w-4 h-4" />
-                    PAUSED AT HUMAN APPROVAL GATE · {findings.length} REAL ISSUES CAUGHT
+                  <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-50 text-amber-900 border border-amber-300 text-[11.5px] font-semibold">
+                    <PauseCircle className="w-3.5 h-3.5 text-amber-600" />
+                    Paused at Human Approval Gate · {findings.length} issues caught
                   </span>
                 ) : scanState === 'PUBLISHED' ? (
-                  <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-600 text-white" style={FONT_MONO}>
-                    <CheckCircle2 className="w-4 h-4" />
-                    HUMAN APPROVED &amp; PUBLISHED TO GITHUB
+                  <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-600 text-white text-[11.5px] font-semibold">
+                    <CheckCircle2 className="w-3.5 h-3.5" />
+                    Human approved &amp; published to GitHub
                   </span>
                 ) : (
-                  <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-stone-300 text-[#141413]" style={FONT_MONO}>
-                    <Radar className="w-4 h-4 text-emerald-600" />
-                    READY — CLICK "OPEN PR &amp; START LIVE SCAN" TO WATCH LASER SCANNER
+                  <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-stone-200 text-stone-700 text-[11.5px] font-medium">
+                    <Radar className="w-3.5 h-3.5 text-emerald-600" />
+                    Ready — click &ldquo;Open PR &amp; Start Live Scan&rdquo; to inspect live code
                   </span>
                 )}
               </div>
-              <span className="text-xs font-extrabold text-[#141413]" style={FONT_MONO}>
-                {scanState === 'IDLE' ? '100% READY' : `${scanPercent}% COMPLETE`}
+              <span className="text-xs font-medium text-stone-600 tabular-nums" style={FONT_MONO}>
+                {scanState === 'IDLE' ? 'Ready' : `${scanPercent}% complete`}
               </span>
             </div>
 
             {/* Smooth Animated Progress Track */}
-            <div className="h-3 w-full rounded-full bg-stone-200 overflow-hidden border border-stone-300">
+            <div className="h-2 w-full rounded-full bg-stone-200/80 overflow-hidden">
               <div
                 className={`h-full transition-all duration-500 rounded-full ${
                   scanState === 'PUBLISHED'
                     ? 'bg-emerald-500'
                     : scanState === 'AWAITING_APPROVAL'
-                    ? 'bg-[#F5C542]'
-                    : 'bg-[#141413]'
+                    ? 'bg-amber-400'
+                    : 'bg-[#09090B]'
                 }`}
                 style={{ width: `${scanState === 'IDLE' ? 0 : scanPercent}%` }}
               />
@@ -1427,13 +1418,13 @@ export default function ForgePlatformDemo() {
               ].map((s) => (
                 <div
                   key={s.step}
-                  className={`rounded-xl px-3.5 py-3 border-2 text-xs font-extrabold transition-all ${
+                  className={`rounded-xl px-3.5 py-2.5 border text-xs font-medium transition-all ${
                     s.active
                       ? s.step === 5
-                        ? 'bg-[#F5C542] border-[#141413] text-[#141413] shadow-md'
-                        : 'bg-[#141413] border-[#141413] text-white shadow-md scale-[1.02]'
+                        ? 'bg-amber-50 border-amber-400 text-amber-950 shadow-sm'
+                        : 'bg-[#09090B] border-[#09090B] text-white shadow-sm'
                       : s.done
-                      ? 'bg-emerald-50 border-emerald-400 text-emerald-950'
+                      ? 'bg-emerald-50/70 border-emerald-200 text-emerald-900'
                       : 'bg-white border-stone-200 text-stone-500'
                   }`}
                 >
@@ -1441,12 +1432,12 @@ export default function ForgePlatformDemo() {
                     <span className="truncate">{s.title}</span>
                     {s.active ? (
                       s.step === 5 ? (
-                        <PauseCircle className="w-4 h-4 shrink-0" />
+                        <PauseCircle className="w-3.5 h-3.5 shrink-0 text-amber-600" />
                       ) : (
-                        <Loader2 className="w-4 h-4 shrink-0 animate-spin text-[#F5C542]" />
+                        <Loader2 className="w-3.5 h-3.5 shrink-0 animate-spin text-amber-300" />
                       )
                     ) : s.done ? (
-                      <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />
+                      <CheckCircle2 className="w-3.5 h-3.5 shrink-0 text-emerald-600" />
                     ) : null}
                   </div>
                 </div>
@@ -1457,27 +1448,26 @@ export default function ForgePlatformDemo() {
           {/* SPLIT LIVE X-RAY CODE VIEWPORT + REAL-TIME DISCOVERY STREAM */}
           <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 items-stretch">
             {/* LEFT 7 COLS: ANIMATED LIVE CODE X-RAY SCANNER */}
-            <div className="xl:col-span-7 rounded-2xl bg-[#121214] border-2 border-[#141413] overflow-hidden shadow-[0_20px_50px_rgba(20,20,19,0.18)] flex flex-col">
-              <div className="px-4 py-3 bg-[#1B1B1F] border-b border-white/10 flex flex-wrap items-center justify-between gap-2">
+            <div className="xl:col-span-7 rounded-2xl bg-[#111113] border border-stone-800 overflow-hidden shadow-[0_18px_45px_rgba(15,23,42,0.16)] flex flex-col">
+              <div className="px-4 py-3 bg-[#18181B] border-b border-white/10 flex flex-wrap items-center justify-between gap-2">
                 <div className="flex items-center gap-2.5">
                   <div className="flex items-center gap-1.5">
-                    <span className="w-2.5 h-2.5 rounded-full bg-red-500" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-amber-400" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-red-500/90" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-amber-400/90" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/90" />
                   </div>
-                  <span className="text-xs font-bold text-stone-200" style={FONT_MONO}>
+                  <span className="text-xs font-medium text-stone-200" style={FONT_MONO}>
                     {activePr.fileName}
                   </span>
-                  <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] font-bold" style={FONT_MONO}>
+                  <span className="px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 text-[10.5px] font-medium" style={FONT_MONO}>
                     {diffSourceLabel}
                   </span>
                 </div>
                 <button
                   onClick={() => setShowDiffEditor((v) => !v)}
-                  className="text-[11px] font-bold text-[#F5C542] hover:underline cursor-pointer"
-                  style={FONT_MONO}
+                  className="text-[11.5px] font-medium text-stone-300 hover:text-white transition-colors cursor-pointer"
                 >
-                  {showDiffEditor ? 'Back to X-Ray View' : 'Edit / Paste Custom Code'}
+                  {showDiffEditor ? 'Back to Scanner View' : 'Edit / Paste Custom Code'}
                 </button>
               </div>
 
@@ -1487,13 +1477,13 @@ export default function ForgePlatformDemo() {
                     rows={16}
                     value={diffText}
                     onChange={(e) => setDiffText(e.target.value)}
-                    className="w-full flex-1 p-3.5 rounded-xl bg-[#0B0B0D] border border-white/15 text-xs text-emerald-200 focus:outline-none focus:border-[#F5C542]"
+                    className="w-full flex-1 p-3.5 rounded-xl bg-[#09090B] border border-white/15 text-xs text-emerald-200 focus:outline-none focus:border-amber-400"
                     style={FONT_MONO}
                   />
                   <div className="flex items-center justify-between">
                     <button
                       onClick={() => setDiffText(INITIAL_DIFF)}
-                      className="text-xs font-bold text-stone-400 hover:text-white underline cursor-pointer"
+                      className="text-xs font-medium text-stone-400 hover:text-white underline cursor-pointer"
                     >
                       Reset GitHub PR Code
                     </button>
@@ -1502,7 +1492,7 @@ export default function ForgePlatformDemo() {
                         setShowDiffEditor(false);
                         setScanState('AWAITING_APPROVAL');
                       }}
-                      className="h-9 px-4 rounded-lg bg-[#F5C542] text-[#141413] text-xs font-extrabold cursor-pointer"
+                      className="h-9 px-4 rounded-lg bg-white hover:bg-stone-100 text-[#09090B] text-xs font-semibold cursor-pointer"
                     >
                       Apply &amp; Update Report
                     </button>
@@ -1556,11 +1546,11 @@ export default function ForgePlatformDemo() {
                         </div>
                         {hit && (
                           <span
-                            className={`px-2 py-0.5 rounded text-[9.5px] font-extrabold shrink-0 animate-forge-pop ${
+                            className={`px-2 py-0.5 rounded text-[9.5px] font-semibold shrink-0 animate-forge-pop ${
                               hit.severity === 'CRITICAL'
                                 ? 'bg-red-600 text-white'
                                 : hit.severity === 'HIGH'
-                                ? 'bg-amber-400 text-[#141413]'
+                                ? 'bg-amber-400 text-[#09090B]'
                                 : 'bg-sky-500 text-white'
                             }`}
                           >
@@ -1575,40 +1565,43 @@ export default function ForgePlatformDemo() {
             </div>
 
             {/* RIGHT 5 COLS: LIVE STREAMING "PROBLEM → SOLUTION" FEED */}
-            <div className="xl:col-span-5 rounded-2xl bg-white border-2 border-[#141413]/15 shadow-sm overflow-hidden flex flex-col">
-              <div className="px-5 py-3.5 bg-[#141413] text-white flex items-center justify-between">
-                <div className="flex items-center gap-2 text-xs font-extrabold" style={FONT_MONO}>
-                  <Radar className={`w-4 h-4 text-[#F5C542] ${isScanningNow ? 'animate-spin' : ''}`} />
-                  <span>LIVE SCAN FEED ({findings.length} DETECTED)</span>
+            <div className="xl:col-span-5 rounded-2xl bg-white border border-stone-200 shadow-[0_8px_24px_rgba(15,23,42,0.04)] overflow-hidden flex flex-col">
+              <div className="px-5 py-3.5 bg-[#09090B] text-white flex items-center justify-between">
+                <div className="flex items-center gap-2 text-xs font-medium">
+                  <Radar className={`w-4 h-4 text-amber-300 ${isScanningNow ? 'animate-spin' : ''}`} />
+                  <span>Live Scan Feed</span>
+                  <span className="px-2 py-0.5 rounded-full bg-white/10 text-stone-200 text-[11px] tabular-nums" style={FONT_MONO}>
+                    {findings.length}
+                  </span>
                 </div>
                 <button
                   onClick={() => scrollToSection('scan-report')}
-                  className="text-[11px] font-extrabold text-[#F5C542] hover:underline cursor-pointer"
+                  className="text-xs font-medium text-stone-300 hover:text-white transition-colors cursor-pointer"
                 >
                   Open Full Report ↓
                 </button>
               </div>
 
-              <div className="flex-1 max-h-[460px] overflow-y-auto p-4 space-y-2.5 bg-[#FAFAF7]">
+              <div className="flex-1 max-h-[460px] overflow-y-auto p-4 space-y-2.5 bg-[#FAFAF8]">
                 {liveLogs.length === 0 ? (
                   <div className="h-full min-h-[300px] flex flex-col items-center justify-center text-center p-6 space-y-4">
-                    <div className="w-14 h-14 rounded-2xl bg-[#F5C542] border-2 border-[#141413] flex items-center justify-center">
-                      <ScanLine className="w-7 h-7 text-[#141413]" />
+                    <div className="w-12 h-12 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-center">
+                      <ScanLine className="w-6 h-6 text-amber-700" />
                     </div>
-                    <div className="space-y-1">
-                      <h4 className="text-lg font-extrabold text-[#141413]" style={FONT_DISPLAY}>
-                        Ready for Real-Time X-Ray Scan
+                    <div className="space-y-1.5">
+                      <h4 className="text-base font-semibold text-[#09090B]" style={FONT_DISPLAY}>
+                        Ready for Real-Time PR Scan
                       </h4>
-                      <p className="text-xs font-bold text-stone-600 max-w-xs">
-                        Click the button below to watch Forge sweep the real GitHub PR line by line
-                        and stream every problem + fix live.
+                      <p className="text-xs font-normal text-stone-600 max-w-xs leading-relaxed">
+                        Click below to watch Forge sweep the live GitHub PR line by line and stream
+                        every detected issue and fix in real time.
                       </p>
                     </div>
                     <button
                       onClick={() => startRealTimePrScan(activePr)}
-                      className="h-11 px-5 rounded-xl bg-[#141413] hover:bg-[#27272A] text-white text-xs font-extrabold inline-flex items-center gap-2 cursor-pointer"
+                      className="h-10 px-5 rounded-lg bg-[#09090B] hover:bg-[#27272A] text-white text-xs font-medium inline-flex items-center gap-2 cursor-pointer"
                     >
-                      <Play className="w-3.5 h-3.5 fill-current text-[#F5C542]" />
+                      <Play className="w-3.5 h-3.5 fill-current" />
                       Start Live PR Scan Now
                     </button>
                   </div>
@@ -1622,41 +1615,41 @@ export default function ForgePlatformDemo() {
                           scrollToSection('scan-report');
                         }
                       }}
-                      className={`p-3.5 rounded-xl border-2 bg-white space-y-1.5 animate-forge-pop ${
+                      className={`p-3.5 rounded-xl border bg-white space-y-1.5 animate-forge-pop transition-colors ${
                         entry.type === 'crit'
-                          ? 'border-red-300 hover:border-red-500 cursor-pointer'
+                          ? 'border-red-200 hover:border-red-400 cursor-pointer'
                           : entry.type === 'warn'
-                          ? 'border-amber-300 hover:border-amber-500 cursor-pointer'
+                          ? 'border-amber-200 hover:border-amber-400 cursor-pointer'
                           : entry.type === 'gate'
-                          ? 'border-[#141413] bg-[#FFFBEB]'
+                          ? 'border-amber-300 bg-amber-50/40'
                           : 'border-stone-200'
                       }`}
                     >
                       <div className="flex items-center justify-between gap-2">
                         <span
-                          className={`px-2 py-0.5 rounded text-[10px] font-extrabold ${
+                          className={`px-2 py-0.5 rounded text-[10px] font-semibold ${
                             entry.type === 'crit'
                               ? 'bg-red-600 text-white'
                               : entry.type === 'warn'
-                              ? 'bg-amber-400 text-[#141413]'
+                              ? 'bg-amber-100 text-amber-900 border border-amber-200'
                               : entry.type === 'gate'
-                              ? 'bg-[#141413] text-[#F5C542]'
-                              : 'bg-emerald-100 text-emerald-900'
+                              ? 'bg-[#09090B] text-amber-300'
+                              : 'bg-emerald-50 text-emerald-800 border border-emerald-200'
                           }`}
                           style={FONT_MONO}
                         >
                           {entry.label}
                         </span>
                         {entry.findingId && (
-                          <span className="text-[11px] font-extrabold text-[#141413] underline">
+                          <span className="text-[11px] font-medium text-stone-600 hover:text-[#09090B]">
                             View Fix ↓
                           </span>
                         )}
                       </div>
-                      <div className="text-xs sm:text-[13px] font-extrabold text-[#141413]">
+                      <div className="text-[13px] font-semibold text-[#09090B]">
                         {entry.title}
                       </div>
-                      <div className="text-[11px] font-bold text-emerald-800 truncate" style={FONT_MONO}>
+                      <div className="text-[11px] font-normal text-stone-600 truncate" style={FONT_MONO}>
                         {entry.detail}
                       </div>
                     </div>
@@ -1673,44 +1666,38 @@ export default function ForgePlatformDemo() {
       {/* ================================================================== */}
       <section id="scan-report" className="py-16 sm:py-24 px-5 sm:px-8 bg-white border-b border-stone-200">
         <div className="max-w-[1320px] mx-auto space-y-10">
-          {/* Big Bold Section Header */}
+          {/* Clean Human SaaS Section Header */}
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
             <div className="space-y-2">
-              <div
-                className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#F5C542] text-[#141413] border border-[#141413] text-xs font-extrabold"
-                style={FONT_MONO}
-              >
-                <BarChart3 className="w-3.5 h-3.5" />
-                <span>02 · SCAN REPORT, GRAPHS &amp; SOLUTIONS</span>
+              <div className="inline-flex items-center gap-2 text-xs font-semibold text-stone-500 uppercase tracking-[0.08em]">
+                <BarChart3 className="w-3.5 h-3.5 text-amber-600" />
+                <span>02 · Scan Report, Charts &amp; Fixes</span>
               </div>
               <h2
-                className="text-3xl sm:text-5xl font-extrabold tracking-[-0.03em] leading-[1.06] text-[#141413]"
+                className="text-3xl sm:text-[42px] font-semibold tracking-[-0.03em] leading-[1.1] text-[#09090B]"
                 style={FONT_DISPLAY}
               >
-                Full visual report &amp;{' '}
-                <span className="italic font-bold" style={FONT_SERIF}>
-                  1-click solutions.
-                </span>
+                Full visual report &amp; 1-click fixes.
               </h2>
-              <p className="text-sm sm:text-base font-bold text-stone-700 max-w-2xl">
-                Every scanned PR generates a clear risk graph, category breakdown, plain-English
-                explanation, and exact code fix — locked behind your Human Approval Gate.
+              <p className="text-sm sm:text-[15.5px] font-normal text-stone-600 max-w-2xl leading-relaxed">
+                Every scanned PR generates a clear risk gauge, severity breakdown, plain-English
+                explanation, and exact code patch — locked behind your Human Approval Gate.
               </p>
             </div>
 
             <div className="flex flex-wrap items-center gap-2.5">
               <button
                 onClick={approveAllCritical}
-                className="h-11 px-4 rounded-xl bg-emerald-50 hover:bg-emerald-100 border-2 border-emerald-500 text-emerald-950 text-xs font-extrabold cursor-pointer"
+                className="h-10 px-4 rounded-lg bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 text-emerald-900 text-xs font-medium cursor-pointer transition-colors"
               >
-                ✓ Approve All Critical &amp; High
+                ✓ Approve Critical &amp; High
               </button>
               <button
                 onClick={triggerPublish}
                 disabled={publishing || isScanningNow}
-                className="h-11 px-5 rounded-xl bg-[#141413] hover:bg-[#27272A] text-white text-xs font-extrabold inline-flex items-center gap-2 cursor-pointer disabled:opacity-50"
+                className="h-10 px-5 rounded-lg bg-[#09090B] hover:bg-[#27272A] text-white text-xs font-medium inline-flex items-center gap-2 cursor-pointer disabled:opacity-50 transition-colors"
               >
-                <Lock className="w-4 h-4 text-[#F5C542]" />
+                <Lock className="w-3.5 h-3.5 text-amber-300" />
                 {publishing ? 'Posting to GitHub...' : `Post Approved to GitHub (${approvedCount})`}
               </button>
             </div>
@@ -1719,18 +1706,18 @@ export default function ForgePlatformDemo() {
           {/* 3 VISUAL REPORT CHARTS (DONUT RISK GAUGE + SEVERITY BAR GRAPH + CATEGORY GRAPH) */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             {/* CHART 1: DARK-INK RISK VERDICT DONUT GAUGE */}
-            <div className="lg:col-span-4 rounded-2xl bg-[#141413] text-white p-6 flex flex-col justify-between gap-6 shadow-[0_18px_40px_rgba(20,20,19,0.16)]">
+            <div className="lg:col-span-4 rounded-2xl bg-[#09090B] text-white p-6 flex flex-col justify-between gap-6 shadow-[0_16px_40px_rgba(15,23,42,0.14)]">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-extrabold uppercase tracking-[0.12em] text-[#F5C542]" style={FONT_MONO}>
-                  PR RISK SCORE
+                <span className="text-xs font-medium uppercase tracking-[0.08em] text-stone-400">
+                  PR Risk Score
                 </span>
                 <span
-                  className={`px-2.5 py-1 rounded-full text-[11px] font-extrabold ${
+                  className={`px-2.5 py-0.5 rounded-full text-[10.5px] font-semibold ${
                     riskScore >= 70
-                      ? 'bg-red-600 text-white'
+                      ? 'bg-red-500/20 text-red-300 border border-red-500/30'
                       : riskScore >= 35
-                      ? 'bg-amber-400 text-[#141413]'
-                      : 'bg-emerald-500 text-white'
+                      ? 'bg-amber-400/20 text-amber-200 border border-amber-400/30'
+                      : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
                   }`}
                   style={FONT_MONO}
                 >
@@ -1740,14 +1727,14 @@ export default function ForgePlatformDemo() {
 
               <div className="flex items-center gap-5">
                 <svg width="136" height="136" viewBox="0 0 136 136" className="shrink-0">
-                  <circle cx="68" cy="68" r={riskR} fill="none" stroke="rgba(255,255,255,0.14)" strokeWidth="12" />
+                  <circle cx="68" cy="68" r={riskR} fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="11" />
                   <circle
                     cx="68"
                     cy="68"
                     r={riskR}
                     fill="none"
-                    stroke={riskScore >= 70 ? '#EF4444' : riskScore >= 35 ? '#F5C542' : '#10B981'}
-                    strokeWidth="12"
+                    stroke={riskScore >= 70 ? '#EF4444' : riskScore >= 35 ? '#F59E0B' : '#10B981'}
+                    strokeWidth="11"
                     strokeLinecap="round"
                     strokeDasharray={riskCirc}
                     strokeDashoffset={riskOffset}
@@ -1758,12 +1745,12 @@ export default function ForgePlatformDemo() {
                     x="68"
                     y="66"
                     textAnchor="middle"
-                    className="text-[28px] font-extrabold fill-white"
+                    className="text-[28px] font-semibold fill-white"
                     style={FONT_DISPLAY}
                   >
                     {riskScore}
                   </text>
-                  <text x="68" y="85" textAnchor="middle" className="text-[10px] font-bold fill-stone-400" style={FONT_MONO}>
+                  <text x="68" y="84" textAnchor="middle" className="text-[10px] font-medium fill-stone-400" style={FONT_MONO}>
                     OUT OF 100
                   </text>
                 </svg>
@@ -1771,37 +1758,37 @@ export default function ForgePlatformDemo() {
                 <div className="space-y-3 flex-1">
                   <div>
                     <div className="text-xs text-stone-400">Total Issues Found</div>
-                    <div className="text-2xl font-extrabold text-white" style={FONT_DISPLAY}>
-                      {findings.length} bugs
+                    <div className="text-2xl font-semibold text-white tracking-[-0.02em]" style={FONT_DISPLAY}>
+                      {findings.length} issues
                     </div>
                   </div>
                   <div>
                     <div className="text-xs text-stone-400">Human Approved</div>
-                    <div className="text-xl font-extrabold text-[#F5C542]" style={FONT_DISPLAY}>
+                    <div className="text-xl font-semibold text-amber-300 tabular-nums" style={FONT_DISPLAY}>
                       {approvedCount} / {findings.length}
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-white/10 flex items-center justify-between text-xs text-stone-300">
+              <div className="pt-4 border-t border-white/10 flex items-center justify-between text-xs text-stone-400">
                 <span>Human Approval Gate</span>
-                <span className="text-emerald-400 font-extrabold">ACTIVE ✓</span>
+                <span className="text-emerald-400 font-medium">Active ✓</span>
               </div>
             </div>
 
             {/* CHART 2: SEVERITY VERTICAL BAR GRAPH */}
-            <div className="lg:col-span-4 rounded-2xl bg-[#FAF9F6] border-2 border-stone-200 p-6 flex flex-col justify-between gap-5">
+            <div className="lg:col-span-4 rounded-2xl bg-[#FAFAF8] border border-stone-200 p-6 flex flex-col justify-between gap-5">
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="text-xs font-extrabold uppercase tracking-[0.1em] text-stone-600" style={FONT_MONO}>
-                    SEVERITY GRAPH
+                  <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-stone-500">
+                    Severity Breakdown
                   </div>
-                  <h3 className="text-xl font-extrabold text-[#141413] mt-0.5" style={FONT_DISPLAY}>
+                  <h3 className="text-lg font-semibold text-[#09090B] mt-0.5 tracking-[-0.02em]" style={FONT_DISPLAY}>
                     Issues by Severity
                   </h3>
                 </div>
-                <BarChart3 className="w-5 h-5 text-[#141413]" />
+                <BarChart3 className="w-4 h-4 text-stone-500" />
               </div>
 
               <div className="grid grid-cols-4 gap-3 items-end h-44 pt-4">
@@ -1809,16 +1796,16 @@ export default function ForgePlatformDemo() {
                   const pct = Math.max(12, Math.round((bar.count / maxSevBar) * 100));
                   return (
                     <div key={bar.label} className="h-full flex flex-col items-center justify-end gap-2">
-                      <span className="text-lg font-extrabold text-[#141413] tabular-nums" style={FONT_DISPLAY}>
+                      <span className="text-base font-semibold text-[#09090B] tabular-nums" style={FONT_MONO}>
                         {bar.count}
                       </span>
-                      <div className="w-full flex-1 bg-stone-200/70 rounded-xl overflow-hidden flex items-end p-1">
+                      <div className="w-full flex-1 bg-stone-200/70 rounded-lg overflow-hidden flex items-end p-1">
                         <div
-                          className={`w-full rounded-lg transition-all duration-700 ${bar.bg}`}
+                          className={`w-full rounded-md transition-all duration-700 ${bar.bg}`}
                           style={{ height: `${pct}%` }}
                         />
                       </div>
-                      <span className="text-[11px] font-extrabold text-stone-700 text-center leading-tight">
+                      <span className="text-[11px] font-medium text-stone-600 text-center leading-tight">
                         {bar.label}
                       </span>
                     </div>
@@ -1828,34 +1815,34 @@ export default function ForgePlatformDemo() {
             </div>
 
             {/* CHART 3: ISSUE CATEGORY BREAKDOWN GRAPH */}
-            <div className="lg:col-span-4 rounded-2xl bg-[#FAF9F6] border-2 border-stone-200 p-6 flex flex-col justify-between gap-5">
+            <div className="lg:col-span-4 rounded-2xl bg-[#FAFAF8] border border-stone-200 p-6 flex flex-col justify-between gap-5">
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="text-xs font-extrabold uppercase tracking-[0.1em] text-stone-600" style={FONT_MONO}>
-                    CATEGORY REPORT
+                  <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-stone-500">
+                    Category Report
                   </div>
-                  <h3 className="text-xl font-extrabold text-[#141413] mt-0.5" style={FONT_DISPLAY}>
+                  <h3 className="text-lg font-semibold text-[#09090B] mt-0.5 tracking-[-0.02em]" style={FONT_DISPLAY}>
                     Where Risks Live
                   </h3>
                 </div>
-                <Zap className="w-5 h-5 text-amber-600" />
+                <Zap className="w-4 h-4 text-amber-600" />
               </div>
 
               <div className="space-y-3 flex-1 flex flex-col justify-center">
                 {categoryBreakdown.length === 0 ? (
-                  <div className="text-sm font-bold text-emerald-700">Zero risk categories detected — clean PR!</div>
+                  <div className="text-sm font-medium text-emerald-700">Zero risk categories detected — clean PR!</div>
                 ) : (
                   categoryBreakdown.map((cat) => {
                     const widthPct = Math.max(18, Math.round((cat.count / Math.max(1, findings.length)) * 100));
                     return (
-                      <div key={cat.name} className="space-y-1">
-                        <div className="flex items-center justify-between text-xs font-extrabold">
-                          <span className="text-[#141413]">{cat.name}</span>
-                          <span className="text-stone-700 tabular-nums" style={FONT_MONO}>
+                      <div key={cat.name} className="space-y-1.5">
+                        <div className="flex items-center justify-between text-xs">
+                          <span className="font-medium text-[#09090B]">{cat.name}</span>
+                          <span className="text-stone-500 tabular-nums" style={FONT_MONO}>
                             {cat.count} {cat.count === 1 ? 'issue' : 'issues'}
                           </span>
                         </div>
-                        <div className="h-2.5 w-full rounded-full bg-stone-200 overflow-hidden">
+                        <div className="h-2 w-full rounded-full bg-stone-200/80 overflow-hidden">
                           <div
                             className="h-full rounded-full transition-all duration-700"
                             style={{ width: `${widthPct}%`, backgroundColor: cat.color }}
@@ -1872,10 +1859,10 @@ export default function ForgePlatformDemo() {
           {/* PUBLISH NOTICE BANNER */}
           {publishNotice && (
             <div
-              className={`rounded-2xl px-5 py-4 text-sm font-bold space-y-3 border-2 ${
+              className={`rounded-xl px-5 py-4 text-sm font-medium space-y-3 border ${
                 publishNotice.type === 'ok'
-                  ? 'bg-emerald-50 border-emerald-500 text-emerald-950'
-                  : 'bg-red-50 border-red-500 text-red-950'
+                  ? 'bg-emerald-50 border-emerald-300 text-emerald-950'
+                  : 'bg-red-50 border-red-300 text-red-950'
               }`}
             >
               <div className="flex items-center justify-between gap-3">
@@ -1891,18 +1878,18 @@ export default function ForgePlatformDemo() {
                       href={publishedCommentUrl}
                       target="_blank"
                       rel="noreferrer"
-                      className="h-10 px-4 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-extrabold inline-flex items-center gap-1.5"
+                      className="h-9 px-4 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-medium inline-flex items-center gap-1.5"
                     >
-                      View Live Comment on GitHub <ArrowUpRight className="w-4 h-4" />
+                      View Live Comment on GitHub <ArrowUpRight className="w-3.5 h-3.5" />
                     </a>
                   )}
                   <a
                     href={activePr.githubUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="h-10 px-4 rounded-xl bg-white border-2 border-emerald-600 text-emerald-950 text-xs font-extrabold inline-flex items-center gap-1.5"
+                    className="h-9 px-4 rounded-lg bg-white border border-emerald-400 text-emerald-900 text-xs font-medium inline-flex items-center gap-1.5"
                   >
-                    Open PR on GitHub <ArrowUpRight className="w-4 h-4" />
+                    Open PR on GitHub <ArrowUpRight className="w-3.5 h-3.5" />
                   </a>
                   {publishedMarkdown && (
                     <button
@@ -1911,7 +1898,7 @@ export default function ForgePlatformDemo() {
                         setCopiedMd(true);
                         setTimeout(() => setCopiedMd(false), 2000);
                       }}
-                      className="h-10 px-4 rounded-xl bg-white border-2 border-emerald-600 text-emerald-950 text-xs font-extrabold inline-flex items-center gap-1.5 cursor-pointer"
+                      className="h-9 px-4 rounded-lg bg-white border border-emerald-400 text-emerald-900 text-xs font-medium inline-flex items-center gap-1.5 cursor-pointer"
                     >
                       <Copy className="w-3.5 h-3.5" />
                       {copiedMd ? 'Copied Full Review!' : 'Copy Formatted GitHub Comment'}
@@ -1923,7 +1910,7 @@ export default function ForgePlatformDemo() {
           )}
 
           {/* FILTER PILLS FOR REPORT CARDS */}
-          <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-stone-200">
+          <div className="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-stone-200">
             <div className="flex flex-wrap items-center gap-2">
               {[
                 { id: 'ALL', label: `All Issues (${findings.length})` },
@@ -1935,25 +1922,25 @@ export default function ForgePlatformDemo() {
                 <button
                   key={pill.id}
                   onClick={() => setReportFilter(pill.id)}
-                  className={`h-9 px-4 rounded-full text-xs font-extrabold transition-all cursor-pointer border-2 ${
+                  className={`h-8 px-3.5 rounded-lg text-xs font-medium transition-colors cursor-pointer border ${
                     reportFilter === pill.id
-                      ? 'bg-[#141413] text-[#F5C542] border-[#141413]'
-                      : 'bg-[#FAF9F6] text-[#141413] border-stone-200 hover:border-[#141413]'
+                      ? 'bg-[#09090B] text-white border-[#09090B]'
+                      : 'bg-white text-stone-700 border-stone-200 hover:border-stone-400'
                   }`}
                 >
                   {pill.label}
                 </button>
               ))}
             </div>
-            <span className="text-xs font-bold text-stone-600">
-              Click any issue card to expand exact Problem + 1-Click Solution
+            <span className="text-xs font-normal text-stone-500">
+              Click any issue card to expand root cause &amp; 1-click code fix
             </span>
           </div>
 
-          {/* EXPANDABLE ATTRACTIVE REPORT CARDS (KHULNE KA MANN KARE!) */}
-          <div className="space-y-4">
+          {/* EXPANDABLE REPORT CARDS */}
+          <div className="space-y-3.5">
             {filteredReportFindings.length === 0 ? (
-              <div className="rounded-2xl bg-[#FAF9F6] border-2 border-stone-200 p-10 text-center text-sm font-bold text-stone-600">
+              <div className="rounded-xl bg-[#FAFAF8] border border-stone-200 p-10 text-center text-sm font-medium text-stone-500">
                 No issues in this filter category.
               </div>
             ) : (
@@ -1963,65 +1950,65 @@ export default function ForgePlatformDemo() {
                 return (
                   <div
                     key={f.id}
-                    className={`rounded-2xl border-2 transition-all duration-300 overflow-hidden ${
+                    className={`rounded-xl border transition-all duration-200 overflow-hidden ${
                       decision === 'APPROVED'
-                        ? 'bg-emerald-50/40 border-emerald-500 shadow-sm'
+                        ? 'bg-emerald-50/35 border-emerald-300'
                         : isOpen
-                        ? 'bg-white border-[#141413] shadow-[0_14px_34px_rgba(20,20,19,0.08)]'
-                        : 'bg-[#FAF9F6] border-stone-200 hover:border-[#141413]'
+                        ? 'bg-white border-stone-300 shadow-[0_10px_28px_rgba(15,23,42,0.06)]'
+                        : 'bg-[#FAFAF8] border-stone-200 hover:border-stone-300'
                     }`}
                   >
                     {/* Card Header — Click anywhere to smoothly expand/collapse */}
                     <div
                       onClick={() => toggleCard(f.id)}
-                      className="p-5 sm:px-6 flex flex-col lg:flex-row lg:items-center justify-between gap-4 cursor-pointer"
+                      className="p-4 sm:px-5 flex flex-col lg:flex-row lg:items-center justify-between gap-4 cursor-pointer"
                     >
-                      <div className="flex items-start gap-4 min-w-0">
+                      <div className="flex items-start gap-3.5 min-w-0">
                         <span
-                          className="w-9 h-9 rounded-xl bg-[#141413] text-[#F5C542] text-xs font-extrabold flex items-center justify-center shrink-0"
+                          className="w-8 h-8 rounded-lg bg-[#09090B] text-white text-xs font-medium flex items-center justify-center shrink-0 tabular-nums"
                           style={FONT_MONO}
                         >
                           {String(idx + 1).padStart(2, '0')}
                         </span>
                         <div className="min-w-0 space-y-1">
                           <div className="flex flex-wrap items-center gap-2">
-                            <span className={`px-2.5 py-0.5 rounded-full text-[10.5px] font-extrabold border ${sevStyle(f.severity)}`} style={FONT_MONO}>
+                            <span className={`px-2 py-0.5 rounded-md text-[10.5px] font-semibold border ${sevStyle(f.severity)}`} style={FONT_MONO}>
                               {f.severity}
                             </span>
-                            <span className="px-2.5 py-0.5 rounded-full bg-white border border-stone-300 text-[10.5px] font-extrabold text-[#141413]" style={FONT_MONO}>
+                            <span className="px-2 py-0.5 rounded-md bg-white border border-stone-200 text-[11px] font-medium text-stone-700">
                               {f.category}
                             </span>
-                            <span className="text-xs font-bold text-stone-600" style={FONT_MONO}>
-                              {f.filePath} : line {f.lineNo} · {f.confidence}% sure
+                            <span className="text-xs text-stone-500" style={FONT_MONO}>
+                              {f.filePath}:{f.lineNo} · {f.confidence}% confidence
                             </span>
                           </div>
-                          <h3 className="text-base sm:text-xl font-extrabold text-[#141413] tracking-[-0.02em]" style={FONT_DISPLAY}>
+                          <h3 className="text-[15.5px] sm:text-[17px] font-semibold text-[#09090B] tracking-[-0.015em]" style={FONT_DISPLAY}>
                             {f.title}
                           </h3>
                         </div>
                       </div>
 
                       <div
-                        className="flex flex-wrap items-center gap-2 shrink-0 pl-13 lg:pl-0"
+                        className="flex flex-wrap items-center gap-2 shrink-0 pl-11 lg:pl-0"
                         onClick={(e) => e.stopPropagation()}
                       >
                         <button
                           onClick={() => setDecisions((d) => ({ ...d, [f.id]: 'APPROVED' }))}
-                          className={`h-9 px-4 rounded-lg text-xs font-extrabold inline-flex items-center gap-1.5 transition-colors cursor-pointer ${
+                          className={`h-8 px-3.5 rounded-lg text-xs font-medium inline-flex items-center gap-1.5 transition-colors cursor-pointer ${
                             decision === 'APPROVED'
                               ? 'bg-emerald-600 text-white'
-                              : 'bg-[#141413] hover:bg-emerald-700 text-white'
+                              : 'bg-[#09090B] hover:bg-emerald-700 text-white'
                           }`}
                         >
                           <Check className="w-3.5 h-3.5" />
-                          {decision === 'APPROVED' ? 'Approved ✓' : 'Approve'}
+                          {decision === 'APPROVED' ? 'Approved' : 'Approve'}
                         </button>
                         <button
                           onClick={() => setDecisions((d) => ({ ...d, [f.id]: 'DISMISSED' }))}
-                          className={`h-9 px-3 rounded-lg border-2 text-xs font-extrabold inline-flex items-center gap-1 cursor-pointer ${
+                          className={`h-8 px-3 rounded-lg border text-xs font-medium inline-flex items-center gap-1 cursor-pointer transition-colors ${
                             decision === 'DISMISSED'
-                              ? 'bg-stone-200 border-stone-400 text-stone-700'
-                              : 'bg-white border-stone-300 hover:border-[#141413] text-[#141413]'
+                              ? 'bg-stone-200 border-stone-300 text-stone-700'
+                              : 'bg-white border-stone-200 hover:border-stone-400 text-stone-700'
                           }`}
                         >
                           <X className="w-3.5 h-3.5" />
@@ -2029,7 +2016,7 @@ export default function ForgePlatformDemo() {
                         </button>
                         <button
                           onClick={() => toggleCard(f.id)}
-                          className="w-9 h-9 rounded-lg bg-white border-2 border-stone-300 hover:border-[#141413] flex items-center justify-center cursor-pointer"
+                          className="w-8 h-8 rounded-lg bg-white border border-stone-200 hover:border-stone-400 flex items-center justify-center cursor-pointer text-stone-600"
                           aria-label="Toggle solution"
                         >
                           <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
@@ -2044,24 +2031,24 @@ export default function ForgePlatformDemo() {
                       }`}
                     >
                       <div className="overflow-hidden">
-                        <div className="px-5 sm:px-6 pb-6 pt-2 border-t border-stone-200/80 grid grid-cols-1 lg:grid-cols-12 gap-5">
-                          <div className="lg:col-span-5 rounded-xl bg-[#F4F2EC] border border-stone-300/80 p-4 space-y-2.5">
-                            <div className="text-[11px] font-extrabold uppercase tracking-[0.08em] text-red-700" style={FONT_MONO}>
-                              ⚠️ WHY THIS BREAKS PRODUCTION
+                        <div className="px-4 sm:px-5 pb-5 pt-3 border-t border-stone-200/80 grid grid-cols-1 lg:grid-cols-12 gap-4">
+                          <div className="lg:col-span-5 rounded-xl bg-[#F8F7F4] border border-stone-200 p-4 space-y-2.5">
+                            <div className="text-[11px] font-semibold uppercase tracking-[0.06em] text-red-700">
+                              Why this breaks production
                             </div>
-                            <p className="text-sm font-bold text-[#141413] leading-relaxed">
+                            <p className="text-[13.5px] font-normal text-stone-700 leading-relaxed">
                               {f.explanation}
                             </p>
-                            <div className="pt-1 text-xs font-extrabold text-stone-700">
-                              Business Impact: <span className="text-[#141413]">{f.impactNote}</span>
+                            <div className="pt-1 text-xs font-medium text-stone-600">
+                              Impact: <span className="text-[#09090B]">{f.impactNote}</span>
                             </div>
                           </div>
 
-                          <div className="lg:col-span-7 rounded-xl bg-[#141413] text-white p-4 space-y-3">
+                          <div className="lg:col-span-7 rounded-xl bg-[#111113] text-white p-4 space-y-3">
                             <div className="flex items-center justify-between gap-2">
-                              <div className="inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-[0.08em] text-[#F5C542]" style={FONT_MONO}>
+                              <div className="inline-flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.06em] text-amber-300">
                                 <Wrench className="w-3.5 h-3.5" />
-                                <span>EXACT SOLUTION · 1-CLICK FIX</span>
+                                <span>Recommended Fix</span>
                               </div>
                               <button
                                 onClick={() => {
@@ -2069,7 +2056,7 @@ export default function ForgePlatformDemo() {
                                   setCopiedFixId(f.id);
                                   setTimeout(() => setCopiedFixId(null), 1800);
                                 }}
-                                className="px-2.5 py-1 rounded-md bg-white/10 hover:bg-white/20 text-white text-[11px] font-bold inline-flex items-center gap-1 cursor-pointer"
+                                className="px-2.5 py-1 rounded-md bg-white/10 hover:bg-white/20 text-white text-[11px] font-medium inline-flex items-center gap-1 cursor-pointer"
                               >
                                 <Copy className="w-3 h-3" />
                                 {copiedFixId === f.id ? 'Copied!' : 'Copy Fix'}
@@ -2077,12 +2064,12 @@ export default function ForgePlatformDemo() {
                             </div>
 
                             <div className="rounded-lg overflow-hidden border border-white/10 text-xs divide-y divide-white/10" style={FONT_MONO}>
-                              <div className="px-3.5 py-2.5 bg-red-500/20 text-red-200 flex items-start gap-2.5 overflow-x-auto">
-                                <span className="text-red-400 font-extrabold select-none">-</span>
+                              <div className="px-3.5 py-2.5 bg-red-500/15 text-red-200 flex items-start gap-2.5 overflow-x-auto">
+                                <span className="text-red-400 font-semibold select-none">-</span>
                                 <code className="whitespace-pre">{f.before}</code>
                               </div>
-                              <div className="px-3.5 py-2.5 bg-emerald-500/20 text-emerald-200 flex items-start gap-2.5 overflow-x-auto">
-                                <span className="text-emerald-400 font-extrabold select-none">+</span>
+                              <div className="px-3.5 py-2.5 bg-emerald-500/15 text-emerald-200 flex items-start gap-2.5 overflow-x-auto">
+                                <span className="text-emerald-400 font-semibold select-none">+</span>
                                 <code className="whitespace-pre">{f.after}</code>
                               </div>
                             </div>
@@ -2104,38 +2091,32 @@ export default function ForgePlatformDemo() {
       <section id="impact-map" className="py-16 sm:py-24 px-5 sm:px-8 bg-[#F9F8F5] border-b border-stone-200">
         <div className="max-w-[1320px] mx-auto space-y-8">
           <div className="space-y-2 max-w-2xl">
-            <div
-              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#141413] text-white text-xs font-extrabold"
-              style={FONT_MONO}
-            >
-              <Network className="w-3.5 h-3.5 text-[#F5C542]" />
-              <span>03 · CHANGE IMPACT &amp; BLAST RADIUS MAP</span>
+            <div className="inline-flex items-center gap-2 text-xs font-semibold text-stone-500 uppercase tracking-[0.08em]">
+              <Network className="w-3.5 h-3.5 text-sky-700" />
+              <span>03 · Change Impact &amp; Blast Radius Map</span>
             </div>
             <h2
-              className="text-3xl sm:text-5xl font-extrabold tracking-[-0.03em] leading-[1.06] text-[#141413]"
+              className="text-3xl sm:text-[42px] font-semibold tracking-[-0.03em] leading-[1.1] text-[#09090B]"
               style={FONT_DISPLAY}
             >
-              Click any service. See what{' '}
-              <span className="italic font-bold" style={FONT_SERIF}>
-                breaks before merge.
-              </span>
+              Click any service. See what breaks before merge.
             </h2>
-            <p className="text-sm sm:text-base font-bold text-stone-700">
-              Forge parses your codebase structure into a live dependency graph. Click any box below
-              to highlight every upstream service and test affected by editing that file.
+            <p className="text-sm sm:text-[15.5px] font-normal text-stone-600 leading-relaxed">
+              Forge parses your codebase structure into a live dependency graph. Click any node below
+              to highlight every upstream service and test impacted by modifying that file.
             </p>
           </div>
 
           <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
-            <div className="xl:col-span-8 rounded-2xl bg-white border-2 border-[#141413]/15 overflow-hidden shadow-sm">
-              <div className="px-5 py-3.5 border-b border-stone-200 bg-[#FAF9F6] flex flex-wrap items-center justify-between gap-2 text-xs font-extrabold">
-                <span className="text-[#141413]">Interactive Code Dependency Graph · Click any component</span>
-                <div className="flex items-center gap-4 text-[11px]" style={FONT_MONO}>
+            <div className="xl:col-span-8 rounded-2xl bg-white border border-stone-200 overflow-hidden shadow-[0_8px_24px_rgba(15,23,42,0.04)]">
+              <div className="px-5 py-3.5 border-b border-stone-200 bg-[#FAFAF8] flex flex-wrap items-center justify-between gap-2 text-xs font-medium">
+                <span className="text-[#09090B]">Interactive Code Dependency Graph · Click any component</span>
+                <div className="flex items-center gap-4 text-[11px] text-stone-600">
                   <span className="flex items-center gap-1.5">
-                    <span className="w-3 h-3 rounded bg-[#141413]" /> Selected
+                    <span className="w-2.5 h-2.5 rounded-sm bg-[#09090B]" /> Selected
                   </span>
                   <span className="flex items-center gap-1.5">
-                    <span className="w-3 h-3 rounded bg-red-600" /> Affected Caller
+                    <span className="w-2.5 h-2.5 rounded-sm bg-red-600" /> Affected Caller
                   </span>
                 </div>
               </div>
@@ -2174,7 +2155,7 @@ export default function ForgePlatformDemo() {
                         d={`M ${x1} ${y1} C ${x1 + dx} ${y1}, ${x2 - dx} ${y2}, ${x2} ${y2}`}
                         fill="none"
                         stroke={hot ? '#DC2626' : '#C8C5BE'}
-                        strokeWidth={hot ? 2.6 : 1.4}
+                        strokeWidth={hot ? 2.4 : 1.4}
                         strokeDasharray={e.type === 'TESTS' ? '5 4' : undefined}
                         markerEnd={hot ? 'url(#arr-hot)' : 'url(#arr-muted)'}
                       />
@@ -2194,18 +2175,18 @@ export default function ForgePlatformDemo() {
                         <rect
                           width="178"
                           height="64"
-                          rx="12"
-                          fill={isSel ? '#141413' : isImp ? '#FEF2F2' : '#FFFFFF'}
-                          stroke={isSel ? '#141413' : isImp ? '#DC2626' : '#D6D3CD'}
-                          strokeWidth={isSel || isImp ? 2.2 : 1.4}
+                          rx="10"
+                          fill={isSel ? '#09090B' : isImp ? '#FEF2F2' : '#FFFFFF'}
+                          stroke={isSel ? '#09090B' : isImp ? '#DC2626' : '#D6D3CD'}
+                          strokeWidth={isSel || isImp ? 1.8 : 1.2}
                         />
                         <text
                           x="12"
                           y="22"
                           fontSize="9.5"
-                          fontWeight="700"
-                          fontFamily="IBM Plex Mono, monospace"
-                          fill={isSel ? '#F5C542' : isImp ? '#B91C1C' : '#57534E'}
+                          fontWeight="600"
+                          fontFamily="'Geist Mono', ui-monospace, monospace"
+                          fill={isSel ? '#FCD34D' : isImp ? '#B91C1C' : '#71717A'}
                         >
                           {n.layer} · cc:{n.cc}
                         </text>
@@ -2213,9 +2194,9 @@ export default function ForgePlatformDemo() {
                           x="12"
                           y="44"
                           fontSize="12"
-                          fontWeight="700"
-                          fontFamily="IBM Plex Mono, monospace"
-                          fill={isSel ? '#FFFFFF' : isImp ? '#7F1D1D' : '#141413'}
+                          fontWeight="600"
+                          fontFamily="'Geist Mono', ui-monospace, monospace"
+                          fill={isSel ? '#FFFFFF' : isImp ? '#7F1D1D' : '#09090B'}
                         >
                           {n.id}
                         </text>
@@ -2227,38 +2208,38 @@ export default function ForgePlatformDemo() {
             </div>
 
             {/* Dark-Ink Blast Radius Inspector */}
-            <div className="xl:col-span-4 rounded-2xl bg-[#141413] text-white p-6 space-y-5 shadow-[0_18px_40px_rgba(20,20,19,0.16)]">
+            <div className="xl:col-span-4 rounded-2xl bg-[#09090B] text-white p-6 space-y-5 shadow-[0_16px_40px_rgba(15,23,42,0.14)]">
               <div>
-                <div className="text-[11px] font-extrabold uppercase tracking-[0.12em] text-[#F5C542]" style={FONT_MONO}>
-                  CHANGE IMPACT SUMMARY
+                <div className="text-[11px] font-medium uppercase tracking-[0.08em] text-stone-400">
+                  Change Impact Summary
                 </div>
-                <h3 className="text-xl font-extrabold text-white mt-1" style={FONT_MONO}>
+                <h3 className="text-lg font-semibold text-white mt-1" style={FONT_MONO}>
                   {selectedNode}
                 </h3>
               </div>
 
               <div className="grid grid-cols-3 gap-2.5">
-                <div className="p-3 rounded-xl bg-white/10">
-                  <div className="text-[10px] text-stone-300" style={FONT_MONO}>AFFECTED</div>
-                  <div className="text-2xl font-extrabold text-white mt-0.5" style={FONT_DISPLAY}>
+                <div className="p-3 rounded-xl bg-white/[0.06] border border-white/10">
+                  <div className="text-[10px] text-stone-400" style={FONT_MONO}>AFFECTED</div>
+                  <div className="text-2xl font-semibold text-white mt-0.5 tabular-nums" style={FONT_DISPLAY}>
                     {blast.impacted.length}
                   </div>
                 </div>
-                <div className="p-3 rounded-xl bg-white/10">
-                  <div className="text-[10px] text-stone-300" style={FONT_MONO}>TESTS</div>
-                  <div className="text-2xl font-extrabold text-[#F5C542] mt-0.5" style={FONT_DISPLAY}>
+                <div className="p-3 rounded-xl bg-white/[0.06] border border-white/10">
+                  <div className="text-[10px] text-stone-400" style={FONT_MONO}>TESTS</div>
+                  <div className="text-2xl font-semibold text-amber-300 mt-0.5 tabular-nums" style={FONT_DISPLAY}>
                     {blast.tests}
                   </div>
                 </div>
-                <div className="p-3 rounded-xl bg-white/10">
-                  <div className="text-[10px] text-stone-300" style={FONT_MONO}>RISK</div>
+                <div className="p-3 rounded-xl bg-white/[0.06] border border-white/10">
+                  <div className="text-[10px] text-stone-400" style={FONT_MONO}>RISK</div>
                   <span
-                    className={`inline-block mt-1 px-2 py-0.5 rounded text-[10px] font-extrabold ${
+                    className={`inline-block mt-1 px-2 py-0.5 rounded text-[10px] font-semibold ${
                       blast.risk === 'HIGH'
-                        ? 'bg-red-600 text-white'
+                        ? 'bg-red-500/20 text-red-300 border border-red-500/30'
                         : blast.risk === 'MEDIUM'
-                        ? 'bg-amber-400 text-[#141413]'
-                        : 'bg-emerald-500 text-white'
+                        ? 'bg-amber-400/20 text-amber-200 border border-amber-400/30'
+                        : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
                     }`}
                     style={FONT_MONO}
                   >
@@ -2268,11 +2249,11 @@ export default function ForgePlatformDemo() {
               </div>
 
               <div>
-                <div className="text-xs font-extrabold text-stone-300 mb-2">
-                  Files &amp; Tests That Break If Edited:
+                <div className="text-xs font-medium text-stone-300 mb-2">
+                  Files &amp; tests affected if edited:
                 </div>
                 {blast.impacted.length === 0 ? (
-                  <div className="text-xs text-stone-300 p-3.5 rounded-xl bg-white/5 border border-white/10">
+                  <div className="text-xs text-stone-400 p-3.5 rounded-xl bg-white/5 border border-white/10">
                     Top-level entry point — editing this won&apos;t break upstream callers.
                   </div>
                 ) : (
@@ -2281,13 +2262,13 @@ export default function ForgePlatformDemo() {
                       <button
                         key={item.id}
                         onClick={() => setSelectedNode(item.id)}
-                        className="w-full text-left px-3.5 py-2.5 rounded-xl bg-red-500/20 hover:bg-red-500/30 border border-red-400/40 flex items-center justify-between gap-2 cursor-pointer"
+                        className="w-full text-left px-3.5 py-2.5 rounded-xl bg-red-500/15 hover:bg-red-500/25 border border-red-400/30 flex items-center justify-between gap-2 cursor-pointer transition-colors"
                       >
-                        <span className="text-xs font-extrabold text-white" style={FONT_MONO}>
+                        <span className="text-xs font-medium text-white" style={FONT_MONO}>
                           {item.id}
                         </span>
-                        <span className="text-[10px] font-bold text-red-200" style={FONT_MONO}>
-                          step {item.hop} · {item.rel === 'TESTS' ? 'test' : 'calls this'}
+                        <span className="text-[10.5px] text-red-200" style={FONT_MONO}>
+                          hop {item.hop} · {item.rel === 'TESTS' ? 'test' : 'caller'}
                         </span>
                       </button>
                     ))}
@@ -2296,7 +2277,7 @@ export default function ForgePlatformDemo() {
               </div>
 
               <div>
-                <div className="text-xs font-extrabold text-stone-300 mb-2">Direct Dependencies:</div>
+                <div className="text-xs font-medium text-stone-300 mb-2">Direct dependencies:</div>
                 <div className="flex flex-wrap gap-1.5">
                   {blast.directOutgoing.length === 0 ? (
                     <span className="text-xs text-stone-400">No outgoing dependencies</span>
@@ -2305,7 +2286,7 @@ export default function ForgePlatformDemo() {
                       <button
                         key={dep}
                         onClick={() => setSelectedNode(dep)}
-                        className="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-bold text-white cursor-pointer"
+                        className="px-2.5 py-1 rounded-md bg-white/10 hover:bg-white/20 text-xs font-medium text-stone-200 cursor-pointer transition-colors"
                         style={FONT_MONO}
                       >
                         {dep}
@@ -2326,58 +2307,52 @@ export default function ForgePlatformDemo() {
         <div className="max-w-[1320px] mx-auto space-y-8">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
             <div className="space-y-2 max-w-2xl">
-              <div
-                className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-600 text-white text-xs font-extrabold"
-                style={FONT_MONO}
-              >
-                <ShieldAlert className="w-3.5 h-3.5" />
-                <span>04 · SECURITY &amp; SECRET SHIELD</span>
+              <div className="inline-flex items-center gap-2 text-xs font-semibold text-stone-500 uppercase tracking-[0.08em]">
+                <ShieldAlert className="w-3.5 h-3.5 text-red-600" />
+                <span>04 · Security &amp; Secret Shield</span>
               </div>
               <h2
-                className="text-3xl sm:text-5xl font-extrabold tracking-[-0.03em] leading-[1.06] text-[#141413]"
+                className="text-3xl sm:text-[42px] font-semibold tracking-[-0.03em] leading-[1.1] text-[#09090B]"
                 style={FONT_DISPLAY}
               >
-                Zero leaked keys. Zero{' '}
-                <span className="italic font-bold" style={FONT_SERIF}>
-                  prompt hijacks.
-                </span>
+                Zero leaked keys. Zero prompt hijacks.
               </h2>
-              <p className="text-sm sm:text-base font-bold text-stone-700">
-                Secrets are encrypted (AES-256) and masked before storage. Click &ldquo;Mark Fixed&rdquo;
+              <p className="text-sm sm:text-[15.5px] font-normal text-stone-600 leading-relaxed">
+                Secrets are encrypted (AES-256) and redacted before storage. Click &ldquo;Mark Fixed&rdquo;
                 on any alert to watch your Security Health score update live.
               </p>
             </div>
 
             {/* Live Interactive Security Health Gauge */}
-            <div className="rounded-2xl bg-[#141413] text-white px-6 py-4 flex items-center gap-5 shrink-0">
+            <div className="rounded-2xl bg-[#09090B] text-white px-6 py-4 flex items-center gap-5 shrink-0 shadow-[0_14px_34px_rgba(15,23,42,0.12)]">
               <svg width="104" height="104" viewBox="0 0 104 104" className="shrink-0">
-                <circle cx="52" cy="52" r={secR} fill="none" stroke="rgba(255,255,255,0.14)" strokeWidth="10" />
+                <circle cx="52" cy="52" r={secR} fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="9" />
                 <circle
                   cx="52"
                   cy="52"
                   r={secR}
                   fill="none"
-                  stroke={openSecCount === 0 ? '#10B981' : '#F5C542'}
-                  strokeWidth="10"
+                  stroke={openSecCount === 0 ? '#10B981' : '#F59E0B'}
+                  strokeWidth="9"
                   strokeLinecap="round"
                   strokeDasharray={secCirc}
                   strokeDashoffset={secOffset}
                   transform="rotate(-90 52 52)"
                   className="transition-all duration-500"
                 />
-                <text x="52" y="57" textAnchor="middle" className="text-[20px] font-extrabold fill-white" style={FONT_DISPLAY}>
+                <text x="52" y="57" textAnchor="middle" className="text-[20px] font-semibold fill-white" style={FONT_DISPLAY}>
                   {healthPct}%
                 </text>
               </svg>
               <div>
-                <div className="text-[11px] uppercase tracking-wider text-[#F5C542]" style={FONT_MONO}>
-                  SECURITY HEALTH
+                <div className="text-[11px] font-medium uppercase tracking-[0.08em] text-stone-400">
+                  Security Health
                 </div>
-                <div className="text-xl font-extrabold text-white mt-0.5" style={FONT_DISPLAY}>
+                <div className="text-lg font-semibold text-white mt-0.5 tracking-[-0.02em]" style={FONT_DISPLAY}>
                   {openSecCount === 0 ? '100% Protected' : `${openSecCount} Open Alerts`}
                 </div>
                 <div className="text-xs text-stone-400 mt-0.5">
-                  {secItems.length - openSecCount} of {secItems.length} fixed
+                  {secItems.length - openSecCount} of {secItems.length} mitigated
                 </div>
               </div>
             </div>
@@ -2388,14 +2363,13 @@ export default function ForgePlatformDemo() {
               <button
                 key={f}
                 onClick={() => setSecFilter(f)}
-                className={`h-9 px-4 rounded-full text-xs font-extrabold transition-colors cursor-pointer border-2 ${
+                className={`h-8 px-3.5 rounded-lg text-xs font-medium transition-colors cursor-pointer border ${
                   secFilter === f
-                    ? 'bg-[#141413] text-[#F5C542] border-[#141413]'
-                    : 'bg-[#FAF9F6] text-[#141413] border-stone-200 hover:border-[#141413]'
+                    ? 'bg-[#09090B] text-white border-[#09090B]'
+                    : 'bg-white text-stone-700 border-stone-200 hover:border-stone-400'
                 }`}
-                style={FONT_MONO}
               >
-                {f === 'MITIGATED' ? 'FIXED' : f}
+                {f === 'MITIGATED' ? 'Fixed' : f.charAt(0) + f.slice(1).toLowerCase()}
               </button>
             ))}
           </div>
@@ -2404,20 +2378,22 @@ export default function ForgePlatformDemo() {
             {filteredSec.map((item) => (
               <div
                 key={item.id}
-                className={`rounded-2xl border-2 p-6 flex flex-col justify-between gap-4 transition-all ${
+                className={`rounded-2xl border p-6 flex flex-col justify-between gap-4 transition-all ${
                   item.status === 'MITIGATED'
-                    ? 'bg-emerald-50/40 border-emerald-400'
-                    : 'bg-[#FAF9F6] border-stone-200 hover:border-[#141413]'
+                    ? 'bg-emerald-50/35 border-emerald-300'
+                    : 'bg-[#FAFAF8] border-stone-200 hover:border-stone-300'
                 }`}
               >
                 <div className="space-y-3">
                   <div className="flex flex-wrap items-center justify-between gap-2">
-                    <span className={`px-2.5 py-0.5 rounded-full text-[10.5px] font-extrabold border ${sevStyle(item.severity)}`} style={FONT_MONO}>
+                    <span className={`px-2 py-0.5 rounded-md text-[10.5px] font-semibold border ${sevStyle(item.severity)}`} style={FONT_MONO}>
                       {item.severity} · {item.scanner}
                     </span>
                     <span
-                      className={`px-2.5 py-0.5 rounded-full text-[10.5px] font-extrabold ${
-                        item.status === 'MITIGATED' ? 'bg-emerald-600 text-white' : 'bg-red-600 text-white'
+                      className={`px-2 py-0.5 rounded-md text-[10.5px] font-semibold ${
+                        item.status === 'MITIGATED'
+                          ? 'bg-emerald-100 text-emerald-800 border border-emerald-200'
+                          : 'bg-red-100 text-red-800 border border-red-200'
                       }`}
                       style={FONT_MONO}
                     >
@@ -2425,17 +2401,17 @@ export default function ForgePlatformDemo() {
                     </span>
                   </div>
 
-                  <h3 className="text-lg font-extrabold text-[#141413] leading-snug" style={FONT_DISPLAY}>
+                  <h3 className="text-[16px] font-semibold text-[#09090B] leading-snug tracking-[-0.015em]" style={FONT_DISPLAY}>
                     {item.title}
                   </h3>
-                  <div className="text-xs font-bold text-stone-600" style={FONT_MONO}>
+                  <div className="text-xs text-stone-500" style={FONT_MONO}>
                     {item.location} · {item.cwe}
                   </div>
-                  <div className="px-3 py-2 rounded-lg bg-[#141413] text-red-300 text-xs overflow-x-auto" style={FONT_MONO}>
+                  <div className="px-3 py-2 rounded-lg bg-[#111113] text-red-300 text-xs overflow-x-auto" style={FONT_MONO}>
                     {item.evidence}
                   </div>
-                  <p className="text-xs font-bold text-[#1E1D1B] leading-relaxed">
-                    <span className="text-emerald-800">Fix: </span>
+                  <p className="text-xs font-normal text-stone-600 leading-relaxed">
+                    <span className="font-semibold text-emerald-800">Fix: </span>
                     {item.remediation}
                   </p>
                 </div>
@@ -2447,9 +2423,9 @@ export default function ForgePlatformDemo() {
                         list.map((s) => (s.id === item.id ? { ...s, status: 'MITIGATED' } : s))
                       )
                     }
-                    className="h-10 w-full rounded-xl bg-[#141413] hover:bg-emerald-700 text-white text-xs font-extrabold inline-flex items-center justify-center gap-1.5 cursor-pointer transition-colors"
+                    className="h-9 w-full rounded-lg bg-[#09090B] hover:bg-emerald-700 text-white text-xs font-medium inline-flex items-center justify-center gap-1.5 cursor-pointer transition-colors"
                   >
-                    <CheckCircle2 className="w-4 h-4" />
+                    <CheckCircle2 className="w-3.5 h-3.5" />
                     Mark Fixed
                   </button>
                 ) : (
@@ -2459,7 +2435,7 @@ export default function ForgePlatformDemo() {
                         list.map((s) => (s.id === item.id ? { ...s, status: 'OPEN' } : s))
                       )
                     }
-                    className="h-10 w-full rounded-xl bg-white hover:bg-stone-100 border-2 border-[#141413] text-[#141413] text-xs font-extrabold cursor-pointer"
+                    className="h-9 w-full rounded-lg bg-white hover:bg-stone-50 border border-stone-300 text-[#09090B] text-xs font-medium cursor-pointer transition-colors"
                   >
                     Reopen Alert
                   </button>
@@ -2476,29 +2452,24 @@ export default function ForgePlatformDemo() {
       <section id="builds-proof" className="py-16 sm:py-24 px-5 sm:px-8 bg-[#F9F8F5] border-b border-stone-200">
         <div className="max-w-[1320px] mx-auto space-y-10">
           <div className="space-y-2 max-w-2xl">
-            <div
-              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-700 text-white text-xs font-extrabold"
-              style={FONT_MONO}
-            >
-              <Activity className="w-3.5 h-3.5" />
-              <span>05 · BUILD DIAGNOSIS &amp; VERIFIED ACCURACY</span>
+            <div className="inline-flex items-center gap-2 text-xs font-semibold text-stone-500 uppercase tracking-[0.08em]">
+              <Activity className="w-3.5 h-3.5 text-emerald-600" />
+              <span>05 · Build Diagnosis &amp; Verified Accuracy</span>
             </div>
             <h2
-              className="text-3xl sm:text-5xl font-extrabold tracking-[-0.03em] leading-[1.06] text-[#141413]"
+              className="text-3xl sm:text-[42px] font-semibold tracking-[-0.03em] leading-[1.1] text-[#09090B]"
               style={FONT_DISPLAY}
             >
-              Plain-English CI fixes &amp;{' '}
-              <span className="italic font-bold" style={FONT_SERIF}>
-                100% proven accuracy.
-              </span>
+              Plain-English CI fixes &amp; 100% proven accuracy.
             </h2>
           </div>
 
           {/* Failed Builds + Root Cause + Fix */}
           <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
-            <div className="xl:col-span-4 rounded-2xl bg-white border-2 border-stone-200 overflow-hidden">
-              <div className="px-5 py-3.5 bg-[#141413] text-white text-xs font-extrabold" style={FONT_MONO}>
-                RECENT BUILD RUNS ({CI_BUILDS.length})
+            <div className="xl:col-span-4 rounded-2xl bg-white border border-stone-200 overflow-hidden shadow-[0_8px_24px_rgba(15,23,42,0.04)]">
+              <div className="px-5 py-3.5 bg-[#09090B] text-white text-xs font-medium flex items-center justify-between">
+                <span>Recent Build Runs</span>
+                <span className="text-stone-400 tabular-nums" style={FONT_MONO}>{CI_BUILDS.length}</span>
               </div>
               <div className="divide-y divide-stone-200">
                 {CI_BUILDS.map((b) => {
@@ -2510,22 +2481,24 @@ export default function ForgePlatformDemo() {
                         setActiveCiId(b.id);
                         setShowRawLog(false);
                       }}
-                      className={`w-full text-left p-4 transition-colors cursor-pointer border-l-4 ${
-                        sel ? 'bg-[#FFFBEB] border-l-[#141413]' : 'hover:bg-stone-50 border-l-transparent'
+                      className={`w-full text-left p-4 transition-colors cursor-pointer border-l-[3px] ${
+                        sel ? 'bg-[#FAFAF8] border-l-[#09090B]' : 'hover:bg-stone-50 border-l-transparent'
                       }`}
                     >
                       <div className="flex items-center justify-between gap-2">
-                        <span className="text-xs font-extrabold text-[#141413] truncate">{b.pipeline}</span>
+                        <span className="text-[13px] font-semibold text-[#09090B] truncate">{b.pipeline}</span>
                         <span
-                          className={`px-2 py-0.5 rounded text-[10px] font-extrabold ${
-                            b.status === 'PASSED' ? 'bg-emerald-600 text-white' : 'bg-red-600 text-white'
+                          className={`px-2 py-0.5 rounded text-[10px] font-semibold ${
+                            b.status === 'PASSED'
+                              ? 'bg-emerald-100 text-emerald-800 border border-emerald-200'
+                              : 'bg-red-100 text-red-800 border border-red-200'
                           }`}
                           style={FONT_MONO}
                         >
                           {b.status}
                         </span>
                       </div>
-                      <div className="text-[11px] font-bold text-stone-600 mt-1" style={FONT_MONO}>
+                      <div className="text-[11px] text-stone-500 mt-1" style={FONT_MONO}>
                         {b.branch} · {b.duration}
                       </div>
                     </button>
@@ -2534,36 +2507,36 @@ export default function ForgePlatformDemo() {
               </div>
             </div>
 
-            <div className="xl:col-span-8 rounded-2xl bg-white border-2 border-stone-200 p-6 space-y-5">
+            <div className="xl:col-span-8 rounded-2xl bg-white border border-stone-200 p-6 space-y-5 shadow-[0_8px_24px_rgba(15,23,42,0.04)]">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div>
-                  <h3 className="text-lg font-extrabold text-[#141413]" style={FONT_DISPLAY}>
+                  <h3 className="text-lg font-semibold text-[#09090B] tracking-[-0.02em]" style={FONT_DISPLAY}>
                     {activeCi.pipeline}
                   </h3>
-                  <div className="text-xs font-bold text-stone-600" style={FONT_MONO}>
+                  <div className="text-xs text-stone-500 mt-0.5" style={FONT_MONO}>
                     {activeCi.repo} · commit {activeCi.sha} · {activeCi.duration}
                   </div>
                 </div>
-                <span className="px-3 py-1 rounded-full bg-[#F5C542] text-[#141413] text-xs font-extrabold" style={FONT_MONO}>
+                <span className="px-2.5 py-1 rounded-md bg-amber-50 border border-amber-200 text-amber-900 text-xs font-medium" style={FONT_MONO}>
                   {activeCi.category}
                 </span>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="p-5 rounded-xl bg-[#F4F2EC] border border-stone-300 space-y-2">
-                  <div className="text-[11px] font-extrabold uppercase tracking-wider text-red-700" style={FONT_MONO}>
-                    WHAT WENT WRONG
+                <div className="p-5 rounded-xl bg-[#FAFAF8] border border-stone-200 space-y-2">
+                  <div className="text-[11px] font-semibold uppercase tracking-[0.06em] text-red-700">
+                    What went wrong
                   </div>
-                  <p className="text-sm font-bold text-[#141413] leading-relaxed">{activeCi.rootCause}</p>
+                  <p className="text-[13.5px] font-normal text-stone-700 leading-relaxed">{activeCi.rootCause}</p>
                 </div>
-                <div className="p-5 rounded-xl bg-[#141413] text-white space-y-2">
-                  <div className="text-[11px] font-extrabold uppercase tracking-wider text-[#F5C542]" style={FONT_MONO}>
-                    HOW TO FIX IT
+                <div className="p-5 rounded-xl bg-[#09090B] text-white space-y-2.5">
+                  <div className="text-[11px] font-medium uppercase tracking-[0.06em] text-amber-300">
+                    How to fix it
                   </div>
-                  <ul className="space-y-1.5 text-xs font-bold text-stone-100">
+                  <ul className="space-y-2 text-xs font-normal text-stone-200 leading-relaxed">
                     {activeCi.remediation.map((step, i) => (
                       <li key={i} className="flex items-start gap-2">
-                        <span className="text-[#F5C542]" style={FONT_MONO}>{i + 1}.</span>
+                        <span className="text-amber-300 font-medium" style={FONT_MONO}>{i + 1}.</span>
                         <span>{step}</span>
                       </li>
                     ))}
@@ -2574,14 +2547,14 @@ export default function ForgePlatformDemo() {
               <div>
                 <button
                   onClick={() => setShowRawLog((v) => !v)}
-                  className="inline-flex items-center gap-1.5 text-xs font-extrabold text-[#141413] underline underline-offset-4 cursor-pointer"
+                  className="inline-flex items-center gap-1.5 text-xs font-medium text-stone-700 hover:text-[#09090B] transition-colors cursor-pointer"
                 >
                   <Terminal className="w-3.5 h-3.5" />
                   {showRawLog ? 'Hide Raw Terminal Log' : 'Inspect Raw Terminal Log'}
                   <ChevronDown className={`w-3.5 h-3.5 transition-transform ${showRawLog ? 'rotate-180' : ''}`} />
                 </button>
                 {showRawLog && (
-                  <div className="mt-3 rounded-xl bg-[#141413] p-4 text-[11.5px] text-stone-300 space-y-1 overflow-x-auto" style={FONT_MONO}>
+                  <div className="mt-3 rounded-xl bg-[#111113] p-4 text-[11.5px] text-stone-300 space-y-1 overflow-x-auto" style={FONT_MONO}>
                     {activeCi.log.split('\n').map((line, i) => (
                       <div
                         key={i}
@@ -2601,27 +2574,27 @@ export default function ForgePlatformDemo() {
           </div>
 
           {/* 8-Case Accuracy Benchmark */}
-          <div className="rounded-2xl bg-white border-2 border-[#141413] overflow-hidden shadow-sm">
-            <div className="px-6 py-5 bg-[#141413] text-white flex flex-wrap items-center justify-between gap-4">
+          <div className="rounded-2xl bg-white border border-stone-200 overflow-hidden shadow-[0_8px_24px_rgba(15,23,42,0.04)]">
+            <div className="px-6 py-5 bg-[#09090B] text-white flex flex-wrap items-center justify-between gap-4">
               <div>
-                <h3 className="text-lg font-extrabold text-white" style={FONT_DISPLAY}>
+                <h3 className="text-base sm:text-lg font-semibold text-white tracking-[-0.02em]" style={FONT_DISPLAY}>
                   Verified 8-Case Accuracy Benchmark (Run #{evalRunCount})
                 </h3>
-                <p className="text-xs font-bold text-stone-300 mt-0.5">
+                <p className="text-xs font-normal text-stone-400 mt-1">
                   Every Forge release runs 7 real vulnerability PRs + 1 clean PR to guarantee 0% false alarms.
                 </p>
               </div>
               <div className="flex flex-wrap items-center gap-2">
-                <span className="px-3 py-1 rounded-full bg-emerald-500 text-white text-xs font-extrabold" style={FONT_MONO}>
+                <span className="px-2.5 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 text-xs font-medium" style={FONT_MONO}>
                   100% Accuracy
                 </span>
-                <span className="px-3 py-1 rounded-full bg-[#F5C542] text-[#141413] text-xs font-extrabold" style={FONT_MONO}>
+                <span className="px-2.5 py-1 rounded-full bg-amber-400/15 border border-amber-400/30 text-amber-200 text-xs font-medium" style={FONT_MONO}>
                   0% False Alarms
                 </span>
                 <button
                   onClick={triggerEvalSuite}
                   disabled={evalRunning}
-                  className="h-9 px-4 rounded-lg bg-white hover:bg-stone-100 text-[#141413] text-xs font-extrabold inline-flex items-center gap-1.5 cursor-pointer"
+                  className="h-8 px-3.5 rounded-lg bg-white hover:bg-stone-100 text-[#09090B] text-xs font-medium inline-flex items-center gap-1.5 cursor-pointer transition-colors"
                 >
                   <RefreshCw className={`w-3.5 h-3.5 ${evalRunning ? 'animate-spin' : ''}`} />
                   {evalRunning ? 'Running...' : 'Re-Run Suite'}
@@ -2630,7 +2603,7 @@ export default function ForgePlatformDemo() {
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
-                <thead className="border-b-2 border-stone-200 bg-[#FAF9F6] text-[11px] uppercase text-stone-600" style={FONT_MONO}>
+                <thead className="border-b border-stone-200 bg-[#FAFAF8] text-[11px] font-medium uppercase tracking-[0.04em] text-stone-500">
                   <tr>
                     <th className="px-6 py-3">Test</th>
                     <th className="px-6 py-3">Real-World Scenario</th>
@@ -2641,16 +2614,16 @@ export default function ForgePlatformDemo() {
                 </thead>
                 <tbody className="divide-y divide-stone-200">
                   {EVAL_CASES.map((c) => (
-                    <tr key={c.id} className="hover:bg-[#FAF9F6]">
-                      <td className="px-6 py-3 font-extrabold text-[#141413]" style={FONT_MONO}>{c.id}</td>
-                      <td className="px-6 py-3 font-extrabold text-[#141413]">{c.name}</td>
-                      <td className="px-6 py-3 font-bold text-stone-600" style={FONT_MONO}>{c.triggered}</td>
+                    <tr key={c.id} className="hover:bg-[#FAFAF8]">
+                      <td className="px-6 py-3 font-medium text-[#09090B]" style={FONT_MONO}>{c.id}</td>
+                      <td className="px-6 py-3 font-medium text-[#09090B]">{c.name}</td>
+                      <td className="px-6 py-3 text-stone-500" style={FONT_MONO}>{c.triggered}</td>
                       <td className="px-6 py-3">
-                        <span className="px-2.5 py-0.5 rounded-full text-[10.5px] font-extrabold bg-emerald-100 text-emerald-900 border border-emerald-300" style={FONT_MONO}>
+                        <span className="px-2 py-0.5 rounded-md text-[10.5px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200" style={FONT_MONO}>
                           {c.outcome}
                         </span>
                       </td>
-                      <td className="px-6 py-3 text-right font-bold text-stone-600" style={FONT_MONO}>{c.ms}ms</td>
+                      <td className="px-6 py-3 text-right text-stone-500 tabular-nums" style={FONT_MONO}>{c.ms}ms</td>
                     </tr>
                   ))}
                 </tbody>
@@ -2667,25 +2640,22 @@ export default function ForgePlatformDemo() {
         <div className="max-w-[1320px] mx-auto space-y-10">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
             <div className="space-y-2 max-w-2xl">
-              <div className="text-xs font-extrabold uppercase tracking-[0.14em] text-stone-600" style={FONT_MONO}>
-                06 · HOW IT WORKS UNDER THE HOOD
+              <div className="text-xs font-semibold uppercase tracking-[0.08em] text-stone-500">
+                06 · How It Works Under The Hood
               </div>
               <h2
-                className="text-3xl sm:text-5xl font-extrabold tracking-[-0.03em] leading-[1.06] text-[#141413]"
+                className="text-3xl sm:text-[42px] font-semibold tracking-[-0.03em] leading-[1.1] text-[#09090B]"
                 style={FONT_DISPLAY}
               >
-                Built like a real production system,{' '}
-                <span className="italic font-bold" style={FONT_SERIF}>
-                  not a wrapper.
-                </span>
+                Built like a real production system, not a wrapper.
               </h2>
             </div>
             <button
               onClick={runPipelineSimulation}
               disabled={simulating}
-              className="h-11 px-5 rounded-xl bg-[#141413] hover:bg-[#27272A] text-white text-xs font-extrabold inline-flex items-center gap-2 self-start md:self-auto cursor-pointer"
+              className="h-10 px-5 rounded-lg bg-[#09090B] hover:bg-[#27272A] text-white text-xs font-medium inline-flex items-center gap-2 self-start md:self-auto cursor-pointer transition-colors"
             >
-              <Play className="w-3.5 h-3.5 fill-current text-[#F5C542]" />
+              <Play className="w-3.5 h-3.5 fill-current" />
               {simulating ? `Running Step ${pipelineStep}/6...` : 'Replay 6-Stage Flow'}
             </button>
           </div>
@@ -2698,11 +2668,11 @@ export default function ForgePlatformDemo() {
               return (
                 <div
                   key={stage.id}
-                  className={`rounded-2xl p-4 border-2 transition-all duration-300 ${
+                  className={`rounded-xl p-4 border transition-all duration-300 ${
                     active
-                      ? 'bg-[#141413] text-white border-[#141413] shadow-lg scale-[1.03]'
+                      ? 'bg-[#09090B] text-white border-[#09090B] shadow-md'
                       : done
-                      ? 'bg-[#FAF9F6] text-[#141413] border-emerald-400'
+                      ? 'bg-[#FAFAF8] text-[#09090B] border-emerald-300'
                       : 'bg-white text-stone-400 border-stone-200'
                   }`}
                 >
@@ -2710,7 +2680,7 @@ export default function ForgePlatformDemo() {
                     <div
                       className={`w-8 h-8 rounded-lg flex items-center justify-center ${
                         active
-                          ? 'bg-[#F5C542] text-[#141413]'
+                          ? 'bg-amber-400 text-[#09090B]'
                           : done
                           ? 'bg-emerald-100 text-emerald-800'
                           : 'bg-stone-100 text-stone-400'
@@ -2718,12 +2688,12 @@ export default function ForgePlatformDemo() {
                     >
                       <Icon className="w-4 h-4" />
                     </div>
-                    <span className="text-[10.5px] font-extrabold" style={FONT_MONO}>
+                    <span className="text-[10.5px] font-medium tabular-nums" style={FONT_MONO}>
                       {done ? `✓ ${stage.latency}` : active ? 'LIVE' : 'WAIT'}
                     </span>
                   </div>
-                  <div className="text-xs font-extrabold">{stage.title}</div>
-                  <div className={`text-[11px] font-bold mt-0.5 ${active ? 'text-stone-300' : 'text-stone-600'}`}>
+                  <div className="text-xs font-semibold">{stage.title}</div>
+                  <div className={`text-[11px] font-normal mt-0.5 ${active ? 'text-stone-300' : 'text-stone-500'}`}>
                     {stage.sub}
                   </div>
                 </div>
@@ -2753,15 +2723,15 @@ export default function ForgePlatformDemo() {
               return (
                 <div
                   key={card.title}
-                  className="rounded-2xl bg-[#FAF9F6] border-2 border-stone-200 p-6 space-y-3"
+                  className="rounded-2xl bg-[#FAFAF8] border border-stone-200 p-6 space-y-3"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-[#141413] text-[#F5C542] flex items-center justify-center">
-                    <Icon className="w-5 h-5" />
+                  <div className="w-9 h-9 rounded-lg bg-[#09090B] text-white flex items-center justify-center">
+                    <Icon className="w-4 h-4" />
                   </div>
-                  <h3 className="text-lg font-extrabold text-[#141413]" style={FONT_DISPLAY}>
+                  <h3 className="text-[16px] font-semibold text-[#09090B] tracking-[-0.015em]" style={FONT_DISPLAY}>
                     {card.title}
                   </h3>
-                  <p className="text-sm font-bold text-[#1E1D1B] leading-relaxed">{card.desc}</p>
+                  <p className="text-sm font-normal text-stone-600 leading-relaxed">{card.desc}</p>
                 </div>
               );
             })}
