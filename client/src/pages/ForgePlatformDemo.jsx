@@ -509,11 +509,8 @@ function computeBlastRadius(targetId) {
   return { impacted, directOutgoing, tests, risk };
 }
 
-function sevStyle(sev) {
-  if (sev === 'CRITICAL') return 'bg-red-100 text-red-800 border-red-300';
-  if (sev === 'HIGH') return 'bg-amber-100 text-amber-900 border-amber-300';
-  if (sev === 'MEDIUM') return 'bg-sky-100 text-sky-900 border-sky-300';
-  return 'bg-emerald-100 text-emerald-900 border-emerald-300';
+function sevStyle() {
+  return 'bg-[#09090B] text-white border-[#09090B]';
 }
 
 export default function ForgePlatformDemo() {
@@ -1379,14 +1376,14 @@ export default function ForgePlatformDemo() {
                         <span className="text-stone-400 font-bold select-none">·</span>
                         <span className="inline-flex flex-wrap items-center gap-1.5 text-xs font-semibold text-[#09090B]">
                           <code
-                            className="px-2 py-0.5 rounded-md bg-sky-50 text-sky-950 border border-sky-200/90 font-semibold"
+                            className="px-2 py-0.5 rounded-md bg-[#09090B] text-white border border-[#09090B] font-bold"
                             style={FONT_MONO}
                           >
                             {activePr.branch}
                           </code>
                           <span className="text-stone-500 font-bold">→</span>
                           <code
-                            className="px-2 py-0.5 rounded-md bg-stone-100 text-[#09090B] border border-stone-200 font-semibold"
+                            className="px-2 py-0.5 rounded-md bg-[#09090B] text-white border border-[#09090B] font-bold"
                             style={FONT_MONO}
                           >
                             {activePr.targetBranch}
@@ -1836,11 +1833,7 @@ export default function ForgePlatformDemo() {
                         </div>
                         {hit && (
                           <span
-                            className={`px-2.5 py-0.5 rounded text-[10.5px] font-bold tracking-[0.04em] shrink-0 animate-forge-pop border ${
-                              hit.severity === 'CRITICAL'
-                                ? 'bg-red-950/90 border-red-500/50 text-red-200'
-                                : 'bg-zinc-900 border-zinc-600 text-zinc-100'
-                            }`}
+                            className="px-2.5 py-0.5 rounded text-[10.5px] font-bold tracking-[0.04em] shrink-0 animate-forge-pop bg-[#09090B] text-white border border-white/35"
                           >
                             {hit.severity} · {hit.category.toUpperCase()}
                           </span>
@@ -1920,13 +1913,7 @@ export default function ForgePlatformDemo() {
                     >
                       <div className="flex items-center justify-between gap-2">
                         <span
-                          className={`px-2 py-0.5 rounded text-[10px] font-bold border ${
-                            entry.type === 'crit'
-                              ? 'bg-red-950/90 border-red-500/50 text-red-200'
-                              : entry.type === 'gate'
-                              ? 'bg-white text-[#09090B] border-white'
-                              : 'bg-zinc-900 border-zinc-700 text-zinc-200'
-                          }`}
+                          className="px-2.5 py-0.5 rounded text-[10px] font-bold bg-[#09090B] text-white border border-white/35"
                           style={FONT_MONO}
                         >
                           {entry.label}
@@ -2003,15 +1990,7 @@ export default function ForgePlatformDemo() {
                   PR Risk Score
                 </span>
                 <span
-                  className={`px-2.5 py-0.5 rounded-md text-[10.5px] font-bold border ${
-                    prCleared || scanState === 'IDLE'
-                      ? 'bg-white/10 text-zinc-300 border-white/15'
-                      : riskScore >= 70
-                      ? 'bg-red-950/90 text-red-200 border-red-500/40'
-                      : riskScore >= 35
-                      ? 'bg-white/10 text-white border-white/25'
-                      : 'bg-white text-[#09090B] border-white'
-                  }`}
+                  className="px-2.5 py-0.5 rounded-md text-[10.5px] font-bold bg-[#09090B] text-white border border-white/35"
                   style={FONT_MONO}
                 >
                   {prCleared ? 'WAITING FOR PR' : scanState === 'IDLE' ? 'NOT SCANNED' : riskScore >= 70 ? 'MERGE BLOCKED' : riskScore >= 35 ? 'NEEDS FIXES' : 'SAFE TO MERGE'}
@@ -2554,13 +2533,7 @@ export default function ForgePlatformDemo() {
                 <div className="p-3 rounded-xl bg-white/[0.06] border border-white/10">
                   <div className="text-[10px] text-stone-400" style={FONT_MONO}>RISK</div>
                   <span
-                    className={`inline-block mt-1 px-2 py-0.5 rounded text-[10px] font-semibold ${
-                      blast.risk === 'HIGH'
-                        ? 'bg-red-500/20 text-red-300 border border-red-500/30'
-                        : blast.risk === 'MEDIUM'
-                        ? 'bg-amber-400/20 text-amber-200 border border-amber-400/30'
-                        : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
-                    }`}
+                    className="inline-block mt-1 px-2.5 py-0.5 rounded text-[10px] font-bold bg-[#09090B] text-white border border-white/35"
                     style={FONT_MONO}
                   >
                     {blast.risk}
@@ -2706,15 +2679,11 @@ export default function ForgePlatformDemo() {
               >
                 <div className="space-y-3">
                   <div className="flex flex-wrap items-center justify-between gap-2">
-                    <span className={`px-2 py-0.5 rounded-md text-[10.5px] font-semibold border ${sevStyle(item.severity)}`} style={FONT_MONO}>
+                    <span className={`px-2.5 py-0.5 rounded-md text-[10.5px] font-bold border ${sevStyle(item.severity)}`} style={FONT_MONO}>
                       {item.severity} · {item.scanner}
                     </span>
                     <span
-                      className={`px-2 py-0.5 rounded-md text-[10.5px] font-semibold ${
-                        item.status === 'MITIGATED'
-                          ? 'bg-emerald-100 text-emerald-800 border border-emerald-200'
-                          : 'bg-red-100 text-red-800 border border-red-200'
-                      }`}
+                      className="px-2.5 py-0.5 rounded-md text-[10.5px] font-bold bg-[#09090B] text-white border border-[#09090B]"
                       style={FONT_MONO}
                     >
                       {item.status === 'MITIGATED' ? 'FIXED' : 'OPEN'}
@@ -2823,8 +2792,8 @@ export default function ForgePlatformDemo() {
                     <span>Recent Build Runs</span>
                   </div>
                   <div className="flex items-center gap-1.5 text-[11px] font-bold" style={FONT_MONO}>
-                    <span className="px-2 py-0.5 rounded bg-red-500/20 text-red-300">2 Failed</span>
-                    <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300">1 Pass</span>
+                    <span className="px-2 py-0.5 rounded bg-[#09090B] text-white border border-white/30">2 Failed</span>
+                    <span className="px-2 py-0.5 rounded bg-[#09090B] text-white border border-white/30">1 Pass</span>
                   </div>
                 </div>
 
@@ -2859,9 +2828,7 @@ export default function ForgePlatformDemo() {
                             <span className="text-[14px] font-bold text-[#09090B] truncate">{b.pipeline}</span>
                           </div>
                           <span
-                            className={`px-2.5 py-0.5 rounded-md text-[10.5px] font-bold shrink-0 ${
-                              isPass ? 'bg-emerald-600 text-white' : 'bg-red-600 text-white'
-                            }`}
+                            className="px-2.5 py-0.5 rounded-md text-[10.5px] font-bold shrink-0 bg-[#09090B] text-white border border-[#09090B]"
                             style={FONT_MONO}
                           >
                             {b.status}
@@ -2915,9 +2882,7 @@ export default function ForgePlatformDemo() {
                     <div className="space-y-2">
                       <div className="flex flex-wrap items-center gap-2.5">
                         <span
-                          className={`px-2.5 py-0.5 rounded-md text-[11px] font-bold ${
-                            activeCi.status === 'PASSED' ? 'bg-emerald-600 text-white' : 'bg-red-600 text-white'
-                          }`}
+                          className="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#09090B] text-white border border-[#09090B]"
                           style={FONT_MONO}
                         >
                           {activeCi.status === 'PASSED' ? 'BUILD PASSED' : 'BUILD FAILED'}
@@ -2938,7 +2903,7 @@ export default function ForgePlatformDemo() {
                     </div>
 
                     <span
-                      className="px-3 py-1.5 rounded-lg bg-[#09090B] text-amber-300 text-xs font-bold tracking-[0.03em]"
+                      className="px-3 py-1.5 rounded-lg bg-[#09090B] text-white text-xs font-bold tracking-[0.03em]"
                       style={FONT_MONO}
                     >
                       {activeCi.category}
@@ -2999,7 +2964,7 @@ export default function ForgePlatformDemo() {
                               How To Fix It
                             </span>
                           </div>
-                          <span className="px-2 py-0.5 rounded bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 text-[10.5px] font-bold" style={FONT_MONO}>
+                          <span className="px-2.5 py-0.5 rounded bg-[#09090B] border border-white/35 text-white text-[10.5px] font-bold" style={FONT_MONO}>
                             VERIFIED
                           </span>
                         </div>
@@ -3080,10 +3045,10 @@ export default function ForgePlatformDemo() {
                 </p>
               </div>
               <div className="flex flex-wrap items-center gap-2">
-                <span className="px-3 py-1 rounded-full bg-emerald-600 text-white text-xs font-bold" style={FONT_MONO}>
+                <span className="px-3 py-1 rounded-md bg-[#09090B] border border-white/35 text-white text-xs font-bold" style={FONT_MONO}>
                   100% Accuracy
                 </span>
-                <span className="px-3 py-1 rounded-full bg-amber-400 text-[#09090B] text-xs font-bold" style={FONT_MONO}>
+                <span className="px-3 py-1 rounded-md bg-[#09090B] border border-white/35 text-white text-xs font-bold" style={FONT_MONO}>
                   0% False Alarms
                 </span>
                 <button
@@ -3114,7 +3079,7 @@ export default function ForgePlatformDemo() {
                       <td className="px-6 py-3.5 font-bold text-[#09090B]">{c.name}</td>
                       <td className="px-6 py-3.5 font-semibold text-stone-700" style={FONT_MONO}>{c.triggered}</td>
                       <td className="px-6 py-3.5">
-                        <span className="px-2.5 py-0.5 rounded-md text-[10.5px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300" style={FONT_MONO}>
+                        <span className="px-2.5 py-0.5 rounded-md text-[10.5px] font-bold bg-[#09090B] text-white border border-[#09090B]" style={FONT_MONO}>
                           {c.outcome}
                         </span>
                       </td>
