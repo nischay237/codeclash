@@ -7,7 +7,10 @@ import LandingLobby from './pages/LandingLobby';
 import BattleArena from './pages/BattleArena';
 import Leaderboard from './pages/Leaderboard';
 import AnalyticsDashboard from './pages/AnalyticsDashboard';
-import ForgePlatformDemo from './pages/ForgePlatformDemo';
+
+const EXTERNAL_FORGE_URL = (
+  import.meta.env.VITE_FORGE_URL || 'https://nischay-portfolio.onrender.com/forge'
+).replace(/\/$/, '');
 
 class ErrorBoundary extends Component {
   constructor(props) {
@@ -50,7 +53,6 @@ class ErrorBoundary extends Component {
 const VIEW_PATH_MAP = {
   portfolio: '/',
   analytics: '/analytics',
-  forge: '/forge',
   lobby: '/arena',
   battle: '/battle',
   leaderboard: '/leaderboard'
@@ -59,12 +61,17 @@ const VIEW_PATH_MAP = {
 const PATH_VIEW_MAP = {
   '/': 'portfolio',
   '/analytics': 'analytics',
-  '/forge': 'forge',
   '/arena': 'lobby',
   '/lobby': 'lobby',
   '/battle': 'battle',
   '/leaderboard': 'leaderboard'
 };
+
+function openExternalForge() {
+  if (typeof window !== 'undefined') {
+    window.location.assign(EXTERNAL_FORGE_URL);
+  }
+}
 
 function getInitialView() {
   if (typeof window === 'undefined') return 'portfolio';
@@ -75,6 +82,14 @@ function getInitialView() {
 function AppContent() {
   const [currentView, setCurrentViewState] = useState(getInitialView);
   const [currentMatch, setCurrentMatch] = useState(null);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const pathname = window.location.pathname.toLowerCase().replace(/\/$/, '');
+    if (pathname === '/forge') {
+      window.location.replace(EXTERNAL_FORGE_URL);
+    }
+  }, []);
 
   // Synchronize URL and state with browser History API so URLs stay permanently live & shareable
   const setCurrentView = (view, replace = false) => {
@@ -127,7 +142,7 @@ function AppContent() {
   };
 
   return (
-    <div className={`min-h-screen flex flex-col font-sans transition-colors duration-300 ${currentView === 'portfolio' || currentView === 'forge' ? 'bg-white text-[#111111]' : 'bg-[#06080e] text-slate-100'}`}>
+    <div className={`min-h-screen flex flex-col font-sans transition-colors duration-300 ${currentView === 'portfolio' ? 'bg-white text-[#111111]' : 'bg-[#06080e] text-slate-100'}`}>
       {/* Show top arena navbar only when playing CodeClash or on leaderboard */}
       {['lobby', 'battle', 'leaderboard'].includes(currentView) && (
         <Navbar currentView={currentView} setCurrentView={setCurrentView} />
@@ -139,12 +154,10 @@ function AppContent() {
             onOpenArena={() => setCurrentView('lobby')} 
             onOpenLeaderboard={() => setCurrentView('leaderboard')}
             onOpenAnalytics={() => setCurrentView('analytics')}
-            onOpenForge={() => setCurrentView('forge')}
+            onOpenForge={openExternalForge}
           />
         ) : currentView === 'analytics' ? (
           <AnalyticsDashboard onExit={() => setCurrentView('portfolio')} />
-        ) : currentView === 'forge' ? (
-          <ForgePlatformDemo onExit={() => setCurrentView('portfolio')} />
         ) : currentView === 'battle' && currentMatch ? (
           <BattleArena
             matchData={currentMatch}
@@ -197,7 +210,7 @@ function AppContent() {
             <div className="md:col-span-3 space-y-2.5 text-xs">
               <div className="text-[11px] uppercase tracking-wider text-stone-400">Live Projects</div>
               <div className="flex flex-col gap-2">
-                <button onClick={() => setCurrentView('forge')} className="text-left text-white hover:text-[#F5C542] transition-colors cursor-pointer">
+                <button onClick={openExternalForge} className="text-left text-white hover:text-[#F5C542] transition-colors cursor-pointer">
                   01. FORGE AI Platform ↗
                 </button>
                 <button onClick={() => setCurrentView('lobby')} className="text-left text-white hover:text-[#F5C542] transition-colors cursor-pointer">
@@ -243,15 +256,11 @@ function AppContent() {
         </footer>
       ) : (
         <footer
-          className={`py-8 px-5 sm:px-8 text-[13px] font-bold ${
-            currentView === 'forge'
-              ? 'border-t border-stone-200 bg-[#FAFAF8] text-stone-600'
-              : 'border-t border-slate-900 bg-[#04060a] text-slate-400'
-          }`}
+          className="py-8 px-5 sm:px-8 text-[13px] font-bold border-t border-slate-900 bg-[#04060a] text-slate-400"
         >
           <div className="max-w-[1240px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-2.5">
-              <span className={`font-bold ${currentView === 'forge' ? 'text-[#141413]' : 'text-white'}`}>
+              <span className="font-bold text-white">
                 Nischay Srivastava
               </span>
               <span className="opacity-45">·</span>
@@ -259,20 +268,20 @@ function AppContent() {
             </div>
             <div className="flex flex-wrap items-center justify-center gap-5 text-xs font-bold">
               <button
-                onClick={() => setCurrentView('forge')}
-                className={`transition-colors cursor-pointer ${currentView === 'forge' ? 'hover:text-[#141413]' : 'hover:text-emerald-400'}`}
+                onClick={openExternalForge}
+                className="transition-colors cursor-pointer hover:text-emerald-400"
               >
-                Forge AI
+                Forge AI ↗
               </button>
               <button
                 onClick={() => setCurrentView('lobby')}
-                className={`transition-colors cursor-pointer ${currentView === 'forge' ? 'hover:text-[#141413]' : 'hover:text-emerald-400'}`}
+                className="transition-colors cursor-pointer hover:text-emerald-400"
               >
                 CodeClash
               </button>
               <button
                 onClick={() => setCurrentView('analytics')}
-                className={`transition-colors cursor-pointer ${currentView === 'forge' ? 'hover:text-[#141413]' : 'hover:text-emerald-400'}`}
+                className="transition-colors cursor-pointer hover:text-emerald-400"
               >
                 Analytics
               </button>
@@ -280,7 +289,7 @@ function AppContent() {
                 href="/resume.pdf"
                 target="_blank"
                 rel="noreferrer"
-                className={`transition-colors ${currentView === 'forge' ? 'hover:text-[#141413]' : 'hover:text-emerald-400'}`}
+                className="transition-colors hover:text-emerald-400"
               >
                 Resume ↗
               </a>
@@ -288,7 +297,7 @@ function AppContent() {
                 href="https://github.com/nischay237"
                 target="_blank"
                 rel="noreferrer"
-                className={`transition-colors ${currentView === 'forge' ? 'hover:text-[#141413]' : 'hover:text-emerald-400'}`}
+                className="transition-colors hover:text-emerald-400"
               >
                 GitHub ↗
               </a>
