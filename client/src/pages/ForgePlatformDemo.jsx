@@ -2075,7 +2075,7 @@ export default function ForgePlatformDemo() {
                             className="px-2 py-0.5 rounded-md bg-stone-100 border border-stone-200 text-stone-600 text-[11px] font-bold tabular-nums"
                             style={FONT_MONO}
                           >
-                            #{String(idx + 1).padStart(2, '0')}
+                            {idx + 1}
                           </span>
                           <span
                             className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-[#09090B] text-white text-[11px] font-bold tracking-[0.04em]"
@@ -2483,7 +2483,7 @@ export default function ForgePlatformDemo() {
                           className="w-8 h-8 rounded-lg bg-[#09090B] text-white text-xs font-medium flex items-center justify-center shrink-0 tabular-nums"
                           style={FONT_MONO}
                         >
-                          {String(idx + 1).padStart(2, '0')}
+                          {idx + 1}
                         </span>
                         <div className="min-w-0 space-y-1">
                           <div className="flex flex-wrap items-center gap-2">
