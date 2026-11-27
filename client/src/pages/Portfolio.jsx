@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import {
   ArrowDown,
   ArrowUpRight,
@@ -187,13 +187,359 @@ const SKILL_ROWS = [
   },
 ];
 
+const HeroProjectRow = memo(function HeroProjectRow({
+  project,
+  isExpanded,
+  isDimmed,
+  onEnter,
+  onLaunchProject,
+  onOpenSandbox,
+}) {
+  const innerRef = useRef(null);
+  const [contentHeight, setContentHeight] = useState(0);
+
+  useLayoutEffect(() => {
+    const el = innerRef.current;
+    if (!el) return;
+    const measure = () => {
+      const h = Math.ceil(el.offsetHeight);
+      if (h > 0) setContentHeight((prev) => (prev === h ? prev : h));
+    };
+    measure();
+    if (typeof ResizeObserver !== 'undefined') {
+      const ro = new ResizeObserver(measure);
+      ro.observe(el);
+      return () => ro.disconnect();
+    }
+    window.addEventListener('resize', measure);
+    return () => window.removeEventListener('resize', measure);
+  }, []);
+
+  return (
+    <div
+      onMouseEnter={() => onEnter(project.id)}
+      style={{ contain: 'layout style' }}
+      className={`transition-opacity duration-300 ease-out will-change-[opacity] ${
+        isDimmed ? 'opacity-50' : 'opacity-100'
+      }`}
+    >
+      {/* Main Bold Project Header Row */}
+      <div
+        onClick={() => onLaunchProject(project.id)}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            onLaunchProject(project.id);
+          }
+        }}
+        className="py-4 sm:py-5 flex flex-col lg:flex-row lg:items-center justify-between gap-3 cursor-pointer"
+      >
+        <div
+          className={`flex items-baseline gap-4 sm:gap-7 transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform ${
+            isExpanded ? 'translate-x-2 sm:translate-x-4' : 'translate-x-0'
+          }`}
+        >
+          <span
+            className="text-sm font-bold text-[#141413] bg-white/95 px-2 py-0.5 rounded border border-[#141413]/25"
+            style={FONT_MONO}
+          >
+            {project.index}
+          </span>
+          <h2
+            className="text-5xl sm:text-7xl lg:text-[86px] font-extrabold tracking-[-0.04em] uppercase leading-[0.92] text-[#141413]"
+            style={{
+              ...FONT_DISPLAY,
+              textShadow: '0 2px 12px rgba(244, 242, 238, 0.85)',
+            }}
+          >
+            {project.displayTitle}
+          </h2>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-3 pl-12 sm:pl-16 lg:pl-0">
+          <div className="text-left lg:text-right">
+            <span
+              className={`inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold tracking-tight ${project.badgeClass}`}
+            >
+              {project.badge}
+            </span>
+            <div className="text-xs font-bold text-[#141413] bg-[#F4F2EE]/95 px-2.5 py-0.5 rounded mt-1">
+              {project.subtitle}
+            </div>
+          </div>
+
+          <span
+            className={`w-12 h-12 rounded-full border flex items-center justify-center shrink-0 transition-[transform,background-color,color,border-color] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform ${
+              isExpanded
+                ? 'bg-[#141413] text-[#F5C542] border-[#141413] rotate-12 scale-105'
+                : 'bg-white/95 text-[#141413] border-[#141413]/45'
+            }`}
+          >
+            <ArrowUpRight className="w-5 h-5" />
+          </span>
+        </div>
+      </div>
+
+      {/* SILKY 120FPS MEASURED-HEIGHT + GPU-LAYER EXPANDING PROJECT DETAIL DRAWER */}
+      <div
+        aria-hidden={!isExpanded}
+        className={`overflow-hidden ${isExpanded ? '' : 'pointer-events-none'}`}
+        style={{
+          height: isExpanded ? (contentHeight > 0 ? `${contentHeight}px` : 'auto') : '0px',
+          transition: 'height 340ms cubic-bezier(0.16, 1, 0.3, 1)',
+        }}
+      >
+        <div
+          ref={innerRef}
+          className="pb-6 pt-0.5 pl-0 sm:pl-14 lg:pl-16 sm:pr-1"
+          style={{
+            contain: 'layout style',
+            transform: isExpanded ? 'translate3d(0, 0, 0)' : 'translate3d(0, -10px, 0)',
+            opacity: isExpanded ? 1 : 0,
+            transition:
+              'transform 340ms cubic-bezier(0.16, 1, 0.3, 1), opacity 240ms ease-out',
+            willChange: 'transform, opacity',
+          }}
+        >
+          <div className="rounded-2xl bg-white/[0.98] border border-[#141413]/15 p-5 sm:p-6 shadow-[0_12px_26px_rgba(20,20,19,0.10)] grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
+            <div className="lg:col-span-9 space-y-3.5">
+              <div className="flex flex-wrap items-center gap-2.5">
+                <span
+                  className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold ${project.badgeClass}`}
+                >
+                  {project.impactStat}
+                </span>
+                <span className="text-xs font-bold text-stone-700" style={FONT_MONO}>
+                  {project.repoSlug}
+                </span>
+                <span className="hidden sm:inline text-stone-300">·</span>
+                <span className="text-xs font-extrabold text-[#141413]">
+                  {project.editorialTitle}
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+                <div className="rounded-xl bg-[#F4F2EC] border border-[#141413]/15 p-3.5 sm:p-4 space-y-1.5">
+                  <div
+                    className="inline-flex items-center gap-1.5 text-[10.5px] font-extrabold uppercase tracking-[0.08em] text-[#141413]"
+                    style={FONT_MONO}
+                  >
+                    <span className={`w-2 h-2 rounded-full ${project.accentBar}`} />
+                    <span>What This Project Does</span>
+                  </div>
+                  <p className="text-[13px] sm:text-[13.5px] font-bold text-[#141413] leading-relaxed">
+                    {project.whatItDoes}
+                  </p>
+                </div>
+
+                <div className="rounded-xl bg-[#141413] text-white border border-[#141413] p-3.5 sm:p-4 space-y-1.5">
+                  <div
+                    className="inline-flex items-center gap-1.5 text-[10.5px] font-extrabold uppercase tracking-[0.08em] text-[#F5C542]"
+                    style={FONT_MONO}
+                  >
+                    <Zap className="w-3 h-3 text-[#F5C542]" />
+                    <span>Industry Problem Solved</span>
+                  </div>
+                  <p className="text-[13px] sm:text-[13.5px] font-bold text-white/95 leading-relaxed">
+                    {project.industryProblem}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex flex-wrap gap-1.5 pt-0.5">
+                {project.techStack.slice(0, 6).map((tech) => (
+                  <span
+                    key={tech}
+                    className="px-2.5 py-1 rounded-full bg-[#F4F2EC] border border-stone-300/80 text-[11.5px] font-bold text-[#141413]"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div className="lg:col-span-3 flex flex-col sm:flex-row lg:flex-col gap-2.5 lg:items-stretch justify-center">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onLaunchProject(project.id);
+                }}
+                className="h-10 px-4 rounded-full bg-[#141413] hover:bg-[#2E2D2A] text-white text-xs font-bold inline-flex items-center justify-center gap-1.5 transition-colors cursor-pointer w-full"
+              >
+                {project.cta} <ArrowUpRight className="w-3.5 h-3.5" />
+              </button>
+              <a
+                href={project.githubUrl}
+                target="_blank"
+                rel="noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="h-10 px-4 rounded-full bg-white hover:bg-[#F5C542] border border-[#141413] text-[#141413] text-xs font-bold inline-flex items-center justify-center gap-1.5 transition-colors w-full"
+              >
+                <GithubIcon className="w-3.5 h-3.5" /> View GitHub Repo ↗
+              </a>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onOpenSandbox(project.id);
+                }}
+                className="text-xs font-bold text-[#141413] underline underline-offset-4 hover:opacity-70 inline-flex items-center justify-center gap-1 pt-1 cursor-pointer w-full"
+              >
+                Try interactive sandbox <ArrowDown className="w-3 h-3" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+});
+
+const HeroProjectSection = memo(function HeroProjectSection({
+  onLaunchProject,
+  onOpenSandbox,
+  onScrollToGallery,
+}) {
+  const [hoveredId, setHoveredId] = useState(null);
+  const hoveredIdRef = useRef(null);
+  const hoverTimerRef = useRef(null);
+
+  const clearHoverTimer = useCallback(() => {
+    if (hoverTimerRef.current) {
+      clearTimeout(hoverTimerRef.current);
+      hoverTimerRef.current = null;
+    }
+  }, []);
+
+  useEffect(() => () => clearHoverTimer(), [clearHoverTimer]);
+
+  const setHovered = useCallback((nextId) => {
+    hoveredIdRef.current = nextId;
+    setHoveredId(nextId);
+  }, []);
+
+  const handleRowEnter = useCallback(
+    (projectId) => {
+      clearHoverTimer();
+      const current = hoveredIdRef.current;
+      if (current === null) {
+        // Instant open from idle with zero delay
+        setHovered(projectId);
+        return;
+      }
+      if (current !== projectId) {
+        // Brief 25ms stabilization prevents stutter on diagonal sweeps across rows
+        hoverTimerRef.current = setTimeout(() => {
+          setHovered(projectId);
+        }, 25);
+      }
+    },
+    [clearHoverTimer, setHovered]
+  );
+
+  const handleListLeave = useCallback(() => {
+    clearHoverTimer();
+    hoverTimerRef.current = setTimeout(() => {
+      setHovered(null);
+    }, 80);
+  }, [clearHoverTimer, setHovered]);
+
+  return (
+    <section className="relative min-h-[calc(100vh-64px)] overflow-hidden bg-[#EAE8E4]">
+      {/* Static GPU-cached blurred photo (ZERO per-frame filter:blur recalculation or resize!) */}
+      <div
+        className="absolute inset-0 pointer-events-none select-none overflow-hidden"
+        style={{ contain: 'strict' }}
+      >
+        <img
+          src="/hero-team-bg.jpg"
+          alt="Software engineers collaborating in studio"
+          decoding="async"
+          className="w-full h-[140vh] min-h-[1150px] object-cover object-[62%_center] blur-[3px] scale-[1.03] opacity-90 transform-gpu will-change-transform"
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              'linear-gradient(96deg, rgba(244,242,238,0.82) 0%, rgba(244,242,238,0.60) 44%, rgba(244,242,238,0.28) 78%, rgba(244,242,238,0.20) 100%)',
+          }}
+        />
+        {/* Pure GPU opacity scrim replaces expensive animated filter:blur */}
+        <div
+          className={`absolute inset-0 bg-[#EAE8E4]/35 transition-opacity duration-300 ease-out will-change-[opacity] ${
+            hoveredId ? 'opacity-100' : 'opacity-0'
+          }`}
+        />
+      </div>
+
+      {/* Foreground Content */}
+      <div className="relative z-10 max-w-[1320px] mx-auto px-5 sm:px-10 py-8 sm:py-10 min-h-[calc(100vh-64px)] flex flex-col justify-between gap-6">
+        {/* Top Identity Strip */}
+        <div className="flex flex-wrap items-center justify-between gap-3 text-xs font-bold text-[#141413]">
+          <div className="inline-flex items-center gap-2 bg-white/95 px-3.5 py-1.5 rounded-full border border-[#141413]/15">
+            <span className="w-2 h-2 rounded-full bg-[#1D8F5A] animate-pulse" />
+            <span>Full-Stack &amp; Distributed Systems Engineer · Open to SWE Roles</span>
+          </div>
+          <div className="inline-flex items-center gap-2.5 bg-white/95 px-3.5 py-1.5 rounded-full border border-[#141413]/15 text-[#141413]">
+            <span>Hover any project to expand details</span>
+            <span className="opacity-35">·</span>
+            <span>Click to launch live</span>
+          </div>
+        </div>
+
+        {/* 120FPS GPU-SMOOTH TOP-ANCHORED HOVER ACCORDION PROJECT LIST */}
+        <div className="mt-4 sm:mt-8 mb-auto py-2" onMouseLeave={handleListLeave}>
+          <div className="border-t border-[#141413]/75 divide-y divide-[#141413]/30">
+            {PROJECTS.map((project) => {
+              const isExpanded = hoveredId === project.id;
+              const isDimmed = hoveredId !== null && !isExpanded;
+              return (
+                <HeroProjectRow
+                  key={project.id}
+                  project={project}
+                  isExpanded={isExpanded}
+                  isDimmed={isDimmed}
+                  onEnter={handleRowEnter}
+                  onLaunchProject={onLaunchProject}
+                  onOpenSandbox={onOpenSandbox}
+                />
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Bottom Quick Hint Strip */}
+        <div className="flex flex-wrap items-center justify-between gap-3 text-xs font-bold text-[#141413]">
+          <button
+            onClick={onScrollToGallery}
+            className="inline-flex items-center gap-2 bg-white/95 hover:bg-white px-4 py-2 rounded-full border border-[#141413]/15 transition-colors cursor-pointer"
+          >
+            <span>Scroll for full projects, GitHub links &amp; live sandboxes</span>
+            <ArrowDown className="w-3.5 h-3.5" />
+          </button>
+          <div className="flex items-center gap-2">
+            <a
+              href="https://github.com/nischay237"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1.5 bg-[#141413] hover:bg-[#2E2D2A] text-white px-4 py-2 rounded-full transition-colors"
+            >
+              <GithubIcon className="w-3.5 h-3.5" /> github.com/nischay237 ↗
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+});
+
 export default function Portfolio({
   onOpenArena,
   onOpenLeaderboard,
   onOpenAnalytics,
   onOpenForge,
 }) {
-  const [hoveredId, setHoveredId] = useState(null);
   const [activeProjectId, setActiveProjectId] = useState('forge');
   const [selectedAstNode, setSelectedAstNode] = useState('FraudRiskEngine');
   const [duelRunning, setDuelRunning] = useState(false);
@@ -227,15 +573,30 @@ export default function Portfolio({
     [activeProjectId]
   );
 
-  const launchProject = (id) => {
-    if (id === 'forge') onOpenForge?.();
-    else if (id === 'codeclash') onOpenArena?.();
-    else if (id === 'analytics') onOpenAnalytics?.();
-  };
+  const launchProject = useCallback(
+    (id) => {
+      if (id === 'forge') onOpenForge?.();
+      else if (id === 'codeclash') onOpenArena?.();
+      else if (id === 'analytics') onOpenAnalytics?.();
+    },
+    [onOpenForge, onOpenArena, onOpenAnalytics]
+  );
 
-  const scrollTo = (id) => {
+  const scrollTo = useCallback((id) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
+  }, []);
+
+  const handleOpenSandbox = useCallback(
+    (projectId) => {
+      setActiveProjectId(projectId);
+      scrollTo('interactive-lab');
+    },
+    [scrollTo]
+  );
+
+  const handleScrollToGallery = useCallback(() => {
+    scrollTo('projects-gallery');
+  }, [scrollTo]);
 
   const handleCopyEmail = () => {
     navigator.clipboard?.writeText('nischaysrivastava2@gmail.com').catch(() => {});
@@ -303,7 +664,7 @@ export default function Portfolio({
       {/* ============================================================== */}
       {/* 1. CLEAN FROSTED TOP NAVBAR (With Direct GitHub & Resume)      */}
       {/* ============================================================== */}
-      <header className="sticky top-0 z-40 bg-[#EAE8E4]/90 backdrop-blur-md border-b border-[#141413]/10">
+      <header className="sticky top-0 z-40 bg-[#EAE8E4]/95 border-b border-[#141413]/10">
         <div className="max-w-[1320px] mx-auto px-5 sm:px-8 h-16 flex items-center justify-between gap-4">
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
@@ -377,251 +738,13 @@ export default function Portfolio({
       </header>
 
       {/* ============================================================== */}
-      {/* 2. HERO: FULL-BLEED BLURRED TEAM PHOTO + PUSH-DOWN ACCORDION   */}
-      {/*    Hovering a project smoothly expands its full info below &   */}
-      {/*    pushes the next project smoothly down; leaving glides it up */}
+      {/* 2. HERO: ISOLATED GPU-SMOOTH HOVER ACCORDION (ZERO LAG!)       */}
       {/* ============================================================== */}
-      <section className="relative min-h-[calc(100vh-64px)] overflow-hidden bg-[#EAE8E4]">
-        {/* Full-Bleed Blurred Team Photo */}
-        <div className="absolute inset-0 pointer-events-none select-none overflow-hidden">
-          <img
-            src="/hero-team-bg.jpg"
-            alt="Software engineers collaborating in studio"
-            className={`w-full h-full object-cover object-[62%_center] transition-all duration-500 ${
-              hoveredId ? 'blur-[5px] scale-[1.04] opacity-85' : 'blur-[2px] scale-[1.02] opacity-95'
-            }`}
-          />
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                'linear-gradient(96deg, rgba(244,242,238,0.82) 0%, rgba(244,242,238,0.60) 44%, rgba(244,242,238,0.28) 78%, rgba(244,242,238,0.20) 100%)',
-            }}
-          />
-        </div>
-
-        {/* Foreground Content */}
-        <div className="relative z-10 max-w-[1320px] mx-auto px-5 sm:px-10 py-8 sm:py-10 min-h-[calc(100vh-64px)] flex flex-col justify-between gap-6">
-          {/* Top Identity Strip */}
-          <div className="flex flex-wrap items-center justify-between gap-3 text-xs font-bold text-[#141413]">
-            <div className="inline-flex items-center gap-2 bg-white/85 backdrop-blur-sm px-3.5 py-1.5 rounded-full border border-[#141413]/12">
-              <span className="w-2 h-2 rounded-full bg-[#1D8F5A] animate-pulse" />
-              <span>Full-Stack &amp; Distributed Systems Engineer · Open to SWE Roles</span>
-            </div>
-            <div className="inline-flex items-center gap-2.5 bg-white/85 backdrop-blur-sm px-3.5 py-1.5 rounded-full border border-[#141413]/12 text-[#141413]">
-              <span>Hover any project to expand details</span>
-              <span className="opacity-35">·</span>
-              <span>Click to launch live</span>
-            </div>
-          </div>
-
-          {/* SMOOTH PUSH-DOWN HOVER ACCORDION PROJECT LIST */}
-          <div
-            className="my-auto py-2"
-            onMouseLeave={() => setHoveredId(null)}
-          >
-            <div className="border-t border-[#141413]/75 divide-y divide-[#141413]/30">
-              {PROJECTS.map((project) => {
-                const isExpanded = hoveredId === project.id;
-                const isDimmed = hoveredId !== null && !isExpanded;
-                return (
-                  <div
-                    key={project.id}
-                    onMouseEnter={() => {
-                      setHoveredId(project.id);
-                      setActiveProjectId(project.id);
-                    }}
-                    className={`transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-                      isDimmed ? 'opacity-50' : 'opacity-100'
-                    }`}
-                  >
-                    {/* Main Bold Project Header Row */}
-                    <div
-                      onClick={() => launchProject(project.id)}
-                      role="button"
-                      tabIndex={0}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                          e.preventDefault();
-                          launchProject(project.id);
-                        }
-                      }}
-                      className="py-4 sm:py-5 flex flex-col lg:flex-row lg:items-center justify-between gap-3 cursor-pointer"
-                    >
-                      <div
-                        className={`flex items-baseline gap-4 sm:gap-7 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-                          isExpanded ? 'translate-x-2 sm:translate-x-4' : ''
-                        }`}
-                      >
-                        <span
-                          className="text-sm font-bold text-[#141413] bg-white/90 px-2 py-0.5 rounded border border-[#141413]/25"
-                          style={FONT_MONO}
-                        >
-                          {project.index}
-                        </span>
-                        <h2
-                          className="text-5xl sm:text-7xl lg:text-[86px] font-extrabold tracking-[-0.04em] uppercase leading-[0.92] text-[#141413]"
-                          style={{
-                            ...FONT_DISPLAY,
-                            textShadow: '0 2px 24px rgba(244, 242, 238, 0.9)',
-                          }}
-                        >
-                          {project.displayTitle}
-                        </h2>
-                      </div>
-
-                      <div className="flex flex-wrap items-center gap-3 pl-12 sm:pl-16 lg:pl-0">
-                        <div className="text-left lg:text-right">
-                          <span
-                            className={`inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold tracking-tight ${project.badgeClass}`}
-                          >
-                            {project.badge}
-                          </span>
-                          <div className="text-xs font-bold text-[#141413] bg-[#F4F2EE]/90 backdrop-blur-xs px-2.5 py-0.5 rounded mt-1">
-                            {project.subtitle}
-                          </div>
-                        </div>
-
-                        <span
-                          className={`w-12 h-12 rounded-full border border-[#141413]/45 flex items-center justify-center shrink-0 transition-all duration-300 ${
-                            isExpanded
-                              ? 'bg-[#141413] text-[#F5C542] border-[#141413] rotate-12 scale-105'
-                              : 'bg-white/90 text-[#141413]'
-                          }`}
-                        >
-                          <ArrowUpRight className="w-5 h-5" />
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* SILKY PUSH-DOWN EXPANDING PROJECT DETAIL DRAWER */}
-                    <div
-                      className={`grid transition-[grid-template-rows,opacity] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-                        isExpanded ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
-                      }`}
-                    >
-                      <div className="overflow-hidden">
-                        <div className="pb-6 pl-0 sm:pl-14 lg:pl-16">
-                          <div className="rounded-2xl bg-white/95 backdrop-blur-md border border-[#141413]/15 p-5 sm:p-6 shadow-[0_14px_36px_rgba(20,20,19,0.12)] grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
-                            <div className="lg:col-span-9 space-y-3.5">
-                              <div className="flex flex-wrap items-center gap-2.5">
-                                <span
-                                  className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold ${project.badgeClass}`}
-                                >
-                                  {project.impactStat}
-                                </span>
-                                <span className="text-xs font-bold text-stone-700" style={FONT_MONO}>
-                                  {project.repoSlug}
-                                </span>
-                                <span className="hidden sm:inline text-stone-300">·</span>
-                                <span className="text-xs font-extrabold text-[#141413]">
-                                  {project.editorialTitle}
-                                </span>
-                              </div>
-
-                              {/* Structured What It Does + Industry Problem Solved Cards */}
-                              <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
-                                <div className="rounded-xl bg-[#F4F2EC] border border-[#141413]/15 p-3.5 sm:p-4 space-y-1.5">
-                                  <div
-                                    className="inline-flex items-center gap-1.5 text-[10.5px] font-extrabold uppercase tracking-[0.08em] text-[#141413]"
-                                    style={FONT_MONO}
-                                  >
-                                    <span className={`w-2 h-2 rounded-full ${project.accentBar}`} />
-                                    <span>What This Project Does</span>
-                                  </div>
-                                  <p className="text-[13px] sm:text-[13.5px] font-bold text-[#141413] leading-relaxed">
-                                    {project.whatItDoes}
-                                  </p>
-                                </div>
-
-                                <div className="rounded-xl bg-[#141413] text-white border border-[#141413] p-3.5 sm:p-4 space-y-1.5">
-                                  <div
-                                    className="inline-flex items-center gap-1.5 text-[10.5px] font-extrabold uppercase tracking-[0.08em] text-[#F5C542]"
-                                    style={FONT_MONO}
-                                  >
-                                    <Zap className="w-3 h-3 text-[#F5C542]" />
-                                    <span>Industry Problem Solved</span>
-                                  </div>
-                                  <p className="text-[13px] sm:text-[13.5px] font-bold text-white/95 leading-relaxed">
-                                    {project.industryProblem}
-                                  </p>
-                                </div>
-                              </div>
-
-                              <div className="flex flex-wrap gap-1.5 pt-0.5">
-                                {project.techStack.slice(0, 6).map((tech) => (
-                                  <span
-                                    key={tech}
-                                    className="px-2.5 py-1 rounded-full bg-[#F4F2EC] border border-stone-300/80 text-[11.5px] font-bold text-[#141413]"
-                                  >
-                                    {tech}
-                                  </span>
-                                ))}
-                              </div>
-                            </div>
-
-                            <div className="lg:col-span-3 flex flex-col sm:flex-row lg:flex-col gap-2.5 lg:items-stretch justify-center">
-                              <button
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  launchProject(project.id);
-                                }}
-                                className="h-10 px-4 rounded-full bg-[#141413] hover:bg-[#2E2D2A] text-white text-xs font-bold inline-flex items-center justify-center gap-1.5 transition-colors cursor-pointer w-full"
-                              >
-                                {project.cta} <ArrowUpRight className="w-3.5 h-3.5" />
-                              </button>
-                              <a
-                                href={project.githubUrl}
-                                target="_blank"
-                                rel="noreferrer"
-                                onClick={(e) => e.stopPropagation()}
-                                className="h-10 px-4 rounded-full bg-white hover:bg-[#F5C542] border border-[#141413] text-[#141413] text-xs font-bold inline-flex items-center justify-center gap-1.5 transition-colors w-full"
-                              >
-                                <GithubIcon className="w-3.5 h-3.5" /> View GitHub Repo ↗
-                              </a>
-                              <button
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  setActiveProjectId(project.id);
-                                  scrollTo('interactive-lab');
-                                }}
-                                className="text-xs font-bold text-[#141413] underline underline-offset-4 hover:opacity-70 inline-flex items-center justify-center gap-1 pt-1 cursor-pointer w-full"
-                              >
-                                Try interactive sandbox <ArrowDown className="w-3 h-3" />
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Bottom Quick Hint Strip */}
-          <div className="flex flex-wrap items-center justify-between gap-3 text-xs font-bold text-[#141413]">
-            <button
-              onClick={() => scrollTo('projects-gallery')}
-              className="inline-flex items-center gap-2 bg-white/88 hover:bg-white backdrop-blur-sm px-4 py-2 rounded-full border border-[#141413]/15 transition-colors cursor-pointer"
-            >
-              <span>Scroll for full projects, GitHub links &amp; live sandboxes</span>
-              <ArrowDown className="w-3.5 h-3.5" />
-            </button>
-            <div className="flex items-center gap-2">
-              <a
-                href="https://github.com/nischay237"
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-1.5 bg-[#141413] hover:bg-[#2E2D2A] text-white px-4 py-2 rounded-full transition-colors"
-              >
-                <GithubIcon className="w-3.5 h-3.5" /> github.com/nischay237 ↗
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
+      <HeroProjectSection
+        onLaunchProject={launchProject}
+        onOpenSandbox={handleOpenSandbox}
+        onScrollToGallery={handleScrollToGallery}
+      />
 
       {/* ============================================================== */}
       {/* 3. EYE-CATCHING HR / RECRUITER PROOF & METRICS BANNER          */}
