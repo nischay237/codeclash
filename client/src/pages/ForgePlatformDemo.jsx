@@ -544,7 +544,6 @@ export default function ForgePlatformDemo() {
   const [scanningLine, setScanningLine] = useState(0);
   const [revealedCount, setRevealedCount] = useState(0);
   const [liveLogs, setLiveLogs] = useState([]);
-  const [popupAlerts, setPopupAlerts] = useState([]);
   const [diffSourceLabel, setDiffSourceLabel] = useState('Waiting for PR');
 
   // Interactive Impact Map, Security, CI, Pipeline
@@ -645,25 +644,27 @@ export default function ForgePlatformDemo() {
     return s.severity === secFilter;
   });
 
+  const stepLogs = useMemo(() => liveLogs.filter((entry) => !entry.findingId), [liveLogs]);
+
   const scrollToSection = (id) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
+  const inspectFindingInReport = (findingId) => {
+    setReportFilter('ALL');
+    setExpandedCards((p) => ({ ...p, [findingId]: true }));
+    setTimeout(() => {
+      const cardEl = document.getElementById(`finding-card-${findingId}`);
+      if (cardEl) {
+        cardEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else {
+        scrollToSection('scan-report');
+      }
+    }, 40);
+  };
+
   const pushLog = (entry) => {
     setLiveLogs((prev) => [...prev, { id: `${Date.now()}-${Math.random()}`, ...entry }]);
-  };
-
-  const dismissPopup = (id) => {
-    setPopupAlerts((prev) => prev.filter((p) => p.id !== id));
-  };
-
-  const pushPopup = (alert, ttlMs = 4600) => {
-    const id = `${Date.now()}-${Math.random()}`;
-    setPopupAlerts((prev) => [...prev.slice(-2), { id, ...alert }]);
-    const tRemove = setTimeout(() => {
-      setPopupAlerts((prev) => prev.filter((p) => p.id !== id));
-    }, ttlMs);
-    scanTimersRef.current.push(tRemove);
   };
 
   const isScanningNow = scanState === 'FETCHING' || scanState === 'IMPACT' || scanState === 'SCANNING';
@@ -674,7 +675,6 @@ export default function ForgePlatformDemo() {
     setWasReset(true);
     setDiffText('');
     setLiveLogs([]);
-    setPopupAlerts([]);
     setDecisions({});
     setExpandedCards({});
     setReportFilter('ALL');
@@ -727,7 +727,6 @@ export default function ForgePlatformDemo() {
     setScanningLine(1);
     setScanPercent(8);
     setLiveLogs([]);
-    setPopupAlerts([]);
     setScanState('FETCHING');
     scrollToSection('live-scanner');
 
@@ -814,15 +813,6 @@ export default function ForgePlatformDemo() {
             detail: `Solution: ${bug.after}`,
             findingId: bug.id,
           });
-          pushPopup({
-            badge: `${bug.severity} · LINE ${bug.lineNo}`,
-            counter: `${String(idx + 1).padStart(2, '0')} / ${String(detected.length).padStart(2, '0')}`,
-            category: bug.category,
-            title: bug.title,
-            fixPreview: bug.after,
-            findingId: bug.id,
-            isCritical: bug.severity === 'CRITICAL',
-          });
         }, (idx + 1) * 720);
         scanTimersRef.current.push(tBug);
       });
@@ -833,21 +823,10 @@ export default function ForgePlatformDemo() {
         setScanState('AWAITING_APPROVAL');
         pushLog({
           type: 'gate',
-          label: 'STEP 5 · PAUSED AT HUMAN APPROVAL GATE',
+          label: 'STEP 5 · HUMAN APPROVAL GATE',
           title: `Scan complete! ${detected.length} real issue(s) found — Report & Graphs ready below.`,
-          detail: 'Scroll to Section 03 to inspect charts, review 1-click fixes, and approve comments.',
+          detail: 'Scroll to Section 04 to inspect charts, review 1-click fixes, and approve comments.',
         });
-        pushPopup(
-          {
-            badge: 'SCAN COMPLETE · HUMAN GATE',
-            counter: `${detected.length} FOUND`,
-            category: 'Report Ready',
-            title: `${detected.length} real issues caught — awaiting your sign-off`,
-            fixPreview: 'Click to view Risk Score, charts & 1-click fixes',
-            isSummary: true,
-          },
-          7000
-        );
       }, (detected.length + 1) * 720 + 400);
       scanTimersRef.current.push(tDone);
     }, 1650);
@@ -1061,6 +1040,7 @@ export default function ForgePlatformDemo() {
             {[
               { id: 'incoming-github', label: 'Incoming GitHub' },
               { id: 'live-scanner', label: 'Live Scan' },
+              { id: 'live-diagnostics', label: 'Live Findings' },
               { id: 'scan-report', label: 'Report & Fixes' },
               { id: 'impact-map', label: 'Impact Map' },
               { id: 'security-shield', label: 'Security' },
@@ -1558,7 +1538,7 @@ export default function ForgePlatformDemo() {
       {/* ================================================================== */}
       {/* SECTION 02: FULL-WIDTH ENTERPRISE LIVE CODE INSPECTION WORKBENCH   */}
       {/* ================================================================== */}
-      <section id="live-scanner" className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-[#F9F8F5] border-b border-stone-200">
+      <section id="live-scanner" className="pt-16 pb-12 sm:pt-20 sm:pb-16 px-4 sm:px-6 lg:px-8 bg-[#F9F8F5] border-b border-stone-200">
         <div className="max-w-[1520px] mx-auto space-y-7">
           {/* Bold Executive Section Header */}
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
@@ -1802,7 +1782,7 @@ export default function ForgePlatformDemo() {
               </div>
             ) : (
               <div
-                className="relative min-h-[420px] max-h-[580px] overflow-y-auto overflow-x-auto py-3 text-[12.5px] sm:text-[13.5px] leading-7 bg-[#09090B]"
+                className="relative min-h-[360px] max-h-[460px] overflow-y-auto overflow-x-auto py-3 text-[12.5px] sm:text-[13.5px] leading-7 bg-[#09090B]"
                 style={FONT_MONO}
               >
                 {/* PROFESSIONAL MONOCHROME PRECISION INSPECTION BEAM (ZERO NEON / RAINBOW!) */}
@@ -1846,8 +1826,7 @@ export default function ForgePlatformDemo() {
                         key={`${line.lineNo}-${line.text.slice(0, 12)}`}
                         onClick={() => {
                           if (hit) {
-                            setExpandedCards((p) => ({ ...p, [hit.id]: true }));
-                            scrollToSection('scan-report');
+                            inspectFindingInReport(hit.id);
                           }
                         }}
                         className={`px-5 sm:px-6 flex items-center justify-between gap-6 transition-colors duration-200 ${
@@ -1883,102 +1862,300 @@ export default function ForgePlatformDemo() {
               </div>
             )}
 
-            {/* INTEGRATED FULL-WIDTH BOTTOM DIAGNOSTICS CONSOLE */}
-            <div className="border-t border-white/10 bg-[#111114]">
-              <div className="px-5 sm:px-6 py-3 border-b border-white/10 flex flex-wrap items-center justify-between gap-2">
-                <div className="flex items-center gap-2.5 text-xs font-bold text-white">
-                  <Terminal className={`w-3.5 h-3.5 text-zinc-400 ${isScanningNow ? 'animate-pulse text-white' : ''}`} />
-                  <span className="uppercase tracking-[0.08em] text-[11px] text-zinc-300">Diagnostics Output</span>
-                  <span className="px-2 py-0.5 rounded bg-white/10 text-white text-[11px] font-bold tabular-nums" style={FONT_MONO}>
-                    {findings.length} {findings.length === 1 ? 'finding' : 'findings'}
-                  </span>
-                </div>
-                {findings.length > 0 && (
-                  <button
-                    onClick={() => scrollToSection('scan-report')}
-                    className="text-xs font-bold text-zinc-300 hover:text-white transition-colors cursor-pointer"
-                  >
-                    Inspect All Fixes in Report ↓
-                  </button>
-                )}
+            {/* SLIM IDE STATUS BAR — DIAGNOSTICS STREAM MOVED TO DEDICATED SECTION BELOW */}
+            <div className="px-5 sm:px-6 py-2.5 border-t border-white/10 bg-[#111114] flex flex-wrap items-center justify-between gap-3">
+              <div className="flex items-center gap-2.5 text-[11.5px] text-zinc-400" style={FONT_MONO}>
+                <span
+                  className={`w-2 h-2 rounded-full ${
+                    isScanningNow
+                      ? 'bg-white animate-ping'
+                      : findings.length > 0
+                      ? 'bg-red-500'
+                      : 'bg-zinc-600'
+                  }`}
+                />
+                <span className="text-zinc-200 font-semibold">
+                  {isScanningNow
+                    ? `Live scan active · ${findings.length} ${findings.length === 1 ? 'finding' : 'findings'} popped below`
+                    : findings.length > 0
+                    ? `${findings.length} ${findings.length === 1 ? 'finding' : 'findings'} caught · displayed in Live Findings below`
+                    : prCleared
+                    ? 'Idle · load a GitHub PR in Section 01 to begin'
+                    : 'Ready · start live scan to stream findings below'}
+                </span>
               </div>
-
-              {liveLogs.length === 0 ? (
-                <div className="px-5 sm:px-6 py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-lg bg-white/[0.06] border border-white/10 flex items-center justify-center shrink-0">
-                      <ScanLine className="w-4 h-4 text-zinc-300" />
-                    </div>
-                    <div>
-                      <div className="text-sm font-bold text-white" style={FONT_DISPLAY}>
-                        {prCleared ? 'Waiting for GitHub Pull Request' : 'Ready for line-by-line inspection'}
-                      </div>
-                      <div className="text-xs text-zinc-400">
-                        {prCleared
-                          ? 'Paste any public GitHub PR link in Section 01 above to run the full inspection pipeline.'
-                          : 'Click Start Inspection to run AST blast radius, secret detection, and static analysis live.'}
-                      </div>
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => (prCleared ? scrollToSection('incoming-github') : startRealTimePrScan(activePr))}
-                    className="h-9 px-5 rounded-lg bg-white hover:bg-zinc-200 text-[#09090B] text-xs font-bold inline-flex items-center justify-center gap-2 cursor-pointer transition-colors shrink-0"
-                  >
-                    <Play className="w-3.5 h-3.5 fill-current" />
-                    {prCleared ? 'Load GitHub PR ↑' : 'Start Live Inspection'}
-                  </button>
-                </div>
-              ) : (
-                <div className="p-4 sm:p-5 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 max-h-[300px] overflow-y-auto">
-                  {liveLogs.map((entry) => (
-                    <div
-                      key={entry.id}
-                      onClick={() => {
-                        if (entry.findingId) {
-                          setExpandedCards((p) => ({ ...p, [entry.findingId]: true }));
-                          scrollToSection('scan-report');
-                        }
-                      }}
-                      className={`p-3.5 rounded-xl border bg-[#09090B] space-y-1.5 animate-forge-pop transition-colors ${
-                        entry.type === 'crit'
-                          ? 'border-red-500/40 hover:border-red-400 cursor-pointer'
-                          : entry.findingId
-                          ? 'border-white/15 hover:border-white/40 cursor-pointer'
-                          : entry.type === 'gate'
-                          ? 'border-white/40 bg-white/[0.04]'
-                          : 'border-white/10'
-                      }`}
-                    >
-                      <div className="flex items-center justify-between gap-2">
-                        <span
-                          className="px-2.5 py-0.5 rounded text-[10px] font-bold bg-[#09090B] text-white border border-white/35"
-                          style={FONT_MONO}
-                        >
-                          {entry.label}
-                        </span>
-                        {entry.findingId && (
-                          <span className="text-[11px] font-bold text-zinc-300 hover:text-white">
-                            Fix →
-                          </span>
-                        )}
-                      </div>
-                      <div className="text-[13px] font-bold text-white leading-snug">
-                        {entry.title}
-                      </div>
-                      <div className="text-[11px] text-zinc-400 truncate" style={FONT_MONO}>
-                        {entry.detail}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
+              <button
+                onClick={() => scrollToSection('live-diagnostics')}
+                className="text-[11.5px] font-semibold text-zinc-300 hover:text-white inline-flex items-center gap-1.5 transition-colors cursor-pointer"
+                style={FONT_MONO}
+              >
+                {findings.length > 0 ? `Jump to Live Findings (${findings.length}) ↓` : 'Live Detection Stream ↓'}
+              </button>
             </div>
           </div>
         </div>
       </section>
 
       {/* ================================================================== */}
-      {/* SECTION 03: EXECUTIVE SCAN REPORT, GRAPHS, SOLUTIONS & APPROVAL    */}
+      {/* SECTION 03: DEDICATED LIVE DETECTION STREAM (POP-IN AS CAUGHT)     */}
+      {/* ================================================================== */}
+      <section id="live-diagnostics" className="py-16 sm:py-24 px-5 sm:px-8 bg-[#F2F1EC] border-b border-stone-200">
+        <div className="max-w-[1320px] mx-auto space-y-9">
+          {/* Editorial Section Header */}
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+            <div className="space-y-3 max-w-2xl">
+              <div
+                className="inline-flex items-center gap-2.5 text-[11.5px] font-semibold text-stone-600 uppercase tracking-[0.12em]"
+                style={FONT_MONO}
+              >
+                <span
+                  className={`w-2 h-2 rounded-full ${
+                    isScanningNow
+                      ? 'bg-red-600 animate-ping'
+                      : findings.length > 0
+                      ? 'bg-[#09090B]'
+                      : 'bg-stone-400'
+                  }`}
+                />
+                <span>03 · Live Detection Stream</span>
+              </div>
+              <h2
+                className="text-3xl sm:text-[42px] font-bold tracking-[-0.035em] leading-[1.08] text-[#09090B]"
+                style={FONT_DISPLAY}
+              >
+                Issues caught live, one by one.
+              </h2>
+              <p className="text-[15px] sm:text-[16px] font-normal text-stone-600 leading-relaxed">
+                As Forge sweeps each line in the scanner above, every sync event and caught
+                vulnerability pops in here sequentially with its line number, risk impact, and
+                ready-to-apply fix.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-3 shrink-0">
+              <div
+                className="h-10 px-4 rounded-lg bg-white border border-stone-300/90 inline-flex items-center gap-2.5 text-xs font-bold text-[#09090B] shadow-xs"
+                style={FONT_MONO}
+              >
+                <Terminal className={`w-3.5 h-3.5 ${isScanningNow ? 'text-red-600 animate-pulse' : 'text-[#09090B]'}`} />
+                <span className="tabular-nums">
+                  {isScanningNow
+                    ? `CATCHING ${findings.length} / ${allFindings.length || '?'}`
+                    : `${findings.length} ${findings.length === 1 ? 'FINDING' : 'FINDINGS'} CAUGHT`}
+                </span>
+              </div>
+
+              {findings.length > 0 ? (
+                <button
+                  onClick={() => scrollToSection('scan-report')}
+                  className="h-10 px-5 rounded-lg bg-[#09090B] hover:bg-[#27272A] text-white text-[13px] font-semibold inline-flex items-center gap-2 transition-colors cursor-pointer"
+                >
+                  Inspect Full Report &amp; Fixes
+                  <ArrowDown className="w-3.5 h-3.5" />
+                </button>
+              ) : (
+                <button
+                  onClick={() => (prCleared ? scrollToSection('incoming-github') : startRealTimePrScan(activePr))}
+                  disabled={isScanningNow}
+                  className="h-10 px-5 rounded-lg bg-[#09090B] hover:bg-[#27272A] text-white text-[13px] font-semibold inline-flex items-center gap-2 transition-colors cursor-pointer disabled:opacity-60"
+                >
+                  <Play className="w-3.5 h-3.5 fill-current" />
+                  {prCleared ? 'Load GitHub PR ↑' : isScanningNow ? 'Scanning...' : 'Start Live Inspection'}
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Pipeline Sync Milestones (Pop in sequentially as scan progresses) */}
+          {stepLogs.length > 0 && (
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3.5">
+              {stepLogs.map((entry) => {
+                const isGate = entry.type === 'gate';
+                return (
+                  <div
+                    key={entry.id}
+                    className={`rounded-xl p-4 sm:p-5 border space-y-2 animate-forge-step-pop transition-colors ${
+                      isGate
+                        ? 'bg-[#09090B] border-[#09090B] text-white shadow-[0_14px_34px_rgba(9,9,11,0.16)]'
+                        : 'bg-white border-stone-200/90 text-[#09090B] shadow-[0_4px_14px_rgba(15,23,42,0.03)]'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between gap-2">
+                      <span
+                        className={`px-2.5 py-0.5 rounded-md text-[10.5px] font-bold tracking-[0.06em] ${
+                          isGate
+                            ? 'bg-white/15 text-white border border-white/25'
+                            : 'bg-[#09090B] text-white'
+                        }`}
+                        style={FONT_MONO}
+                      >
+                        {entry.label}
+                      </span>
+                      {isGate ? (
+                        <PauseCircle className="w-4 h-4 text-amber-300 shrink-0" />
+                      ) : (
+                        <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                      )}
+                    </div>
+                    <div
+                      className={`text-[14.5px] font-semibold leading-snug tracking-[-0.015em] ${
+                        isGate ? 'text-white' : 'text-[#09090B]'
+                      }`}
+                      style={FONT_DISPLAY}
+                    >
+                      {entry.title}
+                    </div>
+                    <p
+                      className={`text-[12.5px] leading-relaxed ${
+                        isGate ? 'text-zinc-300' : 'text-stone-600'
+                      }`}
+                    >
+                      {entry.detail}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+
+          {/* Caught Issues Pop-In Cards Grid (Grows downward one by one as scanner catches each bug) */}
+          {findings.length === 0 && !isScanningNow ? (
+            <div className="rounded-2xl bg-white border border-stone-200/90 p-8 sm:p-11 flex flex-col sm:flex-row sm:items-center justify-between gap-6 shadow-[0_8px_28px_rgba(15,23,42,0.04)]">
+              <div className="flex items-start gap-4 max-w-xl">
+                <div className="w-12 h-12 rounded-xl bg-[#09090B] text-white flex items-center justify-center shrink-0">
+                  <ScanLine className="w-5 h-5" />
+                </div>
+                <div className="space-y-1.5">
+                  <h3
+                    className="text-lg sm:text-[20px] font-bold text-[#09090B] tracking-[-0.02em]"
+                    style={FONT_DISPLAY}
+                  >
+                    {prCleared
+                      ? 'Waiting for a Pull Request to stream live findings'
+                      : scanState === 'AWAITING_APPROVAL' || scanState === 'PUBLISHED'
+                      ? 'Zero vulnerabilities detected in this Pull Request'
+                      : 'Ready to stream findings as Forge scans'}
+                  </h3>
+                  <p className="text-[14px] text-stone-600 leading-relaxed">
+                    {prCleared
+                      ? 'Load a public GitHub Pull Request (or the sample payment PR) in Section 01 above, then run the scan to watch each caught issue pop in here one by one.'
+                      : scanState === 'AWAITING_APPROVAL' || scanState === 'PUBLISHED'
+                      ? 'Every inspected line passed secret scanning, AST dependency checks, and static analysis cleanly.'
+                      : 'Start the live code scan above — every secret leak, SQL injection, concurrency bug, and performance issue will pop into this feed the instant Forge catches it.'}
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => (prCleared ? scrollToSection('incoming-github') : startRealTimePrScan(activePr))}
+                className="h-11 px-6 rounded-lg bg-[#09090B] hover:bg-[#27272A] text-white text-[13.5px] font-semibold inline-flex items-center justify-center gap-2 cursor-pointer transition-colors shrink-0"
+              >
+                <Play className="w-3.5 h-3.5 fill-current" />
+                {prCleared ? 'Load GitHub PR ↑' : 'Start Live Inspection'}
+              </button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5">
+              {findings.map((bug, idx) => {
+                const isCritical = bug.severity === 'CRITICAL';
+                return (
+                  <article
+                    key={bug.id}
+                    onClick={() => inspectFindingInReport(bug.id)}
+                    className={`group rounded-2xl bg-white p-5 sm:p-6 border border-l-[4px] flex flex-col justify-between gap-4 cursor-pointer transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_16px_38px_rgba(9,9,11,0.08)] ${
+                      isCritical
+                        ? 'border-red-200/90 border-l-red-600 hover:border-red-400 animate-forge-card-pop-crit'
+                        : 'border-stone-200/90 border-l-[#09090B] hover:border-stone-400 animate-forge-card-pop'
+                    }`}
+                  >
+                    <div className="space-y-3">
+                      {/* Top Meta Bar */}
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span
+                            className="px-2 py-0.5 rounded-md bg-stone-100 border border-stone-200 text-stone-600 text-[11px] font-bold tabular-nums"
+                            style={FONT_MONO}
+                          >
+                            #{String(idx + 1).padStart(2, '0')}
+                          </span>
+                          <span
+                            className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-[#09090B] text-white text-[11px] font-bold tracking-[0.04em]"
+                            style={FONT_MONO}
+                          >
+                            {isCritical && <span className="w-1.5 h-1.5 rounded-full bg-red-500" />}
+                            {bug.severity} · LINE {bug.lineNo}
+                          </span>
+                          <span className="text-[12px] font-semibold text-stone-500">
+                            {bug.category}
+                          </span>
+                        </div>
+
+                        <span className="inline-flex items-center gap-1 text-[12.5px] font-semibold text-[#09090B] group-hover:translate-x-0.5 transition-transform">
+                          Inspect Fix
+                          <ArrowRight className="w-3.5 h-3.5" />
+                        </span>
+                      </div>
+
+                      {/* Clean Editorial Title & Concise Impact */}
+                      <div className="space-y-1.5">
+                        <h3
+                          className="text-[17px] sm:text-[18.5px] font-semibold text-[#09090B] tracking-[-0.02em] leading-[1.3]"
+                          style={FONT_DISPLAY}
+                        >
+                          {bug.title}
+                        </h3>
+                        <p className="text-[13.5px] font-normal text-stone-600 leading-relaxed">
+                          {bug.impactNote}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Readable Suggested Fix Box (Zero Truncation) */}
+                    <div className="rounded-xl bg-[#F7F6F3] border border-stone-200/85 px-4 py-3 space-y-1.5">
+                      <div
+                        className="flex items-center justify-between gap-2 text-[10.5px] font-semibold uppercase tracking-[0.09em] text-stone-500"
+                        style={FONT_MONO}
+                      >
+                        <span>Suggested Fix</span>
+                        <span className="text-stone-400">{bug.ruleId}</span>
+                      </div>
+                      <code
+                        className="block text-[12.5px] font-medium text-[#09090B] leading-relaxed break-words"
+                        style={FONT_MONO}
+                      >
+                        {bug.after}
+                      </code>
+                    </div>
+                  </article>
+                );
+              })}
+
+              {/* Live Pulsing Tail Card While Scanner Is Still Catching Issues */}
+              {isScanningNow && (
+                <div className="rounded-2xl bg-white/75 border-2 border-dashed border-stone-300 p-6 flex flex-col justify-center gap-3 min-h-[186px] animate-forge-step-pop">
+                  <div className="flex items-center gap-2.5">
+                    <span className="w-8 h-8 rounded-lg bg-[#09090B] text-white flex items-center justify-center shrink-0">
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    </span>
+                    <span
+                      className="text-[11.5px] font-bold uppercase tracking-[0.08em] text-[#09090B]"
+                      style={FONT_MONO}
+                    >
+                      Scanning line {scanningLine || 1} of {codeLines.length || 36}...
+                    </span>
+                  </div>
+                  <p className="text-[14px] font-medium text-stone-600 leading-relaxed">
+                    Evaluating AST callers, secret patterns, and SAST rules — newly caught issues
+                    pop directly into this grid in real time.
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* ================================================================== */}
+      {/* SECTION 04: EXECUTIVE SCAN REPORT, GRAPHS, SOLUTIONS & APPROVAL    */}
       {/* ================================================================== */}
       <section id="scan-report" className="py-16 sm:py-24 px-5 sm:px-8 bg-white border-b border-stone-200">
         <div className="max-w-[1320px] mx-auto space-y-10">
@@ -1987,7 +2164,7 @@ export default function ForgePlatformDemo() {
             <div className="space-y-2.5">
               <div className="inline-flex items-center gap-2 text-xs font-bold text-stone-600 uppercase tracking-[0.08em]">
                 <BarChart3 className="w-3.5 h-3.5 text-[#09090B]" />
-                <span>03 · Scan Report, Charts &amp; Fixes</span>
+                <span>04 · Scan Report, Charts &amp; Fixes</span>
               </div>
               <h2
                 className="text-3xl sm:text-[44px] font-bold tracking-[-0.035em] leading-[1.08] text-[#09090B]"
@@ -2287,6 +2464,7 @@ export default function ForgePlatformDemo() {
                 return (
                   <div
                     key={f.id}
+                    id={`finding-card-${f.id}`}
                     className={`rounded-xl border transition-all duration-200 overflow-hidden ${
                       decision === 'APPROVED'
                         ? 'bg-emerald-50/35 border-emerald-300'
@@ -2430,7 +2608,7 @@ export default function ForgePlatformDemo() {
           <div className="space-y-2 max-w-2xl">
             <div className="inline-flex items-center gap-2 text-xs font-bold text-stone-600 uppercase tracking-[0.08em]">
               <Network className="w-3.5 h-3.5 text-sky-700" />
-              <span>04 · Change Impact &amp; Blast Radius Map</span>
+              <span>05 · Change Impact &amp; Blast Radius Map</span>
             </div>
             <h2
               className="text-3xl sm:text-[42px] font-semibold tracking-[-0.03em] leading-[1.1] text-[#09090B]"
@@ -2640,7 +2818,7 @@ export default function ForgePlatformDemo() {
             <div className="space-y-2 max-w-2xl">
               <div className="inline-flex items-center gap-2 text-xs font-bold text-stone-600 uppercase tracking-[0.08em]">
                 <ShieldAlert className="w-3.5 h-3.5 text-red-600" />
-                <span>05 · Security &amp; Secret Shield</span>
+                <span>06 · Security &amp; Secret Shield</span>
               </div>
               <h2
                 className="text-3xl sm:text-[42px] font-semibold tracking-[-0.03em] leading-[1.1] text-[#09090B]"
@@ -2783,7 +2961,7 @@ export default function ForgePlatformDemo() {
             <div className="space-y-2.5 max-w-2xl">
               <div className="inline-flex items-center gap-2 text-xs font-bold text-stone-600 uppercase tracking-[0.08em]">
                 <Activity className="w-4 h-4 text-emerald-600" />
-                <span>06 · Build Diagnosis &amp; Verified Accuracy</span>
+                <span>07 · Build Diagnosis &amp; Verified Accuracy</span>
               </div>
               <h2
                 className="text-3xl sm:text-[44px] font-bold tracking-[-0.035em] leading-[1.08] text-[#09090B]"
@@ -3139,7 +3317,7 @@ export default function ForgePlatformDemo() {
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
             <div className="space-y-2 max-w-2xl">
               <div className="text-xs font-bold uppercase tracking-[0.08em] text-stone-600">
-                07 · How It Works Under The Hood
+                08 · How It Works Under The Hood
               </div>
               <h2
                 className="text-3xl sm:text-[42px] font-semibold tracking-[-0.03em] leading-[1.1] text-[#09090B]"
@@ -3236,91 +3414,6 @@ export default function ForgePlatformDemo() {
           </div>
         </div>
       </section>
-
-      {/* ================================================================== */}
-      {/* FLOATING REAL-TIME MONOCHROME ISSUE DETECTION POPUPS               */}
-      {/* ================================================================== */}
-      {popupAlerts.length > 0 && (
-        <div
-          aria-live="polite"
-          className="fixed bottom-5 right-5 z-50 w-[390px] max-w-[calc(100vw-2rem)] flex flex-col gap-2.5 pointer-events-none"
-        >
-          {popupAlerts.length > 1 && (
-            <div className="flex justify-end pointer-events-auto">
-              <button
-                onClick={() => setPopupAlerts([])}
-                className="px-2.5 py-1 rounded-md bg-[#09090B]/95 border border-white/25 text-[10.5px] font-bold text-white hover:bg-zinc-800 transition-colors cursor-pointer shadow-lg"
-                style={FONT_MONO}
-              >
-                DISMISS ALL ({popupAlerts.length})
-              </button>
-            </div>
-          )}
-
-          {popupAlerts.map((alert) => (
-            <div
-              key={alert.id}
-              onClick={() => {
-                if (alert.findingId) {
-                  setExpandedCards((p) => ({ ...p, [alert.findingId]: true }));
-                }
-                dismissPopup(alert.id);
-                scrollToSection('scan-report');
-              }}
-              className={`pointer-events-auto relative overflow-hidden rounded-xl bg-[#09090B]/95 backdrop-blur-md text-white border border-white/25 border-l-[3px] shadow-[0_24px_56px_rgba(0,0,0,0.5)] cursor-pointer hover:border-white/50 transition-colors animate-forge-toast ${
-                alert.isCritical ? 'border-l-red-500' : 'border-l-white'
-              }`}
-            >
-              <div className="p-4 space-y-2">
-                <div className="flex items-center justify-between gap-2">
-                  <div className="flex items-center gap-2 min-w-0">
-                    <span
-                      className="px-2 py-0.5 rounded bg-[#09090B] text-white border border-white/35 text-[10px] font-bold tracking-[0.04em] shrink-0"
-                      style={FONT_MONO}
-                    >
-                      {alert.badge}
-                    </span>
-                    <span className="text-[10.5px] font-bold text-zinc-400 tabular-nums shrink-0" style={FONT_MONO}>
-                      {alert.counter}
-                    </span>
-                  </div>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      dismissPopup(alert.id);
-                    }}
-                    className="w-6 h-6 rounded-md hover:bg-white/10 text-zinc-400 hover:text-white flex items-center justify-center shrink-0 cursor-pointer transition-colors"
-                    aria-label="Dismiss popup"
-                  >
-                    <X className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-
-                <div className="text-[13.5px] font-bold text-white leading-snug tracking-[-0.01em]" style={FONT_DISPLAY}>
-                  {alert.title}
-                </div>
-
-                <div className="flex items-center justify-between gap-3 pt-0.5">
-                  <span className="text-[11px] text-zinc-400 truncate" style={FONT_MONO}>
-                    {alert.isSummary ? alert.fixPreview : `Fix: ${alert.fixPreview}`}
-                  </span>
-                  <span className="text-[11px] font-bold text-white shrink-0">
-                    {alert.isSummary ? 'Open Report →' : 'Inspect Fix →'}
-                  </span>
-                </div>
-              </div>
-
-              {/* Ultra-thin auto-dismiss hairline bar */}
-              <div className="h-[2px] w-full bg-white/10">
-                <div
-                  className={`h-full animate-forge-drain ${alert.isCritical ? 'bg-red-500' : 'bg-white'}`}
-                  style={alert.isSummary ? { animationDuration: '7s' } : undefined}
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
     </div>
   );
 }
